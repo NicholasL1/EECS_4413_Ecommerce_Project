@@ -1,10 +1,12 @@
 const express = require("express");
 const app = express();
+require("dotenv").config(); // Retrieves sensitive values from .env file, I.E.: API Keys, Passwords, etc
 const mongoose = require("mongoose");
+const connectDB = require("./config/db");
+const PORT = process.env.PORT || 3001;
 
-// ToDo -- Might need to supply professor with these values?
-// Retrieves sensitive values from .env file, I.E.: API Keys, Passwords, etc
-require("dotenv").config();
+// Connect to database
+connectDB();
 
 // Parses JSON body-requests
 const bodyParser = require("body-parser");
@@ -18,6 +20,6 @@ app.use(express.json());
 // How to add controller to application
 // app.use('/CONTROLLER', CONTROLLER)
 
-app.listen(3001, function () {
+app.listen(PORT, function () {
   console.log(`Listening on PORT 3001`);
 });
