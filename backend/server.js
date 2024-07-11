@@ -1,6 +1,9 @@
+// Dependencies
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv").config(); // Retrieves sensitive values from .env file, I.E.: API Keys, Passwords, etc
+
+// Config
 const connectDB = require("./config/db");
 
 // Port env variable
@@ -8,7 +11,7 @@ const PORT = process.env.PORT || 3001;
 
 // Controllers
 // const CONTROLLER = require('./controllers/CONTROLLER_NAME')
-const User = require("./controllers/User/UserController.js");
+const User = require("./controllers/UserController.js");
 
 // Connect to database
 connectDB();
