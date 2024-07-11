@@ -10,6 +10,7 @@
   "author": "Auric, ewmackay, McDonald's Hashbrown, NickV1",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "colors": "^1.4.0",
     "express": "^4.19.2",
     "mongoose": "^8.5.0"

@@ -1,5 +1,5 @@
 const User = require("../models/UserModel");
-const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
 class UserDAO {
   // get user related stuff from mongo here
@@ -12,9 +12,11 @@ class UserDAO {
   }
 
   static async registerUser(email, password, first_name, last_name, address) {
+    const hashed_password = await bcrypt.hash(password, 10);
+
     const user = await User.create({
       email,
-      password,
+      password: hashed_password,
       first_name,
       last_name,
       address,
@@ -22,11 +24,19 @@ class UserDAO {
 
     if (user) {
       return user;
+    } else {
+      throw new Error("Invalid user data");
     }
   }
 
-  static async validateLogin() {
-    // mongoose query
+  static async validateLogin(email, password) {
+    const user = await this.checkUserExists(email);
+
+    if (user && (await bcrypt.compare(password, user.password))) {
+      return user;
+    } else {
+      throw new Error("Invalid Login Credentials");
+    }
   }
 }
 
