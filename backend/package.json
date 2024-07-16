@@ -7,7 +7,7 @@
     "dev": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Auric, ewmackay, McDonald's Hashbrown, NickV1",
+  "author": "Ryan, Ethan, Ammad, Nick",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",

@@ -11,6 +11,9 @@ class UserDAO {
     return userExists;
   }
 
+  /**
+   * @returns User
+   */
   static async registerUser(email, password, first_name, last_name, address) {
     const hashed_password = await bcrypt.hash(password, 10);
 
