@@ -69,3 +69,5 @@ router.post("/checkout", async (req, res) => {
     throw new Error(error);
   }
 });
+
+module.exports = router;

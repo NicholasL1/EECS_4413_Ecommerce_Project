@@ -8,7 +8,7 @@ const shoeDetailSchema = new mongoose.Schema({
 const cartSchema = mongoose.Schema(
   {
     shoes: {
-      type: map,
+      type: Map,
       of: shoeDetailSchema,
       required: [true, "Please add shoes"],
     },

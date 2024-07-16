@@ -1,6 +1,6 @@
 const Cart = require("../models/CartModel");
 const Shoe = require("../models/ShoeModel");
-const OrderService = require("./OrderService");
+const OrderService = require("../services/OrderService");
 
 class CartDAO {
   // Add shoes to cart

@@ -3,17 +3,17 @@ const OrderModel = require("../models/OrderModel");
 
 class OrderService {
   /**
-   *
+   * ToDo -- Get user_id from JWT
    * @param {JSON} Shoes -- {id: (qty, price), ...}
    */
   static async CreateOrder(Shoes) {
     /*
     Called form /Shopping/checkout
     Payload is similar to ShoeIDObject = {
-                            shoeId: (qty, price),
-                            shoeId2: (qty2, price2),
-                            ...
-                        }
+        shoeId: (qty, price),
+        shoeId2: (qty2, price2),
+        ...
+    }
     Search through the DB
         check if the qty <= qty in DB
             if not return error
@@ -21,8 +21,7 @@ class OrderService {
         Add item to OrderTable
     */
 
-    const Shoes = req.body.ShoeIDObject;
-    const shoe_ids = Object.keys(Shoes);
+    let total = 0;
 
     for (let shoe_id in Shoes) {
       if (Shoes.hasOwnProperty(shoe_id)) {
@@ -36,16 +35,19 @@ class OrderService {
         if (qty > currentStock)
           throw new Error("[Error] - One or more items are out of stock");
 
+        total += price;
         shoe.set("stock", currentStock - qty);
         await shoe.save();
       }
     }
 
-    // Calculate the total
-
-    // Insert value in OrderTable
-
-    return "[Success] - Order has been placed";
+    // Create and add order
+    const order = new OrderModel.create({
+      user_id: null,
+      total: total,
+      date: new Date(),
+      shoes: Shoes,
+    });
   }
 }
 
