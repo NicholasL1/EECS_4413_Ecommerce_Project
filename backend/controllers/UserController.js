@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 
 const UserService = require("../services/UserService.js");
+const { generateToken } = require("../config/generateToken.js");
+
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
@@ -11,16 +13,25 @@ router.post("/login", async (req, res) => {
     throw new Error("Please enter all fields");
   }
 
+  /*
+logs in 
+gen jwt 
+return jwt back to client
+store jwt on local storage (client side)
+*/
+
   // call UserService to login
   try {
     const user = await UserService.login(email, password); // send login info
     res.status(201).json({
-      _id: user._id,
-      email: user.email,
-      password: user.password,
-      first_name: user.first_name,
-      last_name: user.last_name,
-      address: user.address,
+      token: generateToken(
+        user._id,
+        user.email,
+        user.password,
+        user.first_name,
+        user.last_name,
+        user.address
+      ),
     });
   } catch (error) {}
 });
@@ -31,7 +42,7 @@ router.post("/register", async (req, res) => {
   const { email, password, first_name, last_name, address } = req.body;
 
   // check if all fields are filled
-  if (!email || !password || !first_name || !last_name) {
+  if (!email || !password || !first_name || !last_name || !address) {
     res.status(400);
     throw new Error("Please include all fields");
   }
@@ -49,16 +60,23 @@ router.post("/register", async (req, res) => {
 
     // Create cart model here using user's id --> user._id
 
+    // ToDo -- store generated token on the client-side
     res.status(201).json({
-      _id: user._id,
-      email: user.email,
-      password: user.password,
-      first_name: user.first_name,
-      last_name: user.last_name,
-      address: user.address,
+      token: generateToken(
+        user._id,
+        user.email,
+        user.password,
+        user.first_name,
+        user.last_name,
+        user.address
+      ),
     });
   } catch (error) {
-    throw new Error(error);
+    if (error.message.includes("User already exists")) {
+      res.send("User already exists.");
+    } else {
+      throw new Error(error);
+    }
   }
 });
 
