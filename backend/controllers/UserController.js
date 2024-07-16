@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const Cart = require("../models/CartModel");
 
 const UserService = require("../services/UserService.js");
 const { generateToken } = require("../config/generateToken.js");
@@ -26,6 +27,7 @@ store jwt on local storage (client side)
     res.status(201).json({
       token: generateToken(
         user._id,
+        user.cart_id,
         user.email,
         user.password,
         user.first_name,
@@ -49,8 +51,11 @@ router.post("/register", async (req, res) => {
 
   // call UserService to register
   // temp ==> const response =
+  const newCart = await Cart.create({});
+  newCartID = newCart._id;
   try {
     const user = await UserService.register({
+      newCartID,
       email,
       password,
       first_name,
@@ -58,12 +63,11 @@ router.post("/register", async (req, res) => {
       address,
     });
 
-    // Create cart model here using user's id --> user._id
-
     // ToDo -- store generated token on the client-side
     res.status(201).json({
       token: generateToken(
         user._id,
+        user.cart_id,
         user.email,
         user.password,
         user.first_name,

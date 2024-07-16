@@ -14,10 +14,18 @@ class UserDAO {
   /**
    * @returns User
    */
-  static async registerUser(email, password, first_name, last_name, address) {
+  static async registerUser(
+    cart_id,
+    email,
+    password,
+    first_name,
+    last_name,
+    address
+  ) {
     const hashed_password = await bcrypt.hash(password, 10);
 
     const user = await User.create({
+      cart_id,
       email,
       password: hashed_password,
       first_name,

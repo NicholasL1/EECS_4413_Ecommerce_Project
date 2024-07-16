@@ -7,7 +7,14 @@ class UserService {
     return user;
   }
 
-  static async register({ email, password, first_name, last_name, address }) {
+  static async register({
+    cart_id,
+    email,
+    password,
+    first_name,
+    last_name,
+    address,
+  }) {
     // check if email is already in use
     const userExists = await UserDAO.checkUserExists(email);
     if (userExists) {
@@ -15,6 +22,7 @@ class UserService {
     }
 
     return UserDAO.registerUser(
+      cart_id,
       email,
       password,
       first_name,
