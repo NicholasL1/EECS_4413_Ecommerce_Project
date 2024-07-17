@@ -76,7 +76,7 @@ class CartDAO {
         return response;
       }
     } else {
-      throw new Error("Error checking out.");
+      return "Error checking out.";
     }
   }
 }

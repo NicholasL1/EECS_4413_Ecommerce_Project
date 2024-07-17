@@ -10,8 +10,7 @@ router.post("/AddPaymentMethod", verifyToken, async (req, res) => {
 
   // Check if all fields are filled
   if (!card_number || !cvc || !expiry_date) {
-    res.status(400);
-    throw new Error("Please fill all the fields.");
+    res.status(400).json({ message: "Please fill all the fields." });
   }
 
   try {

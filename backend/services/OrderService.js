@@ -32,7 +32,7 @@ class OrderService {
 
         // remove qty from DB if qty <= qty in DB
         if (qty > currentStock)
-          throw new Error("[Error] - One or more items are out of stock");
+          throw new Error("One or more items are out of stock");
 
         total += price * qty;
         shoe.set("stock", currentStock - qty);

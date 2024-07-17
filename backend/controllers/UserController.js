@@ -6,30 +6,12 @@ const UserService = require("../services/UserService.js");
 const { generateToken } = require("../config/generateToken.js");
 const verifyToken = require("../config/verifyToken.js");
 
-// Gets user data by verifying the jwt with verifyToken middleware
-router.get("/Me", verifyToken, async (req, res) => {
-  // const user = {
-  //   id: req.user._id,
-  //   cart_id: req.user.cart_id,
-  //   email: req.user.email,
-  //   first_name: req.user.first_name,
-  //   last_name: req.user.last_name,
-  //   address: req.user.address,
-  // };
-  try {
-    res.status(200).json(req.user.id);
-  } catch (error) {
-    throw new Error(error);
-  }
-});
-
 router.post("/Login", async (req, res) => {
   const { email, password } = req.body;
 
   // check if all fields are filled
   if (!email || !password) {
-    res.status(400);
-    throw new Error("Please enter all fields");
+    res.status(400).send("Please enter all fields");
   }
 
   /*
@@ -67,8 +49,7 @@ router.post("/Register", async (req, res) => {
 
   // check if all fields are filled
   if (!email || !password || !first_name || !last_name || !address) {
-    res.status(400);
-    throw new Error("Please include all fields");
+    res.status(400).json({ message: "Please include all fields" });
   }
 
   // call UserService to register
@@ -97,11 +78,7 @@ router.post("/Register", async (req, res) => {
       ),
     });
   } catch (error) {
-    if (error.message.includes("User already exists")) {
-      res.send("User already exists.");
-    } else {
-      throw new Error(error);
-    }
+    res.status(401).json({ message: error.message });
   }
 });
 
