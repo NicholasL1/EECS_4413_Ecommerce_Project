@@ -41,7 +41,7 @@ const verifyToken = (req, res, next) => {
     const token = req.headers['authorization'];
   
     if (!token) {
-      return res.status(403).send('A token is required for authentication');
+      return res.status(403).send('Login Required');
     }
   
     try {
