@@ -7,6 +7,7 @@ const dotenv = require("dotenv").config(); // Retrieves sensitive values from .e
 // const CONTROLLER = require('./controllers/CONTROLLER_NAME')
 const User = require("./controllers/UserController.js");
 const Cart = require("./controllers/CartController.js");
+const Order = require("./controllers/OrderController.js");
 
 // Config
 const connectDB = require("./config/db");
@@ -26,6 +27,7 @@ app.use(express.json());
 // app.use('/CONTROLLER', CONTROLLER)
 app.use("/User", User);
 app.use("/Cart", Cart);
+app.use("/Order", Order);
 
 app.get("/", (req, res) => {
   res.status(200).json({ message: "Welcome to shoe store" });
