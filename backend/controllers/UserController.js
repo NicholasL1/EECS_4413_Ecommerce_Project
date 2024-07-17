@@ -7,7 +7,7 @@ const { generateToken } = require("../config/generateToken.js");
 const verifyToken = require("../config/verifyToken.js");
 
 // Gets user data by verifying the jwt with verifyToken middleware
-router.get("/me", verifyToken, async (req, res) => {
+router.get("/Me", verifyToken, async (req, res) => {
   // const user = {
   //   id: req.user._id,
   //   cart_id: req.user.cart_id,
@@ -23,7 +23,7 @@ router.get("/me", verifyToken, async (req, res) => {
   }
 });
 
-router.post("/login", async (req, res) => {
+router.post("/Login", async (req, res) => {
   const { email, password } = req.body;
 
   // check if all fields are filled
@@ -60,9 +60,9 @@ store jwt on local storage (client side)
   }
 });
 
-router.post("/logout", async (req, res) => {});
+router.post("/Logout", async (req, res) => {});
 
-router.post("/register", async (req, res) => {
+router.post("/Register", async (req, res) => {
   const { email, password, first_name, last_name, address } = req.body;
 
   // check if all fields are filled
