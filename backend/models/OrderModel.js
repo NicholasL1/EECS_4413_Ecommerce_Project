@@ -17,6 +17,11 @@ const orderSchema = mongoose.Schema(
       of: shoeDetailSchema,
       required: [true, "At Least 1 Shoe Should Be In The Order"],
     },
+    payment: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: [true, "Please Enter A Payment For This Order"],
+      unique: false,
+    },
     total: {
       type: Number,
       required: [true, "Total Cannot Be Empty"],

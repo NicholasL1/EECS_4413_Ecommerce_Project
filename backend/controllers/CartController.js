@@ -62,11 +62,12 @@ router.post("/UpdateQuantity", verifyToken, async (req, res) => {
 });
 
 router.post("/Checkout", verifyToken, async (req, res) => {
+  const { payment_id } = req.body;
   const cart_id = req.user.userData[1];
   const user_id = req.user.userData[0];
 
   try {
-    const response = await CartService.checkout(cart_id, user_id);
+    const response = await CartService.checkout(cart_id, user_id, payment_id);
     res.status(201).json({
       message: response,
     });

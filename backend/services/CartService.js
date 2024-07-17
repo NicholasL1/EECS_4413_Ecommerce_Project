@@ -32,10 +32,10 @@ class CartService {
     }
    * @returns: String confirmation message
    */
-  static async checkout(cart_id, user_id) {
+  static async checkout(cart_id, user_id, payment_id) {
     // Calls createOrder endpoint to create order in DB
     // Clears the cart
-    const response = await CartDAO.checkout(cart_id, user_id);
+    const response = await CartDAO.checkout(cart_id, user_id, payment_id);
     return response;
   }
 }
