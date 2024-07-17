@@ -1,8 +1,27 @@
 const express = require("express");
 const router = express.Router();
+const Cart = require("../models/CartModel");
 
 const UserService = require("../services/UserService.js");
 const { generateToken } = require("../config/generateToken.js");
+const verifyToken = require("../config/verifyToken.js");
+
+// Gets user data by verifying the jwt with verifyToken middleware
+router.get("/me", verifyToken, async (req, res) => {
+  // const user = {
+  //   id: req.user._id,
+  //   cart_id: req.user.cart_id,
+  //   email: req.user.email,
+  //   first_name: req.user.first_name,
+  //   last_name: req.user.last_name,
+  //   address: req.user.address,
+  // };
+  try {
+    res.status(200).json(req.user.id);
+  } catch (error) {
+    throw new Error(error);
+  }
+});
 
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
@@ -26,6 +45,7 @@ store jwt on local storage (client side)
     res.status(201).json({
       token: generateToken(
         user._id,
+        user.cart_id,
         user.email,
         user.password,
         user.first_name,
@@ -33,7 +53,11 @@ store jwt on local storage (client side)
         user.address
       ),
     });
-  } catch (error) {}
+  } catch (error) {
+    if (error.message === "Invalid Login Credentials") {
+      res.status(400).json({ message: error.message });
+    }
+  }
 });
 
 router.post("/logout", async (req, res) => {});
@@ -49,21 +73,22 @@ router.post("/register", async (req, res) => {
 
   // call UserService to register
   // temp ==> const response =
+  const newCart = await Cart.create({});
   try {
-    const user = await UserService.register({
+    const user = await UserService.register(
+      newCart._id,
       email,
       password,
       first_name,
       last_name,
-      address,
-    });
-
-    // Create cart model here using user's id --> user._id
+      address
+    );
 
     // ToDo -- store generated token on the client-side
     res.status(201).json({
       token: generateToken(
         user._id,
+        user.cart_id,
         user.email,
         user.password,
         user.first_name,
