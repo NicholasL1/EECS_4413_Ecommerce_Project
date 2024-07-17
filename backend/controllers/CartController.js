@@ -11,10 +11,10 @@ router.post("/AddToCart", verifyToken, async (req, res) => {
   // check if all fields are filled
   if (!shoe_id) {
     res.status(400);
-    throw new Error("No shoe selected.");
+    res.status(401).json({ message: "No shoe selected." });
   } else if (!cart_id) {
     res.status(400);
-    throw new Error("You are not logged in.");
+    res.status(401).json({ message: "You are not logged in." });
   }
 
   try {
@@ -23,7 +23,7 @@ router.post("/AddToCart", verifyToken, async (req, res) => {
       message: response,
     });
   } catch (error) {
-    throw new Error(error);
+    res.status(401).json({ message: error.message });
   }
 });
 
@@ -34,7 +34,7 @@ router.post("/RemoveFromCart", verifyToken, async (req, res) => {
   // check if all fields are filled
   if (!shoe_id) {
     res.status(400);
-    throw new Error("No shoe selected");
+    res.status(401).json({ message: error.message });
   }
 
   try {
@@ -43,7 +43,7 @@ router.post("/RemoveFromCart", verifyToken, async (req, res) => {
       message: response,
     });
   } catch (error) {
-    throw new Error(error);
+    res.status(401).json({ message: error.message });
   }
 });
 
@@ -57,21 +57,22 @@ router.post("/UpdateQuantity", verifyToken, async (req, res) => {
       message: response,
     });
   } catch (error) {
-    throw new Error(error);
+    res.status(401).json({ message: error.message });
   }
 });
 
 router.post("/Checkout", verifyToken, async (req, res) => {
+  const { payment_id } = req.body;
   const cart_id = req.user.userData[1];
   const user_id = req.user.userData[0];
 
   try {
-    const response = await CartService.checkout(cart_id, user_id);
+    const response = await CartService.checkout(cart_id, user_id, payment_id);
     res.status(201).json({
       message: response,
     });
   } catch (error) {
-    throw new Error(error);
+    res.status(401).json({ message: error.message });
   }
 });
 

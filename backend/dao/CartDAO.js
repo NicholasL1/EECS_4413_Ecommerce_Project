@@ -57,14 +57,18 @@ class CartDAO {
     }
   }
 
-  static async checkout(cart_id, user_id) {
+  static async checkout(cart_id, user_id, payment_id) {
     /**
      * Check if the cart exists, if it does then retrieve it
      * Send the cart information to order
      */
     const cart = await Cart.findById(cart_id);
     if (cart) {
-      const order = await OrderService.CreateOrder(cart.shoes, user_id);
+      const order = await OrderService.CreateOrder(
+        cart.shoes,
+        user_id,
+        payment_id
+      );
       if (order) {
         const response = "Order created.";
         cart.shoes = new Map(); // Clears the cart
@@ -72,7 +76,7 @@ class CartDAO {
         return response;
       }
     } else {
-      throw new Error("Error checking out.");
+      return "Error checking out.";
     }
   }
 }
