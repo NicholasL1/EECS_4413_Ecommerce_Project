@@ -4,7 +4,7 @@ const router = express.Router();
 const CartService = require("../services/CartService.js");
 const verifyToken = require("../config/verifyToken.js");
 
-router.post("/addToCart", verifyToken, async (req, res) => {
+router.post("/AddToCart", verifyToken, async (req, res) => {
   const { shoe_id } = req.body;
   const cart_id = req.user.userData[1];
 
@@ -27,7 +27,7 @@ router.post("/addToCart", verifyToken, async (req, res) => {
   }
 });
 
-router.post("/removeFromCart", verifyToken, async (req, res) => {
+router.post("/RemoveFromCart", verifyToken, async (req, res) => {
   const { shoe_id } = req.body;
   const cart_id = req.user.userData[1];
 
@@ -47,7 +47,7 @@ router.post("/removeFromCart", verifyToken, async (req, res) => {
   }
 });
 
-router.post("/updateQuantity", verifyToken, async (req, res) => {
+router.post("/UpdateQuantity", verifyToken, async (req, res) => {
   const { qty, shoe_id } = req.body;
   const cart_id = req.user.userData[1];
 
@@ -61,7 +61,7 @@ router.post("/updateQuantity", verifyToken, async (req, res) => {
   }
 });
 
-router.post("/checkout", verifyToken, async (req, res) => {
+router.post("/Checkout", verifyToken, async (req, res) => {
   const cart_id = req.user.userData[1];
   const user_id = req.user.userData[0];
 
