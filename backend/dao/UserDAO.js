@@ -23,7 +23,6 @@ class UserDAO {
     address
   ) {
     const hashed_password = await bcrypt.hash(password, 10);
-
     const user = await User.create({
       cart_id,
       email,

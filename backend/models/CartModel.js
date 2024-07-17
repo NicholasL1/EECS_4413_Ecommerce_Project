@@ -10,7 +10,7 @@ const cartSchema = mongoose.Schema(
     shoes: {
       type: Map,
       of: shoeDetailSchema,
-      required: [true, "Please add shoes"],
+      required: false,
     },
   },
   { collection: "carts" }

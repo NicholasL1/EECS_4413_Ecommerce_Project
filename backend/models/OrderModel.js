@@ -5,23 +5,16 @@ const shoeDetailSchema = new mongoose.Schema({
   price: { type: Number, required: true },
 });
 
-const shoeSchema = mongoose.Schema({
-  shoes: {
-    type: Map,
-    of: shoeDetailSchema,
-    required: [true, "Please add shoe"],
-  },
-});
-
 const orderSchema = mongoose.Schema(
   {
     user_id: {
       type: mongoose.Schema.Types.ObjectId,
       required: [true, "Please Enter A user_id For This Order"],
-      unique: true,
+      unique: false,
     },
     shoes: {
-      type: shoeSchema,
+      type: Map,
+      of: shoeDetailSchema,
       required: [true, "At Least 1 Shoe Should Be In The Order"],
     },
     total: {

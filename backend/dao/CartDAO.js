@@ -13,6 +13,9 @@ class CartDAO {
     const cart = await Cart.findById(cart_id);
     if (cart) {
       const shoe = await Shoe.findById(shoe_id);
+      if (!cart.shoes) {
+        cart.shoes = new Map();
+      }
       cart.shoes.set(shoe._id.toString(), { qty: 1, price: shoe.price });
 
       // save cart
@@ -54,17 +57,24 @@ class CartDAO {
     }
   }
 
-  static async checkout(cart_id) {
+  static async checkout(cart_id, user_id) {
     /**
      * Check if the cart exists, if it does then retrieve it
      * Send the cart information to order
      */
-    const cart = await cart.findById(cart_id);
+    const cart = await Cart.findById(cart_id);
     if (cart) {
-      const response = await OrderService.CreateOrder(cart.shoes);
-      return response;
+      const order = await OrderService.CreateOrder(cart.shoes, user_id);
+      if (order) {
+        const response = "Order created.";
+        cart.shoes = new Map(); // Clears the cart
+        await cart.save();
+        return response;
+      }
     } else {
       throw new Error("Error checking out.");
     }
   }
 }
+
+module.exports = CartDAO;

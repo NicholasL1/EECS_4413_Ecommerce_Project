@@ -6,7 +6,7 @@ class CartService {
    * @returns: String confirmation message
    */
   static async addToCart(shoe_id, cart_id) {
-    const response = await CartDAO.addToCart(shoe_id);
+    const response = await CartDAO.addToCart(shoe_id, cart_id);
     return response;
   }
 
@@ -32,10 +32,12 @@ class CartService {
     }
    * @returns: String confirmation message
    */
-  static async checkout(cart_id) {
+  static async checkout(cart_id, user_id) {
     // Calls createOrder endpoint to create order in DB
     // Clears the cart
-    const response = await CartDAO.checkout(cart_id);
+    const response = await CartDAO.checkout(cart_id, user_id);
     return response;
   }
 }
+
+module.exports = CartService;

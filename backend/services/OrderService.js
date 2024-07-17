@@ -1,53 +1,50 @@
 const ShoeModel = require("../models/ShoeModel");
 const OrderModel = require("../models/OrderModel");
+const UserModel = require("../models/UserModel");
 
 class OrderService {
   /**
    * ToDo -- Get user_id from JWT
    * @param {JSON} Shoes -- {id: (qty, price), ...}
    */
-  static async CreateOrder(Shoes) {
-    /*
-    Called form /Shopping/checkout
-    Payload is similar to ShoeIDObject = {
-        shoeId: (qty, price),
-        shoeId2: (qty2, price2),
-        ...
-    }
-    Search through the DB
-        check if the qty <= qty in DB
-            if not return error
-        remove qty from qty in DB
-        Add item to OrderTable
-    */
+  static async CreateOrder(Shoes, user_id) {
+    try {
+      let total = 0;
 
-    let total = 0;
+      const order = await OrderModel.create({
+        user_id: user_id,
+        shoes: Shoes,
+        total: total,
+        date: new Date(),
+      });
 
-    for (let shoe_id in Shoes) {
-      if (Shoes.hasOwnProperty(shoe_id)) {
-        const { qty, price } = Shoes[shoe_id];
+      if (!order) {
+        throw new Error("Order Could Not Be Created");
+      }
+
+      for (const [shoe_id, value] of Shoes.entries()) {
+        const { qty, price } = value;
 
         // check if qty <= qty in DB
-        const shoe = ShoeModel.findById(shoe_id);
+        const shoe = await ShoeModel.findById(shoe_id);
         const currentStock = shoe.get("stock");
 
         // remove qty from DB if qty <= qty in DB
         if (qty > currentStock)
           throw new Error("[Error] - One or more items are out of stock");
 
-        total += price;
+        total += price * qty;
         shoe.set("stock", currentStock - qty);
         await shoe.save();
       }
-    }
 
-    // Create and add order
-    const order = new OrderModel.create({
-      user_id: null,
-      total: total,
-      date: new Date(),
-      shoes: Shoes,
-    });
+      order.set("total", total);
+      await order.save();
+
+      return order;
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 }
 

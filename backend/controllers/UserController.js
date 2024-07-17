@@ -53,7 +53,11 @@ store jwt on local storage (client side)
         user.address
       ),
     });
-  } catch (error) {}
+  } catch (error) {
+    if (error.message === "Invalid Login Credentials") {
+      res.status(400).json({ message: error.message });
+    }
+  }
 });
 
 router.post("/logout", async (req, res) => {});
@@ -70,16 +74,15 @@ router.post("/register", async (req, res) => {
   // call UserService to register
   // temp ==> const response =
   const newCart = await Cart.create({});
-  newCartID = newCart._id;
   try {
-    const user = await UserService.register({
-      newCartID,
+    const user = await UserService.register(
+      newCart._id,
       email,
       password,
       first_name,
       last_name,
-      address,
-    });
+      address
+    );
 
     // ToDo -- store generated token on the client-side
     res.status(201).json({
