@@ -111,15 +111,24 @@ class OrderService {
       const order = allOrders[i]
       const shoes = order.shoes
       
+      // Go through all the shoes in the order object
       for (const [shoe_id, info] of shoes.entries()) {
+        const user = await UserModel.findOne({_id: order.user_id})
+        
         if (shoe_id in shoeStats) {
+        
           const total_qty = shoeStats[shoe_id].qty + info.qty
           const total_price = info.price * total_qty
+
           shoeStats[shoe_id].qty = total_qty
           shoeStats[shoe_id].price = total_price
+          shoeStats[shoe_id].users.push(user)
+        
         } else {
+
           const shoe = await ShoeModel.findOne({_id: shoe_id})
-          shoeStats[shoe_id] = {qty: info.qty, price: info.price, shoe: shoe}
+          shoeStats[shoe_id] = {qty: info.qty, price: info.qty * info.price, shoe: shoe, users: [user]}
+        
         }
 
         shoeStats['total_sales'] += info.qty * info.price
