@@ -3,7 +3,6 @@ const Shoe = require("../models/ProductModel");
 class ProductDAO {
 
     static async fetchShoes(query) {
-        //return query;                               // testing to see if query formatting is broken
         const shoes = await Shoe.find(query);
         return shoes;
     }
