@@ -40,6 +40,6 @@ const productSchema = mongoose.Schema(
         },
     },
     {collection: "shoes", 
-     collation: {locale: 'en', strength: 2}}
+     collation: {locale: 'en', strength: 2}}                // Collation allows for fast, case-insensitive queries
 );
 module.exports = mongoose.model("Shoe", productSchema);
