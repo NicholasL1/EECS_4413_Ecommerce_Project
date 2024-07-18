@@ -46,7 +46,7 @@ class ProductService {
 
 
     static async fetchAllShoes() {
-        return ProductDAO.fetchAll();
+        return await ProductDAO.fetchAll();
     }
 
 
