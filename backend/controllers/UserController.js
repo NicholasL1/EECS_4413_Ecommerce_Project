@@ -11,7 +11,7 @@ router.post("/Login", async (req, res) => {
 
   // check if all fields are filled
   if (!email || !password) {
-    res.status(400).send("Please enter all fields");
+    res.status(400).json({ message: "Please enter all fields" });
   }
 
   /*
