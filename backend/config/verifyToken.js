@@ -1,8 +1,8 @@
 //#region Tutorial + Use-case
 
 /*
-  When a user is registered/logged-in, a TOKEN is gererated and returned. Seen in the
-  login and register endpoints in UserContoller. The TOKEN will be returned to the front-end
+  When a user is registered/logged-in, a TOKEN is generated and returned. Seen in the
+  login and register endpoints in UserController. The TOKEN will be returned to the front-end
   where it will be stored in LOCALSTORAGE so we can use it later.
 
   We use this TOKEN to verify is the user is currently logged-in and can access certain
@@ -35,22 +35,22 @@
 //#endregion
 
 const dotenv = require("dotenv").config(); // Retrieves sensitive values from .env file, I.E.: API Keys, Passwords, etc
-const jwt = require('jsonwebtoken'); // Ensure you have jwt imported
+const jwt = require("jsonwebtoken"); // Ensure you have jwt imported
 
 const verifyToken = (req, res, next) => {
-    const token = req.headers['authorization'];
-  
-    if (!token) {
-      return res.status(403).send('Login Required');
-    }
-  
-    try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = decoded; // Attach decoded token to request object
-    } catch (err) {
-      return res.status(401).send('Invalid Token');
-    }
-    return next();
+  const token = req.headers["authorization"];
+
+  if (!token) {
+    return res.status(403).send("Login Required");
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded; // Attach decoded token to request object
+  } catch (err) {
+    return res.status(401).send("Invalid Token");
+  }
+  return next();
 };
 
 module.exports = verifyToken;

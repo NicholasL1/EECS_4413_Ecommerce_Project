@@ -1,7 +1,13 @@
 // Dependencies
 const express = require("express");
-const mongoose = require("mongoose");
 const dotenv = require("dotenv").config(); // Retrieves sensitive values from .env file, I.E.: API Keys, Passwords, etc
+
+// Controllers
+// const CONTROLLER = require('./controllers/CONTROLLER_NAME')
+const User = require("./controllers/UserController.js");
+const Cart = require("./controllers/CartController.js");
+const Order = require("./controllers/OrderController.js");
+const Payment = require("./controllers/PaymentController.js");
 
 // Config
 const connectDB = require("./config/db");

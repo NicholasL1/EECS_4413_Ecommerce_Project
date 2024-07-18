@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 
 const userSchema = mongoose.Schema(
   {
+    cart_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+    },
     email: {
       type: String,
       required: [true, "Please add a valid email"],
