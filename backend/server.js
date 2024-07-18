@@ -12,6 +12,9 @@ const PORT = process.env.PORT || 3001;
 // Controllers
 // const CONTROLLER = require('./controllers/CONTROLLER_NAME')
 const User = require("./controllers/UserController.js");
+const Cart = require("./controllers/CartController.js");
+const Order = require("./controllers/OrderController.js");
+const Payment = require("./controllers/PaymentController.js");
 const Product = require("./controllers/ProductController.js");
 
 // Connect to database
@@ -25,6 +28,9 @@ app.use(express.json());
 // How to add controller to application
 // app.use('/CONTROLLER', CONTROLLER)
 app.use("/User", User);
+app.use("/Cart", Cart);
+app.use("/Order", Order);
+app.use("/Payment", Payment);
 app.use("/Product", Product);
 
 app.get("/", (req, res) => {
