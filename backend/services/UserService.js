@@ -1,6 +1,11 @@
 const UserDAO = require("../dao/UserDAO.js");
 
+
 class UserService {
+  static async getUserById(userId) {
+    const user = UserDAO.findUser(userId);
+    return user;
+  }
   static async login(email, password) {
     // check if email exists
     const user = UserDAO.validateLogin(email, password);
@@ -32,6 +37,9 @@ class UserService {
 
     // register them
   }
+
+
+
 
   static async logout() {}
 }

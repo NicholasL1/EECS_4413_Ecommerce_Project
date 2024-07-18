@@ -5,6 +5,17 @@ class UserDAO {
   // get user related stuff from mongo here
 
   // NOTE -- pass parameters as objects: {...}
+  static async findUser(userId) {
+    try {
+      const user = User.findById(userId);
+      if (!user) {
+        throw new Error("User not found");
+      }
+      return user;
+    } catch (error) {
+      throw new Error("Error");
+    }
+  }
 
   static async checkUserExists(email) {
     const userExists = await User.findOne({ email: email });

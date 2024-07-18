@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const Cart = require("../models/CartModel");
+const User = require("../models/UserModel.js");
+const app = express();
 
 const UserService = require("../services/UserService.js");
 const { generateToken } = require("../config/generateToken.js");
@@ -80,6 +82,25 @@ router.post("/Register", async (req, res) => {
   } catch (error) {
     res.status(401).json({ message: error.message });
   }
+});
+
+app.get("/account/:id", (req, res) => {
+  try {
+    const userId = req.params.id;
+    const user = UserService.getUserById(userId);
+
+    if (!user) {
+      return res.sendStatus(404);
+    }
+
+    res.status(200).json({
+      email: user.email,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      address: user.address,
+      is_admin: user.is_admin,
+    });
+  } catch (error) {}
 });
 
 module.exports = router;
