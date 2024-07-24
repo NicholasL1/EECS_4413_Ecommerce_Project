@@ -1,6 +1,5 @@
 const UserDAO = require("../dao/UserDAO.js");
 
-
 class UserService {
   static async getUserById(userId) {
     const user = UserDAO.findUser(userId);
@@ -38,18 +37,17 @@ class UserService {
     // register them
   }
 
-static async updateUser(userId, updateData) {
-  const user = await UserDAO.findById(userId);
-  if (!user) {
-    throw new Error('User Not Found');
+  static async updateUser(userId, updateData) {
+    const user = await UserDAO.findUser(userId);
+    if (!user) {
+      throw new Error("User Not Found");
+    }
+
+    Object.assign(user, updateData);
+    await user.save();
+
+    return user;
   }
-
-  Object.assign(user, updateData);
-  await user.save();
-
-  return user;
-}
-
 
   static async logout() {}
 }
