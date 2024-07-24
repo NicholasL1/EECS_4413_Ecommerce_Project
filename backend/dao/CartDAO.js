@@ -1,6 +1,7 @@
 const Cart = require("../models/CartModel");
-const Shoe = require("../models/ShoeModel");
+const Shoe = require("../models/ProductModel");
 const OrderService = require("../services/OrderService");
+const PaymentModel = require("../models/PaymentModel");
 
 class CartDAO {
   // Add shoes to cart
@@ -64,11 +65,18 @@ class CartDAO {
      */
     const cart = await Cart.findById(cart_id);
     if (cart) {
+      try {
+        await PaymentModel.findById(payment_id);
+      } catch (error) {
+        return "No Payment Option Provided";
+      }
+
       const order = await OrderService.CreateOrder(
         cart.shoes,
         user_id,
         payment_id
       );
+
       if (order) {
         const response = "Order created.";
         cart.shoes = new Map(); // Clears the cart

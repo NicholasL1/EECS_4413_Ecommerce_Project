@@ -32,7 +32,8 @@ store jwt on local storage (client side)
         user.password,
         user.first_name,
         user.last_name,
-        user.address
+        user.address,
+        user.isAdmin
       ),
     });
   } catch (error) {
@@ -74,7 +75,8 @@ router.post("/Register", async (req, res) => {
         user.password,
         user.first_name,
         user.last_name,
-        user.address
+        user.address,
+        user.isAdmin
       ),
     });
   } catch (error) {

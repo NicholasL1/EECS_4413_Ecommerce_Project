@@ -1,4 +1,4 @@
-const ShoeModel = require("../models/ShoeModel");
+const ShoeModel = require("../models/ProductModel");
 const OrderModel = require("../models/OrderModel");
 const UserModel = require("../models/UserModel");
 
@@ -10,6 +10,10 @@ class OrderService {
   static async CreateOrder(Shoes, user_id, payment_id) {
     try {
       let total = 0;
+
+      if (Shoes.size == 0) {
+        throw new Error("Cart is Empty");
+      }
 
       const order = await OrderModel.create({
         user_id: user_id,

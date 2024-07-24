@@ -47,15 +47,8 @@ class ProductService {
     return await ProductDAO.fetchAll();
   }
 
-  static async updateStock({ name, size, colour, stock }) {
-    const filteredQuery = {};
-
-    filteredQuery.name = name;
-    filteredQuery.size = Number(size);
-    filteredQuery.colour = colour;
-    filteredQuery.stock = Number(stock);
-
-    return await ProductDAO.updateStock(filteredQuery);
+  static async updateStock({ product_id, stock }) {
+    return await ProductDAO.updateStock(product_id, stock);
   }
 }
 

@@ -15,18 +15,18 @@ class ProductDAO {
   // need to update method to find the shoe with the productID that needs to be updated then use .set() to update the stock
   // const shoe = await shoe.findone({ _id: product_id });;
   // shoe.set({ stock: stock });;
-  static async updateStock({ name, size, colour, stock }) {
+  static async updateStock(product_id, stock) {
     // fetch the shoe from the DB, adjust stock based on amount sold, rewrite shoe to DB w adjusted stock
 
     try {
+      console.log(product_id);
+
       const update = await Shoe.updateOne(
         {
-          name: name,
-          size: size,
-          colour: colour,
+          _id: product_id,
         },
         {
-          $inc: { stock: -stock },
+          $set: { stock: stock },
         }
       );
 
