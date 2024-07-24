@@ -103,4 +103,25 @@ app.get("/account/:id", (req, res) => {
   } catch (error) {}
 });
 
+router.post("/updateUser", async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const updateData = req.body;
+    const user = await UserService.updateUser(userId, updateData);
+
+    res.status(200).json({
+      message: "Update Success",
+      user: {
+        id: user._id,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        address: user.address,
+        email: user.email,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ message: "server error" });
+  }
+});
+
 module.exports = router;

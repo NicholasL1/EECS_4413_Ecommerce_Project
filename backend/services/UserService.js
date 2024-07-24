@@ -38,7 +38,17 @@ class UserService {
     // register them
   }
 
+static async updateUser(userId, updateData) {
+  const user = await UserDAO.findById(userId);
+  if (!user) {
+    throw new Error('User Not Found');
+  }
 
+  Object.assign(user, updateData);
+  await user.save();
+
+  return user;
+}
 
 
   static async logout() {}
