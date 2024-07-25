@@ -36,7 +36,7 @@ const productSchema = mongoose.Schema(
         },
         category: {
             type: String,
-            required: [true, "Please enter shoe category"]
+            required: [false, "Please enter shoe category"]
         },
     },
     {collection: "shoes", 
