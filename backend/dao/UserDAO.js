@@ -2,18 +2,16 @@ const User = require("../models/UserModel");
 const bcrypt = require("bcrypt");
 
 class UserDAO {
-  // get user related stuff from mongo here
-
-  // NOTE -- pass parameters as objects: {...}
   static async findUser(userId) {
+    console.log(userId);
     try {
-      const user =  await User.findById(userId);
+      const user = await User.findById({ _id: userId });
       if (!user) {
         throw new Error("User not found");
       }
       return user;
     } catch (error) {
-      throw new Error("Error");
+      throw new Error(error);
     }
   }
 
@@ -57,6 +55,25 @@ class UserDAO {
       return user;
     } else {
       throw new Error("Invalid Login Credentials");
+    }
+  }
+
+  static async updateUser(user_id, values) {
+    try {
+      const update = await User.updateOne(
+        {
+          _id: user_id,
+        },
+        values
+      );
+
+      if (update.modifiedCount > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      throw new Error(error);
     }
   }
 }

@@ -86,10 +86,10 @@ router.post("/Register", async (req, res) => {
   }
 });
 
-app.get("/account/:id", (req, res) => {
+router.get("/Account/:id", async (req, res) => {
   try {
     const userId = req.params.id;
-    const user = UserService.getUserById(userId);
+    const user = await UserService.getUserById(userId);
 
     if (!user) {
       return res.sendStatus(404);
@@ -102,18 +102,22 @@ app.get("/account/:id", (req, res) => {
       address: user.address,
       is_admin: user.is_admin,
     });
-  } catch (error) {}
+  } catch (error) {
+    res.status(401).json({ message: error.message });
+  }
 });
 
-router.post("/updateUser", async (req, res) => {
+router.post("/UpdateUser", verifyToken, async (req, res) => {
   try {
-    const { userId, updateData } = req.body;
+    const userId = req.user.userData[0];
 
-    if (!userId || !updateData) {
+    const { update } = req.body;
+
+    if (!userId || !update) {
       return res.status(400).json({ message: "ID and update is required" });
     }
 
-    const user = await UserService.updateUser(userId, updateData);
+    const user = await UserService.updateUser(userId, update);
 
     if (!user) {
       return res
@@ -123,13 +127,6 @@ router.post("/updateUser", async (req, res) => {
 
     res.status(201).json({
       message: "Update Successful",
-      user: {
-        id: user._id,
-        first_name: user.first_name,
-        last_name: user.last_name,
-        address: user.address,
-        email: user.email,
-      },
     });
   } catch (error) {
     console.error("Error updating user:", error);
