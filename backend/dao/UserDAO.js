@@ -7,7 +7,7 @@ class UserDAO {
   // NOTE -- pass parameters as objects: {...}
   static async findUser(userId) {
     try {
-      const user = User.findById(userId);
+      const user =  await User.findById(userId);
       if (!user) {
         throw new Error("User not found");
       }

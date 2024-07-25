@@ -87,7 +87,7 @@ router.post("/Register", async (req, res) => {
 app.get("/account/:id", (req, res) => {
   try {
     const userId = req.params.id;
-    const user = UserService.getUserById(userId);
+    const user =  UserService.getUserById(userId);
 
     if (!user) {
       return res.sendStatus(404);
