@@ -7,12 +7,13 @@
     "dev": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Auric, ewmackay, McDonald's Hashbrown, NickV1",
+  "author": "Ryan, Ethan, Ammad, Nick",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "colors": "^1.4.0",
     "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.5.0"
   },
   "devDependencies": {
