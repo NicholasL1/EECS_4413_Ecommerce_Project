@@ -13,7 +13,7 @@ router.post("/Login", async (req, res) => {
 
   // check if all fields are filled
   if (!email || !password) {
-    res.status(400).send("Please enter all fields");
+    res.status(400).json({ message: "Please enter all fields" });
   }
 
   /*
@@ -34,7 +34,8 @@ store jwt on local storage (client side)
         user.password,
         user.first_name,
         user.last_name,
-        user.address
+        user.address,
+        user.isAdmin
       ),
     });
   } catch (error) {
@@ -76,7 +77,8 @@ router.post("/Register", async (req, res) => {
         user.password,
         user.first_name,
         user.last_name,
-        user.address
+        user.address,
+        user.isAdmin
       ),
     });
   } catch (error) {
