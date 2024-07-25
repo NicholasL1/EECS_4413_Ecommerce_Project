@@ -10,6 +10,7 @@ const verifyToken = require("../config/verifyToken.js");
 router.get("/FetchShoe", async (req, res) => {
   const query = req.query; // Get query params from request
 
+  // Checks if query is empty
   if (
     !query.brand &&
     !query.size &&
@@ -22,6 +23,7 @@ router.get("/FetchShoe", async (req, res) => {
     !query.category
   ) {
     res.status(400).json({ message: "No parameters associated with query" });
+    return;
   }
 
   try {
