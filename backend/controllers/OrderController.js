@@ -3,6 +3,7 @@ const router = express.Router()
 
 const OrderService = require('../services/OrderService')
 const verifyToken = require('../config/verifyToken')
+const verifyAdmin = require('../config/verifyAdmin')
 
 //#region POST requests
 router.post('/CancelOrder/:orderID', verifyToken, async (req, res) => {    
@@ -44,6 +45,16 @@ router.get('/GetSales', verifyToken, async(req, res) => {
         res.send(err.message)
     }
 })
+
+router.get('/GetAllOrders', verifyToken, verifyAdmin, async (req, res) => {
+    try {
+        const result = await OrderService.GetAllOrders()
+        res.json(result)
+    } catch (err) {
+        res.send(err.message)
+    }
+})
+
 //#endregion
 
 module.exports = router
