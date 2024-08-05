@@ -1,6 +1,7 @@
 // Dependencies
 const express = require("express");
 const dotenv = require("dotenv").config(); // Retrieves sensitive values from .env file, I.E.: API Keys, Passwords, etc
+const cors = require('cors');
 
 // Config
 const connectDB = require("./config/db");
@@ -24,6 +25,7 @@ const app = express();
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(cors());
 
 // How to add controller to application
 // app.use('/CONTROLLER', CONTROLLER)
