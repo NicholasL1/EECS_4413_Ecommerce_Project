@@ -42,6 +42,10 @@ class AdminService {
 
     return await AdminDAO.updateUser(email, update);
   }
+
+  static async getAllUsers() {
+    return await AdminDAO.getAllUsers()
+  }
 }
 
 module.exports = AdminService;

@@ -16,7 +16,7 @@ import AdminServices from './adminServices'; // Adjust the path as needed
 export default function OrderDashboard() {
 
     // ToDo -- TEMPORARY -- Remove once this has been implmented in Login and Registration page
-    localStorage.setItem('Authorization', JSON.stringify(`eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRGF0YSI6WyI2Njk3ZjFjOTM4NDA3MTdiYjI3MGFiNjIiLCI2Njk3ZjFjOTM4NDA3MTdiYjI3MGFiNWYiLCJhZG1pbkBtYWlsLmNvbSIsIiQyYiQxMCQ2bE1pR3M4aG9wWUxWbjMzOTRrdG0ua2pybGtBaVE0VElLQzlBL2FkSXBaVDlzUVp6WHhWZSIsIkFkbWluaXN0cmF0b3IiLCJBY2NvdW50IiwiNDcwMCBLZWVsZSBTdCwgTm9ydGggWW9yaywgT04gTTNKIDFQMyIsdHJ1ZV0sImlhdCI6MTcyMjg4MDMxOSwiZXhwIjoxNzI1NDcyMzE5fQ.RpQm5S1j6AQwQX0T5Hch55foN2bq4kYFiRwMKqukIQc`));
+    localStorage.setItem('Authorization', JSON.stringify(`eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRGF0YSI6WyI2Njk3ZjFjOTM4NDA3MTdiYjI3MGFiNjIiLCI2Njk3ZjFjOTM4NDA3MTdiYjI3MGFiNWYiLCJhZG1pbkBtYWlsLmNvbSIsIiQyYiQxMCQ2bE1pR3M4aG9wWUxWbjMzOTRrdG0ua2pybGtBaVE0VElLQzlBL2FkSXBaVDlzUVp6WHhWZSIsIkFkbWluaXN0cmF0b3IiLCJBY2NvdW50IiwiNDcwMCBLZWVsZSBTdCwgTm9ydGggWW9yaywgT04gTTNKIDFQMyIsdHJ1ZV0sImlhdCI6MTcyMjkyMjE3OSwiZXhwIjoxNzI1NTE0MTc5fQ.EMlArJIXjo_SIOjyzrGqAfspsszfijpQc7puAZvEJVM`));
 
 
     //#region States
@@ -79,7 +79,7 @@ export default function OrderDashboard() {
                 {
                     rowData.shoes.map((shoe, i) => {
                         return (
-                            <div className="p-2 pl-0 pt-0">
+                            <div className="p-2 pl-0 pt-0" key={i}>
                                 <div className="flex">
                                     <a href={`Order/${shoe.shoe._id}`} className="block underline text-blue-600">{shoe.qty} x {shoe.shoe.name} @ ${shoe.shoe.price}</a>
                                     <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="ml-1 mt-1 text-blue-500" size="sm"/>

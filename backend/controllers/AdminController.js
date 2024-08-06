@@ -125,4 +125,18 @@ router.post("/UpdateCustInfo", verifyToken, verifyAdmin, async (req, res) => {
   }
 });
 
+router.get('/GetAllCustomers', verifyToken, verifyAdmin, async (req, res) => {
+  try {
+    const response = await AdminService.getAllUsers()
+    res.json({data: response})
+  } catch (err) {
+    console.log(err.message)
+    res.json({data: []})
+  }
+})
+
+router.post('/RemoveCustomer', verifyToken, verifyAdmin, async (req, res) => {
+  
+})
+
 module.exports = router;

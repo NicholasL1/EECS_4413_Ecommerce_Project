@@ -1,9 +1,9 @@
 "use client";
 
+import CustomersDashboard from "@/components/admin/CustomersDashboard";
 import OrderDashboard from "@/components/admin/OrderDashboard";
 import ProductsDashboard, {} from "@/components/admin/ProductsDashboard";
 import React, { useEffect, useState } from "react";
-
 
 function page() {
 
@@ -20,6 +20,13 @@ function page() {
 
   //#region Components
   const DashboardMenu = (menu_items) => {
+
+    /* TODO
+    - Add JWT decode logic
+      - This is to prevent unauthorized users from accessing this section  
+    - Add SalesDashboard
+    */
+
     return (
       <div id="DashboardMenu" className="w-1/12 border h-fit border-gray-300 rounded-md shadow-sm">
           <ul>
@@ -48,13 +55,8 @@ function page() {
 
       <div className="flex justify-items-center align-middle p-4">
         {DashboardMenu(menu_items)}
-
         {GenerateDashboard(selected_item)}
       </div>
-
-      
-
-
     </div>
   )  
 }
@@ -64,7 +66,8 @@ const GenerateDashboard = (menu_item) => {
     return <ProductsDashboard/>
   else if (menu_item === 'Orders')
     return <OrderDashboard/>
+  else if (menu_item === 'Customers')
+    return <CustomersDashboard/>
 }
-
 
 export default page;

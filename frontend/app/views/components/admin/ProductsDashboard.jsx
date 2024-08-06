@@ -48,14 +48,14 @@ export default function ProductsDashboard() {
     }, [])
 
     const RowActions = (rowData) => {
-        const btn_style = `block w-full my-2 p-1 text-sm text-center rounded-md shadow-sm` 
+        const btn_style = `block h-[32px] w-full my-2 p-1 text-sm text-center rounded-md shadow-sm text-white font-bold` 
         return (
-            <div className="justify-center align-middle">
-                <button onClick={() => handleShowEditModal(rowData)} className={`${btn_style} bg-[#272f29] text-white font-bold`}>Edit
-                    <FontAwesomeIcon icon={faEdit} className="ml-1"/>
+            <div className="justify-center align-middle text-center">
+                <button onClick={() => handleShowEditModal(rowData)} className={`${btn_style} bg-[#272f29]`}>
+                    <FontAwesomeIcon icon={faEdit} size="md"/>
                 </button>
-                <button onClick={() => {RemoveProduct(rowData)}} className={`${btn_style} bg-[#dd2c2c] text-white font-bold`}>Delete
-                    <FontAwesomeIcon icon={faTrashCan} className="ml-1"/>
+                <button onClick={() => {RemoveProduct(rowData)}} className={`${btn_style} bg-[#dd2c2c]`}>
+                    <FontAwesomeIcon icon={faTrashCan} />
                 </button>
             </div>
         )

@@ -1,7 +1,5 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import AdminServices from "./adminServices";
-import { faArrowDownUpAcrossLine } from "@fortawesome/free-solid-svg-icons";
 
 export default function AddProductModal({ showModal, setShowModal }) {
     
@@ -10,6 +8,7 @@ export default function AddProductModal({ showModal, setShowModal }) {
     });
     const [isFormFilled, setIsFormFilled] = useState(false)
 
+    // Enables the form to be submitted if all fields are completed
     const handleIsFormFilled = () => {
         for (const key in newProduct) {
             if (key !== 'rating' && newProduct[key] === null)
@@ -20,6 +19,8 @@ export default function AddProductModal({ showModal, setShowModal }) {
 
     const handleNewProduct = (field, e) => {
         let value = e.target.value;        
+        
+        // Stock is the only field that must be a whole digit
         if (field === 'stock' && value.includes('.')) {
             document.getElementById('stock_input').value = value.substring(0, value.indexOf('.'))
             document.getElementById('stock_input').blur()
@@ -84,7 +85,7 @@ export default function AddProductModal({ showModal, setShowModal }) {
                         required
                         defaultValue={newProduct[lowerLabel] || ''}
                         onChange={(e) => handleNewProduct(lowerLabel, e)}
-                        className="block border p-1 h-[32px] rounded-md"
+                        className="block border p-1 h-[32px] w-11/12 rounded-md"
                         disabled={lowerLabel === 'rating'}
                     />
                 )}
@@ -99,7 +100,7 @@ export default function AddProductModal({ showModal, setShowModal }) {
                     <div
                         className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
                     >
-                        <div className="relative w-auto my-6 mx-auto max-w-3xl">
+                        <div className="relative w-1/3 my-6 mx-auto max-w-3xl">
                             <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                                 <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
                                     <h3 className="text-3xl font-semibold">

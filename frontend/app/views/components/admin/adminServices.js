@@ -77,4 +77,57 @@ export default class AdminServices {
             return false
         }
     }
+
+    static async GetAllCustomers (token) {
+        try {
+            const response = await this.DB.get('/Admin/GetAllCustomers', {
+                headers: {
+                    Authorization: token
+                }
+            })
+
+            return response.data
+        } catch(err) {
+            console.log(err)
+            return []
+        }
+    }
+
+
+    static async RemoveUser(token, user_id) {
+        try {
+            await this.DB.post('/Admin/RemoveUser', {user_id: user_id}, {
+                headers: {
+                    Authorization: token
+                }
+            })
+            return true
+        } catch(err) {
+            console.log(err)
+            return false
+        }
+    }
+
+    static async EditCustomer(token, changes) {
+        try {
+            await this.DB.post('/Admin/UpdateCustInfo', {
+                email: changes.email,
+                update: {
+                    email: changes.email,
+                    first_name: changes.first_name,
+                    last_name: changes.last_name,
+                    address: changes.address,
+                }
+            }, 
+            {
+                headers: {
+                    Authorization: token
+                }
+            })
+            return true
+        } catch(err) {
+            console.log(err)
+            return false
+        }
+    }
 }
