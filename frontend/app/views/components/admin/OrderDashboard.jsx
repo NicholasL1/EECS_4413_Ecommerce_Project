@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import  'primereact/resources/themes/lara-light-indigo/theme.css'
@@ -9,15 +10,13 @@ import 'primereact/resources/themes/saga-blue/theme.css'; // Theme CSS
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '@fortawesome/fontawesome-svg-core/styles.css';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faArrowUpRightFromSquare  } from '@fortawesome/free-solid-svg-icons';
 import AdminServices from './adminServices'; // Adjust the path as needed
 
 export default function OrderDashboard() {
 
     // ToDo -- TEMPORARY -- Remove once this has been implmented in Login and Registration page
-    localStorage.setItem('Authorization', JSON.stringify(`
-        eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRGF0YSI6WyI2Njk3ZjFjOTM4NDA3MTdiYjI3MGFiNjIiLCI2Njk3ZjFjOTM4NDA3MTdiYjI3MGFiNWYiLCJhZG1pbkBtYWlsLmNvbSIsIiQyYiQxMCQ2bE1pR3M4aG9wWUxWbjMzOTRrdG0ua2pybGtBaVE0VElLQzlBL2FkSXBaVDlzUVp6WHhWZSIsIkFkbWluaXN0cmF0b3IiLCJBY2NvdW50IiwiNDcwMCBLZWVsZSBTdCwgTm9ydGggWW9yaywgT04gTTNKIDFQMyIsdHJ1ZV0sImlhdCI6MTcyMjg4MDMxOSwiZXhwIjoxNzI1NDcyMzE5fQ.RpQm5S1j6AQwQX0T5Hch55foN2bq4kYFiRwMKqukIQc
-        `));
+    localStorage.setItem('Authorization', JSON.stringify(`eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRGF0YSI6WyI2Njk3ZjFjOTM4NDA3MTdiYjI3MGFiNjIiLCI2Njk3ZjFjOTM4NDA3MTdiYjI3MGFiNWYiLCJhZG1pbkBtYWlsLmNvbSIsIiQyYiQxMCQ2bE1pR3M4aG9wWUxWbjMzOTRrdG0ua2pybGtBaVE0VElLQzlBL2FkSXBaVDlzUVp6WHhWZSIsIkFkbWluaXN0cmF0b3IiLCJBY2NvdW50IiwiNDcwMCBLZWVsZSBTdCwgTm9ydGggWW9yaywgT04gTTNKIDFQMyIsdHJ1ZV0sImlhdCI6MTcyMjg4MDMxOSwiZXhwIjoxNzI1NDcyMzE5fQ.RpQm5S1j6AQwQX0T5Hch55foN2bq4kYFiRwMKqukIQc`));
 
 
     //#region States
@@ -52,7 +51,12 @@ export default function OrderDashboard() {
     
     //#region Child Components
     const OrderIDComponent = (rowData) => {
-        return <a href={`Order/${rowData.order.order_id}`}>{rowData.order.order_id}</a>
+        return (
+            <div className="flex">
+                <a href={`Order/${rowData.order.order_id}`}>{rowData.order.order_id}</a>
+                <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="ml-1 mt-1 text-blue-500" size="sm"/>
+            </div>
+        )
     }
 
     const TotalComponent = (rowData) => {
@@ -75,8 +79,11 @@ export default function OrderDashboard() {
                 {
                     rowData.shoes.map((shoe, i) => {
                         return (
-                            <div className="p-2 pl-0">
-                                <a href={`Order/${shoe.shoe._id}`} className="block underline text-blue-600">{shoe.qty} x {shoe.shoe.name} @ ${shoe.shoe.price}</a>
+                            <div className="p-2 pl-0 pt-0">
+                                <div className="flex">
+                                    <a href={`Order/${shoe.shoe._id}`} className="block underline text-blue-600">{shoe.qty} x {shoe.shoe.name} @ ${shoe.shoe.price}</a>
+                                    <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="ml-1 mt-1 text-blue-500" size="sm"/>
+                                </div>
                                 <span className="text-sm">Size {shoe.shoe.size} | Colour: {shoe.shoe.colour} | Gender: {shoe.shoe.gender}</span>
                             </div>
                         )
@@ -109,8 +116,8 @@ export default function OrderDashboard() {
                     stripedRows
                     filters={filters}
                 >
-                    <Column field="order.order_id" header="ID" body={OrderIDComponent} sortable className="align-top"/>
-                    <Column field="user.email" header="User Email" sortable className="align-top"/>
+                    <Column field="order.order_id" header="Order ID" body={OrderIDComponent} sortable className="align-top"/>
+                    <Column field="user.email" header="Ordered By" sortable className="align-top"/>
                     <Column field="order.date" header="Date" body={DateComponent} sortable className="align-top"/>
                     <Column field="shoes" header="Details" body={ShoeDisplay} sortable/>
                     <Column field="order.total" header="Total" body={TotalComponent} sortable />

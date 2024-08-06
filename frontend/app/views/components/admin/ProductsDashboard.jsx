@@ -1,14 +1,81 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+
+import ProductEditModal from "./ProductEditModal";
+import AddProductModal from "./AddProductModal";
+
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+import  'primereact/resources/themes/lara-light-indigo/theme.css'
+import 'primereact/resources/primereact.min.css'
+import { FilterMatchMode } from "primereact/api";
+import { InputText } from "primereact/inputtext";
+import 'primereact/resources/themes/saga-blue/theme.css'; // Theme CSS
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import '@fortawesome/fontawesome-svg-core/styles.css';
 
-import { faMagnifyingGlass, faCirclePlus } from '@fortawesome/free-solid-svg-icons'
+import { faMagnifyingGlass, faCirclePlus, faEdit, faTrashCan } from '@fortawesome/free-solid-svg-icons'
+import AdminServices from "./adminServices";
 
 export default function ProductsDashboard() {
   
-  
-    const search_results = []
+    const [filters, setFilters] = useState({
+        global: { value: '', matchMode: FilterMatchMode.CONTAINS }
+    });
+    const [search_results, setSearchResults] = useState([])
+
+    const [newProductInfo, setNewProductInfo] = useState(null)
+
+    const [showAddModal, setShowAddModal] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false);
+
+    const handleShowEditModal = (product) => {
+        setNewProductInfo(product)
+        setShowEditModal(true)
+    }
+
+    const GetAllProducts = async () => {
+        try {
+            const response = await AdminServices.GetAllProducts()
+            setSearchResults(response.data)
+        } catch (err) {
+
+        }
+    }
+
+    useEffect(() => {
+        GetAllProducts()
+    }, [])
+
+    const RowActions = (rowData) => {
+        const btn_style = `block w-full my-2 p-1 text-sm text-center rounded-md shadow-sm` 
+        return (
+            <div className="justify-center align-middle">
+                <button onClick={() => handleShowEditModal(rowData)} className={`${btn_style} bg-[#272f29] text-white font-bold`}>Edit
+                    <FontAwesomeIcon icon={faEdit} className="ml-1"/>
+                </button>
+                <button onClick={() => {RemoveProduct(rowData)}} className={`${btn_style} bg-[#dd2c2c] text-white font-bold`}>Delete
+                    <FontAwesomeIcon icon={faTrashCan} className="ml-1"/>
+                </button>
+            </div>
+        )
+    }
+
+    const ProductIDcomponent = (rowData) => {
+        return (
+            <div className="">
+                <a href="" className=" text-xs">{rowData._id}</a>
+            </div>  
+        )
+    }
+
+    const RemoveProduct = async (rowData) => {
+        const confirmation = confirm('Are you sure you want to remove this product?')
+        if (confirmation) {
+            await AdminServices.RemoveProduct(JSON.parse(localStorage.getItem('Authorization')), rowData._id)
+            window.location.reload()
+        }
+    }
 
     return (
         
@@ -16,45 +83,48 @@ export default function ProductsDashboard() {
             
             <h2 className="text-lg font-medium">Products</h2>
 
-            <div id="ProductSearch" className="flex h-[64px] w-1/3 py-2 justify-center align-middle">
-                <input className="w-full p-4 rounded-s-md border border-[#272f29]" type="text" placeholder="Search Inventory by Name, Brand, Gender, etc"/>
-                <button className="w-[64px] rounded-e-md text-sm bg-[#272f29] text-white">
-                    <FontAwesomeIcon icon={faMagnifyingGlass} size="xl"/>
+            <div id="ProductSearch" className="flex py-2 my-2 justify-between align-middle">
+                <InputText 
+                    onInput={(e) => setFilters({
+                        global: { value: e.target.value, matchMode: FilterMatchMode.CONTAINS }
+                    })}
+                    placeholder="Search Inventory"
+                    className="h-[48px] w-1/3 p-4 rounded-s-md border border-[#272f29]"
+                />   
+
+                <button onClick={() => {setShowAddModal(true)}} className="w-[48px] h-[48px] rounded-md shadow-md bg-[#272f29] text-white">
+                    <FontAwesomeIcon icon={faCirclePlus} size="xl"/>
                 </button>
             </div>
 
             <div id="ProductResultPage" className="">
-                {
-                    search_results.map((data, i) => {
-                        return ResultItem(data, i)
-                    })
-                }
-
+                <DataTable 
+                    value={search_results} 
+                    paginator 
+                    rows={5} 
+                    rowsPerPageOptions={[10, 50, 100]}
+                    stripedRows
+                    filters={filters}
+                >
+                    <Column field="_id" header="Product ID" body={ProductIDcomponent} sortable/>
+                    <Column field="brand" header="Brand" sortable/>
+                    <Column field="size" header="Size" sortable/>
+                    <Column field="name" header="Name" sortable/>
+                    <Column field="colour" header="Colour" sortable/>
+                    <Column field="gender" header="Gender" sortable/>
+                    <Column field="stock" header="Stock" sortable/>
+                    <Column field="price" header="Price" sortable/>
+                    <Column field="rating" header="Rating" sortable/>
+                    <Column field="category" header="Category" sortable />
+                    <Column header="Actions" body={RowActions}/>
+                </DataTable>
             </div>
 
-            <div id="AddProductRow" className="flex flex-row justify-end">
-                <button className="w-[48px] h-[48px] flex justify-center align-middle p-4 rounded-md shadow-md bg-[#272f29] text-white">
-                    <FontAwesomeIcon icon={faCirclePlus}/>
-                </button>
-            </div>
+            <AddProductModal showModal={showAddModal} setShowModal={setShowAddModal}/>
+            <ProductEditModal showModal={showEditModal} setShowModal={setShowEditModal} product={newProductInfo}/>
+            
+            
 
         </div>
     )  
-}
-
-const ResultItem = (data, i) => {
-    return (
-        <div id="ResultItem" key={i}>
-            <div id="">
-                <img alt="Product Image"></img>
-            </div>
-            <div id="ResultInfo">
-                <p>Result Info</p>
-            </div>
-            <div id="actions">
-                <button>Update</button>
-                <button>Delete</button>
-            </div>
-        </div>
-    )
 }

@@ -20,7 +20,7 @@ class AdminService {
       gender: gender,
       stock: stock,
       price: price,
-      rating: rating || null,
+      rating: rating || 0,
       category: category || null,
     };
 
