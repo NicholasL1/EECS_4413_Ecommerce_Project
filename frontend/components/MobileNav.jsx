@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { CiMenuFries } from "react-icons/ci";
 import { Button } from "./ui/button";
+import { addAdminLink } from "@/lib/utils";
 
 const links = [
   {
@@ -20,6 +21,8 @@ const links = [
     path: "/contact",
   },
 ];
+
+addAdminLink(links)
 
 const MobileNav = () => {
   const pathname = usePathname();

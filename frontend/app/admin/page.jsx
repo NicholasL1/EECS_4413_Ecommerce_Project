@@ -1,8 +1,8 @@
 "use client";
 
-import CustomersDashboard from "@/components/admin/CustomersDashboard";
-import OrderDashboard from "@/components/admin/OrderDashboard";
-import ProductsDashboard, {} from "@/components/admin/ProductsDashboard";
+import CustomersDashboard from "../../components/admin/CustomersDashboard";
+import OrderDashboard from "../../components/admin/OrderDashboard";
+import ProductsDashboard, {} from "../../components/admin/ProductsDashboard";
 import React, { useEffect, useState } from "react";
 
 function page() {
@@ -28,7 +28,7 @@ function page() {
     */
 
     return (
-      <div id="DashboardMenu" className="w-1/12 border h-fit border-gray-300 rounded-md shadow-sm">
+      <div id="DashboardMenu" className="w-1/12 border h-fit rounded-md shadow-sm bg-white">
           <ul>
             {
               menu_items.map((item, i) => {

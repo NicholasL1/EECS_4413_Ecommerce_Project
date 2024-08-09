@@ -52,10 +52,10 @@ export default function CustomersDashboard() {
         const btn_style = `block w-full my-2 p-1 text-sm text-center rounded-md shadow-sm` 
         return (
             <div className="justify-center align-middle">
-                <button onClick={() => handleShowEditModal(rowData)} className={`${btn_style} bg-[#272f29] text-white font-bold`}>
+                <button onClick={() => handleShowEditModal(rowData)} className={`${btn_style} bg-custom-black text-white font-bold`}>
                     <FontAwesomeIcon icon={faEdit} className="ml-1"/>
                 </button>
-                <button onClick={() => {RemoveUser(rowData)}} className={`${btn_style} bg-[#dd2c2c] text-white font-bold`}>
+                <button onClick={() => {RemoveUser(rowData)}} className={`${btn_style} bg-custom-red text-white font-bold`}>
                     <FontAwesomeIcon icon={faTrashCan} className="ml-1"/>
                 </button>
             </div>
@@ -81,7 +81,7 @@ export default function CustomersDashboard() {
 
     return (
         
-        <div id="CustomersDashboard" className="h-full w-full ml-4 p-4 border border-gray-300 rounded-md">
+        <div id="CustomersDashboard" className="h-full w-full ml-4 p-4 rounded-md bg-white">
             
             <h2 className="text-lg font-medium">Customers</h2>
 
@@ -91,7 +91,7 @@ export default function CustomersDashboard() {
                         global: { value: e.target.value, matchMode: FilterMatchMode.CONTAINS }
                     })}
                     placeholder="Search Customers"
-                    className="h-[48px] w-1/3 p-4 rounded-s-md border border-[#272f29]"
+                    className="h-[48px] w-1/3 p-4 rounded-s-md border border-custom-black"
                 />   
             </div>
 
@@ -116,9 +116,6 @@ export default function CustomersDashboard() {
 
             <AddProductModal showModal={showAddModal} setShowModal={setShowAddModal}/>
             <EditCustomerModal showModal={showEditModal} setShowModal={setShowEditModal} customer={newCustomerInfo}/>
-            
-            
-
         </div>
     )  
 }

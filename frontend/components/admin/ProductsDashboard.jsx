@@ -51,10 +51,10 @@ export default function ProductsDashboard() {
         const btn_style = `block h-[32px] w-full my-2 p-1 text-sm text-center rounded-md shadow-sm text-white font-bold` 
         return (
             <div className="justify-center align-middle text-center">
-                <button onClick={() => handleShowEditModal(rowData)} className={`${btn_style} bg-[#272f29]`}>
+                <button onClick={() => handleShowEditModal(rowData)} className={`${btn_style} bg-custom-black`}>
                     <FontAwesomeIcon icon={faEdit} size="md"/>
                 </button>
-                <button onClick={() => {RemoveProduct(rowData)}} className={`${btn_style} bg-[#dd2c2c]`}>
+                <button onClick={() => {RemoveProduct(rowData)}} className={`${btn_style} bg-custom-red`}>
                     <FontAwesomeIcon icon={faTrashCan} />
                 </button>
             </div>
@@ -79,7 +79,7 @@ export default function ProductsDashboard() {
 
     return (
         
-        <div id="ProductsDashboard" className="h-full w-full ml-4 p-4 border border-gray-300 rounded-md">
+        <div id="ProductsDashboard" className="h-full w-full ml-4 p-4 shadow-md rounded-md bg-white">
             
             <h2 className="text-lg font-medium">Products</h2>
 
@@ -89,10 +89,10 @@ export default function ProductsDashboard() {
                         global: { value: e.target.value, matchMode: FilterMatchMode.CONTAINS }
                     })}
                     placeholder="Search Inventory"
-                    className="h-[48px] w-1/3 p-4 rounded-s-md border border-[#272f29]"
+                    className="h-[48px] w-1/3 p-4 rounded-s-md border border-custom-black"
                 />   
 
-                <button onClick={() => {setShowAddModal(true)}} className="w-[48px] h-[48px] rounded-md shadow-md bg-[#272f29] text-white">
+                <button onClick={() => {setShowAddModal(true)}} className="w-[48px] h-[48px] rounded-md shadow-md bg-custom-black text-white">
                     <FontAwesomeIcon icon={faCirclePlus} size="xl"/>
                 </button>
             </div>

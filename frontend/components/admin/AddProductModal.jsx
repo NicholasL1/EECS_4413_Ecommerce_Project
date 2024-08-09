@@ -59,7 +59,7 @@ export default function AddProductModal({ showModal, setShowModal }) {
             <div className="p-2 my-1 w-full">
                 <label htmlFor={id} className="text-md">
                     {label}
-                    <span className="text-[#dd2c2c]">*</span>
+                    <span className="text-custom-red">*</span>
                 </label>
 
                 {lowerLabel === 'gender' ? (
@@ -107,10 +107,10 @@ export default function AddProductModal({ showModal, setShowModal }) {
                                         Add Product
                                     </h3>
                                     <button
-                                        className="p-1 ml-auto bg-transparent border-0 text-[#272f29] opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                                        className="p-1 ml-auto bg-transparent border-0 text-custom-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                                         onClick={() => setShowModal(false)}
                                     >
-                                        <span className="bg-transparent text-[#272f29] opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                                        <span className="bg-transparent text-custom-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
                                             ×
                                         </span>
                                     </button>
@@ -149,7 +149,7 @@ export default function AddProductModal({ showModal, setShowModal }) {
                                 </div>
                                 <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
                                     <button
-                                        className="text-[#dd2c2c] background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                        className="text-custom-red background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                         type="button"
                                         onClick={() => HandleClose()}
                                     >
@@ -157,7 +157,7 @@ export default function AddProductModal({ showModal, setShowModal }) {
                                     </button>
                                     
                                     <button
-                                        className={`${!isFormFilled ? 'bg-gray-200' : 'bg-[#272f29]'} text-white active:bg-[#272f29] font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150`}
+                                        className={`${!isFormFilled ? 'bg-gray-200' : 'bg-custom-black'} text-white active:bg-custom-black font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150`}
                                         type="button"
                                         onClick={() => SubmitChanges()}
                                         disabled={!isFormFilled}

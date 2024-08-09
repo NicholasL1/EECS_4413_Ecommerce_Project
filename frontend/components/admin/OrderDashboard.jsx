@@ -18,7 +18,6 @@ export default function OrderDashboard() {
     // ToDo -- TEMPORARY -- Remove once this has been implmented in Login and Registration page
     localStorage.setItem('Authorization', JSON.stringify(`eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRGF0YSI6WyI2Njk3ZjFjOTM4NDA3MTdiYjI3MGFiNjIiLCI2Njk3ZjFjOTM4NDA3MTdiYjI3MGFiNWYiLCJhZG1pbkBtYWlsLmNvbSIsIiQyYiQxMCQ2bE1pR3M4aG9wWUxWbjMzOTRrdG0ua2pybGtBaVE0VElLQzlBL2FkSXBaVDlzUVp6WHhWZSIsIkFkbWluaXN0cmF0b3IiLCJBY2NvdW50IiwiNDcwMCBLZWVsZSBTdCwgTm9ydGggWW9yaywgT04gTTNKIDFQMyIsdHJ1ZV0sImlhdCI6MTcyMjkyMjE3OSwiZXhwIjoxNzI1NTE0MTc5fQ.EMlArJIXjo_SIOjyzrGqAfspsszfijpQc7puAZvEJVM`));
 
-
     //#region States
     const [filters, setFilters] = useState({
         global: { value: '', matchMode: FilterMatchMode.CONTAINS }
@@ -95,15 +94,15 @@ export default function OrderDashboard() {
     //#endregion
 
     return (
-        <div id="OrdersDashboard" className="h-full w-full ml-4 p-4 border border-gray-300 rounded-md">
+        <div id="OrdersDashboard" className="h-full w-full ml-4 p-4 rounded-md bg-white">
             <h2 className="text-lg font-medium">Orders</h2>
             <div id="OrderSearch" className="flex h-[64px] w-1/3 my-2 py-2 justify-center align-middle">
                 <InputText 
                     onInput={(e) => setFilters({
                         global: { value: e.target.value, matchMode: FilterMatchMode.CONTAINS }
                     })}
-                    placeholder="Search Inventory"
-                    className="w-full p-4 rounded-s-md border border-[#272f29]"
+                    placeholder="Search Orders"
+                    className="w-full p-4 rounded-s-md border border-custom-black"
                 />                
             </div>
             {
@@ -117,7 +116,7 @@ export default function OrderDashboard() {
                     filters={filters}
                 >
                     <Column field="order.order_id" header="Order ID" body={OrderIDComponent} sortable className="align-top"/>
-                    <Column field="user.email" header="Ordered By" sortable className="align-top"/>
+                    <Column field="user.email" header="Ordered By" sortable body={null} className="align-top"/>
                     <Column field="order.date" header="Date" body={DateComponent} sortable className="align-top"/>
                     <Column field="shoes" header="Details" body={ShoeDisplay} sortable/>
                     <Column field="order.total" header="Total" body={TotalComponent} sortable />

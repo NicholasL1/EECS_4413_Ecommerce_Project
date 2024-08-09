@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation"; // Correct import
+import { addAdminLink } from "@/lib/utils";
 
 const links = [
   {
@@ -17,6 +18,8 @@ const links = [
     path: "/contact",
   },
 ];
+
+addAdminLink(links)
 
 export default function Nav() {
   const pathname = usePathname(); // Correct function name
