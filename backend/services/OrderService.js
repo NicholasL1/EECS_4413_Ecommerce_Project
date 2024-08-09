@@ -1,6 +1,7 @@
 const ShoeModel = require("../models/ProductModel");
 const OrderModel = require("../models/OrderModel");
 const UserModel = require("../models/UserModel");
+const OrderDAO = require('../dao/OrderDAO')
 
 class OrderService {
   /**
@@ -144,6 +145,17 @@ class OrderService {
     }
     return shoeStats;
   }
+
+  static async GetAllOrders() {
+    try {
+      const orders = await OrderDAO.GetAllOrders()
+      return orders
+    } catch (err) {
+      return err.message
+    }
+  }
+
 }
 
 module.exports = OrderService;
+``

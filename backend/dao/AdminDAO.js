@@ -72,6 +72,15 @@ class AdminDAO {
       throw new Error(error);
     }
   }
+
+  static async getAllUsers() {
+    try {
+      const users = await User.find()
+      return users
+    } catch (err) {
+      throw new Error(err.message)
+    }
+  }
 }
 
 module.exports = AdminDAO;
