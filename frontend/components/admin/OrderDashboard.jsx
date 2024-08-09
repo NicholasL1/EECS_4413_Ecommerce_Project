@@ -16,7 +16,7 @@ import AdminServices from './adminServices'; // Adjust the path as needed
 export default function OrderDashboard() {
 
     // ToDo -- TEMPORARY -- Remove once this has been implmented in Login and Registration page
-    localStorage.setItem('Authorization', JSON.stringify(`eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRGF0YSI6WyI2Njk3ZjFjOTM4NDA3MTdiYjI3MGFiNjIiLCI2Njk3ZjFjOTM4NDA3MTdiYjI3MGFiNWYiLCJhZG1pbkBtYWlsLmNvbSIsIiQyYiQxMCQ2bE1pR3M4aG9wWUxWbjMzOTRrdG0ua2pybGtBaVE0VElLQzlBL2FkSXBaVDlzUVp6WHhWZSIsIkFkbWluaXN0cmF0b3IiLCJBY2NvdW50IiwiNDcwMCBLZWVsZSBTdCwgTm9ydGggWW9yaywgT04gTTNKIDFQMyIsdHJ1ZV0sImlhdCI6MTcyMjkyMjE3OSwiZXhwIjoxNzI1NTE0MTc5fQ.EMlArJIXjo_SIOjyzrGqAfspsszfijpQc7puAZvEJVM`));
+    // localStorage.setItem('Authorization', JSON.stringify(`eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRGF0YSI6WyI2Njk3ZjFjOTM4NDA3MTdiYjI3MGFiNjIiLCI2Njk3ZjFjOTM4NDA3MTdiYjI3MGFiNWYiLCJhZG1pbkBtYWlsLmNvbSIsIiQyYiQxMCQ2bE1pR3M4aG9wWUxWbjMzOTRrdG0ua2pybGtBaVE0VElLQzlBL2FkSXBaVDlzUVp6WHhWZSIsIkFkbWluaXN0cmF0b3IiLCJBY2NvdW50IiwiNDcwMCBLZWVsZSBTdCwgTm9ydGggWW9yaywgT04gTTNKIDFQMyIsdHJ1ZV0sImlhdCI6MTcyMjkyMjE3OSwiZXhwIjoxNzI1NTE0MTc5fQ.EMlArJIXjo_SIOjyzrGqAfspsszfijpQc7puAZvEJVM`));
 
     //#region States
     const [filters, setFilters] = useState({
