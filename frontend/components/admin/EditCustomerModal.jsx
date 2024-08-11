@@ -1,18 +1,11 @@
 import React, { useEffect, useState } from "react";
 import AdminServices from "./adminServices";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import '@fortawesome/fontawesome-svg-core/styles.css';
+import { faCircleCheck } from '@fortawesome/free-solid-svg-icons'
 
 export default function EditCustomerModal({ showModal, setShowModal, customer }) {
     const [newCustomer, setNewCustomer] = useState({ ...customer });
-
-    const [isFormFilled, setIsFormFilled] = useState(false)
-
-    const handleIsFormFilled = () => {
-        for (const key in newCustomer) {
-            if (key !== 'rating' && newCustomer[key] !== customer[key])
-                return true
-        }
-        return false
-    }
 
     useEffect(() => {
         if (showModal) {
@@ -20,21 +13,32 @@ export default function EditCustomerModal({ showModal, setShowModal, customer })
         }
     }, [customer, showModal]);
 
+    const handleOnBlur = () => {
+        let formChange = false        
+        
+        for (const [key, value] of Object.entries(newCustomer)) {
+            if (customer[key] !== value) {
+                formChange = true
+                break;
+            }
+        }
+        
+        // manipulate DOM to avoid re-render --> input loses focus on re-render
+        if (formChange) {
+            const save_changes_btn = document.getElementById('save_changes_btn')
+            save_changes_btn.disabled = false
+            save_changes_btn.style.backgroundColor = '#272f29'
+            save_changes_btn.style.cursor = 'pointer'
+            save_changes_btn.className += ' active:bg-custom-black'
+        }
+    }
+
     const handleNewProduct = (field, e) => {
         let value = e.target.value;
-
-        if (field === 'stock' && value.includes('.')) {
-            document.getElementById('stock_input').value = value.substring(0, value.indexOf('.'))
-            document.getElementById('stock_input').blur()
-
-            return;
-        } else {
-            const x = newCustomer
-            value = value.split(' ').map(word => {return word.charAt(0).toUpperCase() + word.slice(1)}).join(' ')
-            x[field.toLowerCase()] = value
-            setNewCustomer(x)
-            setIsFormFilled(handleIsFormFilled())
-        }
+        const x = newCustomer
+        value = value.split(' ').map(word => {return word.charAt(0).toUpperCase() + word.slice(1)}).join(' ')
+        x[field.toLowerCase()] = value
+        setNewCustomer(x)
     };
 
     const SubmitChanges = async () => {
@@ -65,7 +69,7 @@ export default function EditCustomerModal({ showModal, setShowModal, customer })
                         required
                         onChange={(e) => handleNewProduct(lowerLabel, e)}
                         className="block border p-1 h-[32px] w-11/12 rounded-md"
-                        disabled={lowerLabel === 'rating'}
+                        onBlur={() => {handleOnBlur()}}
                     />
             </div>
         );
@@ -85,10 +89,10 @@ export default function EditCustomerModal({ showModal, setShowModal, customer })
                                         Edit Customer Information
                                     </h3>
                                     <button
-                                        className="p-1 ml-auto bg-transparent border-0 text-custom-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                                        className="p-1 ml-auto bg-transparent float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                                         onClick={() => setShowModal(false)}
                                     >
-                                        <span className="bg-transparent text-custom-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                                        <span className="bg-transparent text-custom-black h-6 w-6 text-2xl block outline-none focus:outline-none">
                                             ×
                                         </span>
                                     </button>
@@ -103,7 +107,7 @@ export default function EditCustomerModal({ showModal, setShowModal, customer })
                                             </div>
                                         </fieldset>
                                         <fieldset className="border my-4">
-                                            <legend className="ml-2 text-lg font-medium">Features</legend>
+                                            <legend className="ml-2 text-lg font-medium">Contact Information</legend>
                                             <div className="flex">
                                                 <FormInputComponent label={'Email'} placeholder={''}/>  
                                                 <FormInputComponent label={'Address'} placeholder={''} />  
@@ -120,12 +124,12 @@ export default function EditCustomerModal({ showModal, setShowModal, customer })
                                         Close
                                     </button>
                                     <button
-                                        className={`${!isFormFilled ? 'bg-gray-200 cursor-not-allowed' : 'bg-custom-black'} text-white active:bg-custom-black#272f29] font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150`}
+                                        className={`bg-gray-200 disabled: text-white font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 cursor-not-allowed`}
                                         type="button"
-                                        onClick={() => SubmitChanges()}
-                                        disabled={!isFormFilled}
+                                        onClick={SubmitChanges}
+                                        id="save_changes_btn"
                                     >
-                                        Save Changes
+                                        Save <FontAwesomeIcon icon={faCircleCheck} size="lg"/>
                                     </button>
                                 </div>
                             </div>

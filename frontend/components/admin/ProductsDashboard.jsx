@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-import ProductEditModal from "./ProductEditModal";
 import AddProductModal from "./AddProductModal";
 
 import { DataTable } from 'primereact/datatable';
@@ -14,8 +13,9 @@ import 'primereact/resources/themes/saga-blue/theme.css'; // Theme CSS
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import '@fortawesome/fontawesome-svg-core/styles.css';
 
-import { faMagnifyingGlass, faCirclePlus, faEdit, faTrashCan } from '@fortawesome/free-solid-svg-icons'
+import { faCirclePlus, faEdit, faTrashCan, faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons'
 import AdminServices from "./adminServices";
+import EditProductModal from "./EditProductModal";
 
 export default function ProductsDashboard() {
   
@@ -64,7 +64,10 @@ export default function ProductsDashboard() {
     const ProductIDcomponent = (rowData) => {
         return (
             <div className="">
-                <a href="" className=" text-xs">{rowData._id}</a>
+                <a href={`/products/${rowData._id}`} className=" text-xs">
+                {rowData._id} 
+                <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="ml-1 mt-1 text-blue-500" size="sm"/>
+                 </a>
             </div>  
         )
     }
@@ -81,7 +84,7 @@ export default function ProductsDashboard() {
         
         <div id="ProductsDashboard" className="h-full w-full ml-4 p-4 shadow-md rounded-md bg-white">
             
-            <h2 className="text-lg font-medium">Products</h2>
+            <h2 className="text-2xl font-medium">Products</h2>
 
             <div id="ProductSearch" className="flex py-2 my-2 justify-between align-middle">
                 <InputText 
@@ -92,8 +95,8 @@ export default function ProductsDashboard() {
                     className="h-[48px] w-1/3 p-4 rounded-s-md border border-custom-black"
                 />   
 
-                <button onClick={() => {setShowAddModal(true)}} className="w-[48px] h-[48px] rounded-md shadow-md bg-custom-black text-white">
-                    <FontAwesomeIcon icon={faCirclePlus} size="xl"/>
+                <button onClick={() => {setShowAddModal(true)}} className="h-[48px] px-4 rounded-md shadow-md bg-custom-black text-white">
+                    Add <FontAwesomeIcon icon={faCirclePlus} size="lg"/>
                 </button>
             </div>
 
@@ -121,8 +124,7 @@ export default function ProductsDashboard() {
             </div>
 
             <AddProductModal showModal={showAddModal} setShowModal={setShowAddModal}/>
-            <ProductEditModal showModal={showEditModal} setShowModal={setShowEditModal} product={newProductInfo}/>
-            
+            <EditProductModal showModal={showEditModal} setShowModal={setShowEditModal} product={newProductInfo} />
             
 
         </div>

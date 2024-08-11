@@ -4,8 +4,14 @@ import CustomersDashboard from "../../components/admin/CustomersDashboard";
 import OrderDashboard from "../../components/admin/OrderDashboard";
 import ProductsDashboard, {} from "../../components/admin/ProductsDashboard";
 import React, { useEffect, useState } from "react";
+import { isAdmin } from "@/lib/utils";
+import AccessDenied from "@/components/AccessDenied";
 
 function page() {
+
+  if (!isAdmin()) {
+    return <AccessDenied/>  
+  }
 
   const menu_items = ['Products', 'Orders', 'Sales', 'Customers']
 

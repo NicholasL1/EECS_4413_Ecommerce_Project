@@ -5,15 +5,20 @@ export default class AdminServices {
 
     static async GetAllOrders(token) {
         try {
+
             const response = await this.DB.get('/Order/GetAllOrders', {
                 headers: {
                     Authorization: token
                 }
             });
+
+            if (response.data?.length === 0)
+                return { message: 'No Orders Have Been Placed', data: [] };
             return { message: '', data: response.data };
+
         } catch (err) {
-            console.error('Error fetching Orders:', err);
-            return { message: 'No Data to Display, check logs', data: [] };
+            console.error('Token Expired')
+            return { message: 'Your session has expired, please log back in', data: [] };
         }
     }
 

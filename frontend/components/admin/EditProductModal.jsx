@@ -1,18 +1,11 @@
 import React, { useEffect, useState } from "react";
 import AdminServices from "./adminServices";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import '@fortawesome/fontawesome-svg-core/styles.css';
+import { faCircleCheck } from '@fortawesome/free-solid-svg-icons'
 
-export default function ProductEditModal({ showModal, setShowModal, product }) {
+export default function EditProductModalV2({ showModal, setShowModal, product }) {
     const [newProduct, setNewProduct] = useState({ ...product });
-
-    const [isFormFilled, setIsFormFilled] = useState(false)
-
-    const handleIsFormFilled = () => {
-        for (const key in newProduct) {
-            if (key !== 'rating' && newProduct[key] === product[key])
-                return true
-        }
-        return false
-    }
 
     useEffect(() => {
         if (showModal) {
@@ -20,22 +13,25 @@ export default function ProductEditModal({ showModal, setShowModal, product }) {
         }
     }, [product, showModal]);
 
-    const handleNewProduct = (field, e) => {
-        let value = e.target.value;
-
-        if (field === 'stock' && value.includes('.')) {
-            document.getElementById('stock_input').value = value.substring(0, value.indexOf('.'))
-            document.getElementById('stock_input').blur()
-
-            return;
-        } else {
-            const x = newProduct
-            value = value.split(' ').map(word => {return word.charAt(0).toUpperCase() + word.slice(1)}).join(' ')
-            x[field.toLowerCase()] = value
-            setNewProduct(x)
-            setIsFormFilled(handleIsFormFilled())
+    const handleOnBlur = () => {
+        let formChange = false        
+        
+        for (const [key, value] of Object.entries(newProduct)) {
+            if (product[key] !== value) {
+                formChange = true
+                break;
+            }
         }
-    };
+        
+        // manipulate DOM to avoid re-render --> input loses focus on re-render
+        if (formChange) {
+            const save_changes_btn = document.getElementById('save_changes_btn')
+            save_changes_btn.disabled = false
+            save_changes_btn.style.backgroundColor = '#272f29'
+            save_changes_btn.style.cursor = 'pointer'
+            save_changes_btn.className += ' active:bg-custom-black'
+        }
+    }
 
     const SubmitChanges = async () => {
         const response = await AdminServices.EditProduct(JSON.parse(localStorage.getItem('Authorization')), newProduct)
@@ -44,7 +40,27 @@ export default function ProductEditModal({ showModal, setShowModal, product }) {
         } 
         setShowModal(false)
     }
-        
+
+    const handleNewProduct = (label, e) => {
+       
+        const value = e.target.value;
+        if (label === 'stock' && value.includes('.')) {
+            document.getElementById('stock_input').value = value.substring(0, value.indexOf('.'))
+            document.getElementById('stock_input').blur()
+            return;
+        } else {
+            const x = newProduct
+
+            // no change, skip update
+            if (x[label] === value) {
+                return
+            }
+
+            x[label] = value
+            setNewProduct(x)
+        }
+    }
+
     const FormInputComponent = ({ label, placeholder, type = 'text' }) => {
         const lowerLabel = label.toLowerCase();
         const id = lowerLabel + '_input';
@@ -63,6 +79,7 @@ export default function ProductEditModal({ showModal, setShowModal, product }) {
                         defaultValue={newProduct[lowerLabel]}
                         onChange={(e) => handleNewProduct(lowerLabel, e)}
                         className="block border w-full h-[32px] rounded-md"
+                        onBlur={() => {handleOnBlur()}}
                     >
                         <option value="Other">Other</option>
                         <option value="Men's">Men's</option>
@@ -80,6 +97,7 @@ export default function ProductEditModal({ showModal, setShowModal, product }) {
                         onChange={(e) => handleNewProduct(lowerLabel, e)}
                         className="block border p-1 h-[32px] w-11/12 rounded-md"
                         disabled={lowerLabel === 'rating'}
+                        onBlur={() => {handleOnBlur()}}
                     />
                 )}
             </div>
@@ -100,10 +118,10 @@ export default function ProductEditModal({ showModal, setShowModal, product }) {
                                         Edit Product Inventory
                                     </h3>
                                     <button
-                                        className="p-1 ml-auto bg-transparent border-0 text-custom-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                                        className="p-1 ml-auto bg-transparent float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                                         onClick={() => setShowModal(false)}
                                     >
-                                        <span className="bg-transparent text-custom-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                                        <span className="bg-transparent text-custom-black h-6 w-6 text-2xl block outline-none focus:outline-none">
                                             ×
                                         </span>
                                     </button>
@@ -149,12 +167,13 @@ export default function ProductEditModal({ showModal, setShowModal, product }) {
                                         Close
                                     </button>
                                     <button
-                                        className={`${!isFormFilled ? 'bg-gray-200' : 'bg-custom-black'} text-white active:bg-custom-black font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150`}
+                                        className={`bg-gray-200 disabled: text-white font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 cursor-not-allowed`}
                                         type="button"
-                                        onClick={() => SubmitChanges()}
-                                        disabled={!isFormFilled}
+                                        onClick={SubmitChanges}
+                                        id="save_changes_btn"
                                     >
-                                        Save Changes
+                                        
+                                        Save <FontAwesomeIcon icon={faCircleCheck} size="lg"/>
                                     </button>
                                 </div>
                             </div>

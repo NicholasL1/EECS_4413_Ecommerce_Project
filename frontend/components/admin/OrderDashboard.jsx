@@ -15,16 +15,13 @@ import AdminServices from './adminServices'; // Adjust the path as needed
 
 export default function OrderDashboard() {
 
-    // ToDo -- TEMPORARY -- Remove once this has been implmented in Login and Registration page
-    // localStorage.setItem('Authorization', JSON.stringify(`eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRGF0YSI6WyI2Njk3ZjFjOTM4NDA3MTdiYjI3MGFiNjIiLCI2Njk3ZjFjOTM4NDA3MTdiYjI3MGFiNWYiLCJhZG1pbkBtYWlsLmNvbSIsIiQyYiQxMCQ2bE1pR3M4aG9wWUxWbjMzOTRrdG0ua2pybGtBaVE0VElLQzlBL2FkSXBaVDlzUVp6WHhWZSIsIkFkbWluaXN0cmF0b3IiLCJBY2NvdW50IiwiNDcwMCBLZWVsZSBTdCwgTm9ydGggWW9yaywgT04gTTNKIDFQMyIsdHJ1ZV0sImlhdCI6MTcyMjkyMjE3OSwiZXhwIjoxNzI1NTE0MTc5fQ.EMlArJIXjo_SIOjyzrGqAfspsszfijpQc7puAZvEJVM`));
-
     //#region States
     const [filters, setFilters] = useState({
         global: { value: '', matchMode: FilterMatchMode.CONTAINS }
     });
 
-    const [searchResults, setSearchResults] = useState([]);
-    const [showNoOrdersLbl, setShowNoOrdersLbl] = useState(false)
+    const [searchResults, setSearchResults] = useState(null);
+    const [label, setLabel] = useState(null)
     //#endregion
 
     //#region On Mount Functions
@@ -33,13 +30,15 @@ export default function OrderDashboard() {
         try {
             const results = await AdminServices.GetAllOrders(token);
             if (results.data.length === 0) {
-                setShowNoOrdersLbl(true)
+                setLabel(results.message)
             } else {
                 setSearchResults(results.data);
+                setLabel('')
             }
         } catch (err) {
             console.error(err.message);
             setSearchResults([]);
+            setLabel(err.message)
         }
     };
     //#endregion
@@ -94,8 +93,8 @@ export default function OrderDashboard() {
     //#endregion
 
     return (
-        <div id="OrdersDashboard" className="h-full w-full ml-4 p-4 rounded-md bg-white">
-            <h2 className="text-lg font-medium">Orders</h2>
+        <div id="OrdersDashboard" className="h-full w-full ml-4 p-4 rounded-md shadow-md bg-white">
+            <h2 className="text-2xl font-medium">Orders</h2>
             <div id="OrderSearch" className="flex h-[64px] w-1/3 my-2 py-2 justify-center align-middle">
                 <InputText 
                     onInput={(e) => setFilters({
@@ -105,8 +104,22 @@ export default function OrderDashboard() {
                     className="w-full p-4 rounded-s-md border border-custom-black"
                 />                
             </div>
+
             {
-                searchResults.length > 0 && 
+                label !== null && 
+                <div className="text-center">
+                    <span>{label}</span>
+                </div>
+            }
+            {
+                label === null &&
+                <div className="text-center">
+                    <span>Loading...</span>
+                </div>
+            }
+
+            {
+                searchResults !== null && 
                 <DataTable 
                     value={searchResults} 
                     paginator 
@@ -122,19 +135,7 @@ export default function OrderDashboard() {
                     <Column field="order.total" header="Total" body={TotalComponent} sortable />
                 </DataTable>
             }
-            {
-                showNoOrdersLbl && 
-                <div className="text-center">
-                    <span>No Orders Have Been Placed Yet</span>
-                </div>
-            }
-            {
-                searchResults.length === 0 && !showNoOrdersLbl && 
-                <div className="text-center">
-                    <span>Loading...</span>
-                </div>
 
-            }
         </div>
     );
 }

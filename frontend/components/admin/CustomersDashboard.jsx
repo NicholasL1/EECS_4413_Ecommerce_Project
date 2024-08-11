@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-import ProductEditModal from "./ProductEditModal";
 import AddProductModal from "./AddProductModal";
 
 import { DataTable } from 'primereact/datatable';
@@ -81,9 +80,9 @@ export default function CustomersDashboard() {
 
     return (
         
-        <div id="CustomersDashboard" className="h-full w-full ml-4 p-4 rounded-md bg-white">
+        <div id="CustomersDashboard" className="h-full w-full ml-4 p-4 rounded-md shadow-md bg-white">
             
-            <h2 className="text-lg font-medium">Customers</h2>
+            <h2 className="text-2xl font-medium">Customers</h2>
 
             <div id="CustomerSearch" className="flex py-2 my-2 justify-between align-middle">
                 <InputText 
