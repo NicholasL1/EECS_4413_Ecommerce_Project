@@ -42,7 +42,7 @@ export default function EditCustomerModal({ showModal, setShowModal, customer })
     };
 
     const SubmitChanges = async () => {
-        const response = await AdminServices.EditCustomer(JSON.parse(localStorage.getItem('Authorization')), newCustomer)
+        const response = await AdminServices.EditCustomer(JSON.parse(localStorage.getItem('Authorization')), newCustomer, customer.email)
         if (response) {
             window.location.reload()
         } 

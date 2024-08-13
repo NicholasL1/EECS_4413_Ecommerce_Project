@@ -2,6 +2,8 @@ const ShoeModel = require("../models/ProductModel");
 const OrderModel = require("../models/OrderModel");
 const UserModel = require("../models/UserModel");
 const OrderDAO = require('../dao/OrderDAO')
+const ProductDAO = require('../dao/ProductDAO')
+const AdminDAO = require('../dao/AdminDAO')
 
 class OrderService {
   /**
@@ -98,21 +100,23 @@ class OrderService {
    * @param {*} user_id
    * @returns
    */
-  static async GetSalesStats(user_id) {
-    const user = await UserModel.findOne({ _id: user_id });
-
-    if (!user.isAdmin) {
-      throw new Error("Cannot be accessed, only accessible to Admins");
-    }
-
+  static async GetSalesStats() {
     const allOrders = await OrderModel.find();
 
     const shoeStats = {
       // shoe : total qty sold, total price
     };
 
-    shoeStats["total_sales"] = 0;
-    shoeStats["number_sold"] = 0;
+    shoeStats["totals"] = {total_sales: 0, total_sold: 0, total_products: 0, total_customers: 0, total_orders: 0}
+    shoeStats["shoes"] = {}
+
+    shoeStats.totals.total_orders = allOrders.length // # of orders
+
+    const totalProducts = await ProductDAO.fetchAll()
+    shoeStats.totals.total_products = totalProducts.length // total # of product
+
+    const totalUsers = await AdminDAO.getAllUsers()
+    shoeStats.totals.total_customers = totalUsers.length
 
     for (let i = 0; i < allOrders.length; i++) {
       const order = allOrders[i];
@@ -122,16 +126,20 @@ class OrderService {
       for (const [shoe_id, info] of shoes.entries()) {
         const user = await UserModel.findOne({ _id: order.user_id });
 
-        if (shoe_id in shoeStats) {
-          const total_qty = shoeStats[shoe_id].qty + info.qty;
+        if (shoe_id in shoeStats.shoes) {
+          const total_qty = shoeStats.shoes[shoe_id].qty + info.qty;
           const total_price = info.price * total_qty;
 
-          shoeStats[shoe_id].qty = total_qty;
-          shoeStats[shoe_id].price = total_price;
-          shoeStats[shoe_id].users.push(user);
+          shoeStats.shoes[shoe_id].qty = total_qty;
+          shoeStats.shoes[shoe_id].price = total_price;
+
+          if (!this.isUserInList(user, shoeStats.shoes[shoe_id].users)) {
+            shoeStats.shoes[shoe_id].users.push(user)
+          }
+
         } else {
           const shoe = await ShoeModel.findOne({ _id: shoe_id });
-          shoeStats[shoe_id] = {
+          shoeStats.shoes[shoe_id] = {
             qty: info.qty,
             price: info.qty * info.price,
             shoe: shoe,
@@ -139,11 +147,28 @@ class OrderService {
           };
         }
 
-        shoeStats["total_sales"] += info.qty * info.price;
-        shoeStats["number_sold"] += info.qty;
+        shoeStats.totals.total_sales += info.qty * info.price;
+        shoeStats.totals.total_sold += info.qty;
       }
     }
+
+    shoeStats.totals.total_sales = '$' + shoeStats.totals.total_sales.toLocaleString()
+
+    const prev_shoeStats_data = shoeStats.shoes
+    const new_shoeStats_data = []
+    
+    for (const key of Object.keys(prev_shoeStats_data))
+      new_shoeStats_data.push(prev_shoeStats_data[key])
+
+    shoeStats.shoes = new_shoeStats_data
+
     return shoeStats;
+  }
+
+  static isUserInList(user, list) {
+    const new_email = user.email
+    const some = list.some((u) => {return u.email === new_email})
+    return some
   }
 
   static async GetAllOrders() {
@@ -158,4 +183,3 @@ class OrderService {
 }
 
 module.exports = OrderService;
-``

@@ -94,7 +94,7 @@ export default function OrderDashboard() {
 
     return (
         <div id="OrdersDashboard" className="h-full w-full ml-4 p-4 rounded-md shadow-md bg-white">
-            <h2 className="text-2xl font-medium">Orders</h2>
+            <h2 className="text-3xl font-medium">Orders</h2>
             <div id="OrderSearch" className="flex h-[64px] w-1/3 my-2 py-2 justify-center align-middle">
                 <InputText 
                     onInput={(e) => setFilters({

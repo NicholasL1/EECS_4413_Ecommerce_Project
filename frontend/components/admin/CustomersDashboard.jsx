@@ -82,7 +82,7 @@ export default function CustomersDashboard() {
         
         <div id="CustomersDashboard" className="h-full w-full ml-4 p-4 rounded-md shadow-md bg-white">
             
-            <h2 className="text-2xl font-medium">Customers</h2>
+            <h2 className="text-3xl font-medium">Customers</h2>
 
             <div id="CustomerSearch" className="flex py-2 my-2 justify-between align-middle">
                 <InputText 

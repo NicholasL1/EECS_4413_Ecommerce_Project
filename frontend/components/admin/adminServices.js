@@ -98,7 +98,6 @@ export default class AdminServices {
         }
     }
 
-
     static async RemoveUser(token, user_id) {
         try {
             await this.DB.post('/Admin/RemoveUser', {user_id: user_id}, {
@@ -113,10 +112,10 @@ export default class AdminServices {
         }
     }
 
-    static async EditCustomer(token, changes) {
+    static async EditCustomer(token, changes, prev_email) {
         try {
             await this.DB.post('/Admin/UpdateCustInfo', {
-                email: changes.email,
+                email: prev_email,
                 update: {
                     email: changes.email,
                     first_name: changes.first_name,
@@ -135,4 +134,33 @@ export default class AdminServices {
             return false
         }
     }
+
+    static async GetTotals(token) {
+        try {
+            const response = await this.DB.get('/Order/GetSales', {
+                headers: {
+                    Authorization: token
+                }
+            })
+
+            const totals = response.data.totals
+
+            const totals_output = []
+            for (const [key, value] of Object.entries(totals)) {
+                const title = key.split('_').map(w => {return w.charAt(0).toUpperCase() + w.substring(1, w.length)}).join(' ')
+                totals_output.push({title: title, value: value})
+            }
+
+            return {message: '', data: {
+                totals: totals_output,
+                shoes: response.data.shoes
+            }}
+
+        } catch (err) {
+            console.error(err)
+            return {message: 'Could Not Retrieve Totals...', totals: []}
+        }
+    }
+
+
 }

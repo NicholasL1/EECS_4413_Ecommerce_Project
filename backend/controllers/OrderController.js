@@ -38,8 +38,7 @@ router.get('/StoreOrderHistory', verifyToken, async (req, res) => {
 
 router.get('/GetSales', verifyToken, async(req, res) => {
     try {
-        const user_id = req.user['userData'][0]
-        const result = await OrderService.GetSalesStats(user_id)
+        const result = await OrderService.GetSalesStats()
         res.send(result)
     } catch (err) {
         res.send(err.message)

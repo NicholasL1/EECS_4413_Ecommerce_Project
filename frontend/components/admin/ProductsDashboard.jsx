@@ -84,7 +84,7 @@ export default function ProductsDashboard() {
         
         <div id="ProductsDashboard" className="h-full w-full ml-4 p-4 shadow-md rounded-md bg-white">
             
-            <h2 className="text-2xl font-medium">Products</h2>
+            <h2 className="text-3xl font-medium">Products</h2>
 
             <div id="ProductSearch" className="flex py-2 my-2 justify-between align-middle">
                 <InputText 
@@ -115,9 +115,9 @@ export default function ProductsDashboard() {
                     <Column field="name" header="Name" sortable/>
                     <Column field="colour" header="Colour" sortable/>
                     <Column field="gender" header="Gender" sortable/>
-                    <Column field="stock" header="Stock" sortable/>
-                    <Column field="price" header="Price" sortable/>
-                    <Column field="rating" header="Rating" sortable/>
+                    <Column field="stock" header="Stock" body={(rowData) => <p>{rowData.stock.toLocaleString()}</p>} sortable/>
+                    <Column field="price" header="Price" body={(rowData) => <p>${rowData.price.toLocaleString()}</p>}  sortable/>
+                    <Column field="rating" header="Rating" body={(rowData) => <p>{rowData.rating}/5</p>} sortable/>
                     <Column field="category" header="Category" sortable />
                     <Column header="Actions" body={RowActions}/>
                 </DataTable>

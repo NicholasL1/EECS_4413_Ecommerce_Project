@@ -6,6 +6,7 @@ import ProductsDashboard, {} from "../../components/admin/ProductsDashboard";
 import React, { useEffect, useState } from "react";
 import { isAdmin } from "@/lib/utils";
 import AccessDenied from "@/components/AccessDenied";
+import SalesDashboard from "@/components/admin/SalesDashboard";
 
 function page() {
 
@@ -74,6 +75,8 @@ const GenerateDashboard = (menu_item) => {
     return <OrderDashboard/>
   else if (menu_item === 'Customers')
     return <CustomersDashboard/>
+  else
+    return <SalesDashboard/>
 }
 
 export default page;
