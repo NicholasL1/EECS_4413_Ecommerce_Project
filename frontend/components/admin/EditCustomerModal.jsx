@@ -3,6 +3,7 @@ import AdminServices from "./adminServices";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons'
+import { handleOnBlur } from "@/lib/utils";
 
 export default function EditCustomerModal({ showModal, setShowModal, customer }) {
     const [newCustomer, setNewCustomer] = useState({ ...customer });
@@ -13,30 +14,19 @@ export default function EditCustomerModal({ showModal, setShowModal, customer })
         }
     }, [customer, showModal]);
 
-    const handleOnBlur = () => {
-        let formChange = false        
-        
-        for (const [key, value] of Object.entries(newCustomer)) {
-            if (customer[key] !== value) {
-                formChange = true
-                break;
-            }
-        }
-        
-        // manipulate DOM to avoid re-render --> input loses focus on re-render
-        if (formChange) {
-            const save_changes_btn = document.getElementById('save_changes_btn')
-            save_changes_btn.disabled = false
-            save_changes_btn.style.backgroundColor = '#272f29'
-            save_changes_btn.style.cursor = 'pointer'
-            save_changes_btn.className += ' active:bg-custom-black'
-        }
-    }
-
     const handleNewProduct = (field, e) => {
         let value = e.target.value;
         const x = newCustomer
-        value = value.split(' ').map(word => {return word.charAt(0).toUpperCase() + word.slice(1)}).join(' ')
+        
+        if (field === 'email') {
+            value = value.split(' ').join('')
+        } else if (field != 'email' && field !== 'address'){
+            value = value.split(' ').map(word => {return word.charAt(0).toUpperCase() + word.slice(1)}).join(' ')
+        } else if (field === 'address') {
+            value = value.split(' ').map(word => {return word.charAt(0).toUpperCase() + word.slice(1)}).join(', ')
+        
+        }
+        
         x[field.toLowerCase()] = value
         setNewCustomer(x)
     };
@@ -69,7 +59,7 @@ export default function EditCustomerModal({ showModal, setShowModal, customer })
                         required
                         onChange={(e) => handleNewProduct(lowerLabel, e)}
                         className="block border p-1 h-[32px] w-11/12 rounded-md"
-                        onBlur={() => {handleOnBlur()}}
+                        onBlur={() => {handleOnBlur(customer, newCustomer)}}
                     />
             </div>
         );
@@ -124,7 +114,7 @@ export default function EditCustomerModal({ showModal, setShowModal, customer })
                                         Close
                                     </button>
                                     <button
-                                        className={`bg-gray-200 disabled: text-white font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 cursor-not-allowed`}
+                                        className={`bg-gray-200 disabled text-white font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 cursor-not-allowed`}
                                         type="button"
                                         onClick={SubmitChanges}
                                         id="save_changes_btn"

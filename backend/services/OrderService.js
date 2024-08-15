@@ -109,6 +109,15 @@ class OrderService {
 
     shoeStats["totals"] = {total_sales: 0, total_sold: 0, total_products: 0, total_customers: 0, total_orders: 0}
     shoeStats["shoes"] = {}
+    
+    
+    /*
+    dates: {
+      2024: [AAA, BBB, CCC, ...],
+      ...
+    }
+    */
+    shoeStats["dates"] = this.initDatesForSalesStats()
 
     shoeStats.totals.total_orders = allOrders.length // # of orders
 
@@ -147,7 +156,24 @@ class OrderService {
           };
         }
 
-        shoeStats.totals.total_sales += info.qty * info.price;
+        const ordered_date = new Date(order.date)
+
+        /*
+        dates: {
+          2020: {
+            qty_sold: [],
+            profit_per_month: []
+          }
+        }
+        */
+
+        const profit = info.qty * info.price
+
+        const monthData = shoeStats.dates[ordered_date.getFullYear()]
+        monthData.qty_sold[ordered_date.getMonth()] += info.qty
+        monthData.profit[ordered_date.getMonth()] += profit
+
+        shoeStats.totals.total_sales += profit;
         shoeStats.totals.total_sold += info.qty;
       }
     }
@@ -169,6 +195,25 @@ class OrderService {
     const new_email = user.email
     const some = list.some((u) => {return u.email === new_email})
     return some
+  }
+
+  /**
+   * 
+   * @param {JSON[]} dates 
+   */
+  static initDatesForSalesStats() {
+    
+    const sales_data = {}
+  
+    for (let i = 2024; i >= 2020; i--) {
+      sales_data[i] = {qty_sold: [], profit: []}
+      for (let j = 0; j < 12; j++) {
+        sales_data[i].qty_sold.push(0)
+        sales_data[i].profit.push(0)
+      }
+    }
+
+    return sales_data
   }
 
   static async GetAllOrders() {

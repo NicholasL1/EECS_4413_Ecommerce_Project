@@ -93,8 +93,8 @@ export default class AdminServices {
 
             return response.data
         } catch(err) {
-            console.log(err)
-            return []
+            console.error('Error fetching Product(s):', err);
+            throw new Error('Your session has expired, please log back in')
         }
     }
 
@@ -153,12 +153,13 @@ export default class AdminServices {
 
             return {message: '', data: {
                 totals: totals_output,
-                shoes: response.data.shoes
+                shoes: response.data.shoes,
+                dates: response.data.dates
             }}
 
         } catch (err) {
             console.error(err)
-            return {message: 'Could Not Retrieve Totals...', totals: []}
+            throw new Error('Your session has expired, please log back in')
         }
     }
 

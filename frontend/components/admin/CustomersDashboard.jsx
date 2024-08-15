@@ -7,15 +7,14 @@ import { Column } from 'primereact/column';
 import  'primereact/resources/themes/lara-light-indigo/theme.css'
 import 'primereact/resources/primereact.min.css'
 import { FilterMatchMode } from "primereact/api";
-import { InputText } from "primereact/inputtext";
 import 'primereact/resources/themes/saga-blue/theme.css'; // Theme CSS
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import '@fortawesome/fontawesome-svg-core/styles.css';
-
-import { faMagnifyingGlass, faCirclePlus, faEdit, faTrashCan } from '@fortawesome/free-solid-svg-icons'
+import { faArrowUpRightFromSquare, faEdit } from '@fortawesome/free-solid-svg-icons'
 import AdminServices from "./adminServices";
 import EditCustomerModal from "./EditCustomerModal";
+import SearchTable from "../ui/SearchTable";
+import Loading from "../ui/Loading";
 
 export default function CustomersDashboard() {
   
@@ -23,6 +22,7 @@ export default function CustomersDashboard() {
         global: { value: '', matchMode: FilterMatchMode.CONTAINS }
     });
     const [search_results, setSearchResults] = useState([])
+    const [errorLabel, setErrorLabel] = useState(null)
 
     const [newCustomerInfo, setNewCustomerInfo] = useState(null)
 
@@ -39,7 +39,8 @@ export default function CustomersDashboard() {
             const response = await AdminServices.GetAllCustomers(JSON.parse(localStorage.getItem('Authorization')))
             setSearchResults(response.data)
         } catch (err) {
-
+            setErrorLabel(err.message)
+            setSearchResults(null)
         }
     }
 
@@ -54,22 +55,18 @@ export default function CustomersDashboard() {
                 <button onClick={() => handleShowEditModal(rowData)} className={`${btn_style} bg-custom-black text-white font-bold`}>
                     <FontAwesomeIcon icon={faEdit} className="ml-1"/>
                 </button>
-                <button onClick={() => {RemoveUser(rowData)}} className={`${btn_style} bg-custom-red text-white font-bold`}>
+
+                {/* <button onClick={() => {RemoveUser(rowData)}} className={`${btn_style} bg-custom-red text-white font-bold`}>
                     <FontAwesomeIcon icon={faTrashCan} className="ml-1"/>
-                </button>
+                </button> */}
             </div>
         )
     }
 
-    // ToDo -- Make link go to user's actual page
-    const UserIDcomponent = (rowData) => {
-        return (
-            <div className="">
-                <a href="" className=" text-xs">{rowData._id}</a>
-            </div>  
-        )
-    }
-
+    /**
+     * @deprecated
+     * @param {*} rowData 
+     */
     const RemoveUser = async (rowData) => {
         const confirmation = confirm('Are you sure you want to remove this User?')
         if (confirmation) {
@@ -79,42 +76,55 @@ export default function CustomersDashboard() {
     }
 
     return (
-        
         <div id="CustomersDashboard" className="h-full w-full ml-4 p-4 rounded-md shadow-md bg-white">
-            
             <h2 className="text-3xl font-medium">Customers</h2>
-
-            <div id="CustomerSearch" className="flex py-2 my-2 justify-between align-middle">
-                <InputText 
-                    onInput={(e) => setFilters({
-                        global: { value: e.target.value, matchMode: FilterMatchMode.CONTAINS }
-                    })}
-                    placeholder="Search Customers"
-                    className="h-[48px] w-1/3 p-4 rounded-s-md border border-custom-black"
-                />   
-            </div>
-
-            <div id="CustomerResultPage" className="">
-                <DataTable 
-                    value={search_results} 
-                    paginator 
-                    rows={5} 
-                    rowsPerPageOptions={[10, 50, 100]}
-                    stripedRows
-                    filters={filters}
-                >
-                    <Column field="_id" header="User ID" body={UserIDcomponent} sortable/>
-                    <Column field="email" header="Email" sortable/>
-                    <Column field="first_name" header="First Name" sortable/>
-                    <Column field="last_name" header="Last Name" sortable/>
-                    <Column field="address" header="Address" sortable/>
-                    <Column field="isAdmin" header="Admin Priveleges" sortable/>
-                    <Column header="Actions" body={RowActions}/>
-                </DataTable>
-            </div>
-
-            <AddProductModal showModal={showAddModal} setShowModal={setShowAddModal}/>
-            <EditCustomerModal showModal={showEditModal} setShowModal={setShowEditModal} customer={newCustomerInfo}/>
+            <hr className="my-3"/>
+            
+            {
+                errorLabel === null && search_results === null &&
+                <Loading />
+            }
+            
+            {
+                errorLabel !== null && search_results === null && 
+                <div className="text-center">
+                    <span>{errorLabel}</span>
+                </div>
+            }
+            
+            {
+                search_results !== null && search_results?.length > 0 &&
+                <div>
+                    <div id="CustomerSearch" className="flex py-2 my-2 justify-between align-middle">
+                        <SearchTable placeholder={'Search Customers'} setFilters={setFilters}/> 
+                    </div>
+                    <div id="CustomerResultPage" className="">
+                        <DataTable 
+                            value={search_results} 
+                            paginator 
+                            rows={5} 
+                            rowsPerPageOptions={[10, 50, 100]}
+                            stripedRows
+                            filters={filters}
+                        >
+                            <Column field="_id" header="User ID" body={(data) => {
+                                    return (<div className="flex flex-row align-middle items-center">
+                                        <a href={`/user/${data._id}`}>{data._id}</a>
+                                        <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="ml-1 mt-1 text-blue-500" size="sm"/>
+                                    </div>)
+                                }} sortable/>
+                            <Column field="email" header="Email" sortable/>
+                            <Column field="first_name" header="First Name" sortable/>
+                            <Column field="last_name" header="Last Name" sortable/>
+                            <Column field="address" header="Address" sortable/>
+                            <Column field="isAdmin" header="Admin Priveleges" sortable/>
+                            <Column header="Actions" body={RowActions}/>
+                        </DataTable>
+                    </div>
+                    <AddProductModal showModal={showAddModal} setShowModal={setShowAddModal}/>
+                    <EditCustomerModal showModal={showEditModal} setShowModal={setShowEditModal} customer={newCustomerInfo}/>
+                </div>
+            }
         </div>
     )  
 }

@@ -3,6 +3,7 @@ import AdminServices from "./adminServices";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons'
+import { handleOnBlur } from "@/lib/utils";
 
 export default function EditProductModalV2({ showModal, setShowModal, product }) {
     const [newProduct, setNewProduct] = useState({ ...product });
@@ -13,25 +14,6 @@ export default function EditProductModalV2({ showModal, setShowModal, product })
         }
     }, [product, showModal]);
 
-    const handleOnBlur = () => {
-        let formChange = false        
-        
-        for (const [key, value] of Object.entries(newProduct)) {
-            if (product[key] !== value) {
-                formChange = true
-                break;
-            }
-        }
-        
-        // manipulate DOM to avoid re-render --> input loses focus on re-render
-        if (formChange) {
-            const save_changes_btn = document.getElementById('save_changes_btn')
-            save_changes_btn.disabled = false
-            save_changes_btn.style.backgroundColor = '#272f29'
-            save_changes_btn.style.cursor = 'pointer'
-            save_changes_btn.className += ' active:bg-custom-black'
-        }
-    }
 
     const SubmitChanges = async () => {
         const response = await AdminServices.EditProduct(JSON.parse(localStorage.getItem('Authorization')), newProduct)
@@ -79,7 +61,7 @@ export default function EditProductModalV2({ showModal, setShowModal, product })
                         defaultValue={newProduct[lowerLabel]}
                         onChange={(e) => handleNewProduct(lowerLabel, e)}
                         className="block border w-full h-[32px] rounded-md"
-                        onBlur={() => {handleOnBlur()}}
+                        onBlur={() => {handleOnBlur(product, newProduct)}}
                     >
                         <option value="Other">Other</option>
                         <option value="Men's">Men's</option>
@@ -97,7 +79,7 @@ export default function EditProductModalV2({ showModal, setShowModal, product })
                         onChange={(e) => handleNewProduct(lowerLabel, e)}
                         className="block border p-1 h-[32px] w-11/12 rounded-md"
                         disabled={lowerLabel === 'rating'}
-                        onBlur={() => {handleOnBlur()}}
+                        onBlur={() => {handleOnBlur(product, newProduct)}}
                     />
                 )}
             </div>
