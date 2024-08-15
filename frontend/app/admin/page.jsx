@@ -2,30 +2,29 @@
 
 import CustomersDashboard from "../../components/admin/CustomersDashboard";
 import OrderDashboard from "../../components/admin/OrderDashboard";
-import ProductsDashboard, {} from "../../components/admin/ProductsDashboard";
-import React, { useEffect, useState } from "react";
+import InventoryDashboard from "../../components/admin/InventoryDashboard";
+import React, { useState } from "react";
+import { isAdmin } from "@/lib/utils";
+import AccessDenied from "@/components/AccessDenied";
+import SalesDashboard from "@/components/admin/SalesDashboard";
 
 function page() {
 
-  const menu_items = ['Products', 'Orders', 'Sales', 'Customers']
+  if (!isAdmin()) {
+    return <AccessDenied/>  
+  }
 
-  //#region Hooks and Handles
-  const [selected_item, setSelectedItem] = useState(menu_items[0])
-  //#endregion
+  const menu_items = ['Inventory', 'Orders', 'Sales', 'Customers']
+  const dashboard_mapping = {
+    'Inventory': <InventoryDashboard/>,
+    'Orders': <OrderDashboard/>,
+    'Customers': <CustomersDashboard/>,
+    'Sales': <SalesDashboard/>
+  }
 
-  useEffect(() => {
-    console.log(selected_item)
-  }, [selected_item])
+  const [selected_item, setSelectedItem] = useState(menu_items[3])
 
-
-  //#region Components
   const DashboardMenu = (menu_items) => {
-
-    /* TODO
-    - Add JWT decode logic
-      - This is to prevent unauthorized users from accessing this section  
-    - Add SalesDashboard
-    */
 
     return (
       <div id="DashboardMenu" className="w-1/12 border h-fit rounded-md shadow-sm bg-white">
@@ -47,7 +46,6 @@ function page() {
         </div>
     )
   }  
-  //#endregion
 
   return (
     <div id="container" className="">
@@ -55,19 +53,10 @@ function page() {
 
       <div className="flex justify-items-center align-middle p-4">
         {DashboardMenu(menu_items)}
-        {GenerateDashboard(selected_item)}
+        {dashboard_mapping[selected_item]}
       </div>
     </div>
   )  
-}
-
-const GenerateDashboard = (menu_item) => {
-  if (menu_item === 'Products') 
-    return <ProductsDashboard/>
-  else if (menu_item === 'Orders')
-    return <OrderDashboard/>
-  else if (menu_item === 'Customers')
-    return <CustomersDashboard/>
 }
 
 export default page;

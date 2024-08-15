@@ -1,21 +1,13 @@
 import React, { useEffect, useState } from "react";
 import AdminServices from "./adminServices";
+import { handleOnBlur } from "@/lib/utils";
 
 export default function AddProductModal({ showModal, setShowModal }) {
     
     const [newProduct, setNewProduct] = useState({
         brand: null, size: null, name: null, colour: null, gender: null, stock: null, price: null, rating: 0, category: null
     });
-    const [isFormFilled, setIsFormFilled] = useState(false)
 
-    // Enables the form to be submitted if all fields are completed
-    const handleIsFormFilled = () => {
-        for (const key in newProduct) {
-            if (key !== 'rating' && newProduct[key] === null)
-                return false
-        }
-        return true
-    }
 
     const handleNewProduct = (field, e) => {
         let value = e.target.value;        
@@ -30,7 +22,6 @@ export default function AddProductModal({ showModal, setShowModal }) {
             value = value.split(' ').map(word => {return word.charAt(0).toUpperCase() + word.slice(1)}).join(' ')
             x[field.toLowerCase()] = value
             setNewProduct(x)
-            setIsFormFilled(handleIsFormFilled())
         }
     };
 
@@ -42,13 +33,6 @@ export default function AddProductModal({ showModal, setShowModal }) {
             setShowModal(false)
             window.location.reload()
         }
-    }
-        
-    const HandleClose = () => {
-        setNewProduct({
-            brand: null, size: null, name: null, colour: null, gender: null, stock: null, price: null, rating: 0, category: null
-        })
-        setShowModal(false)
     }
 
     const FormInputComponent = ({ label, placeholder, type = 'text' }) => {
@@ -69,6 +53,7 @@ export default function AddProductModal({ showModal, setShowModal }) {
                         defaultValue={newProduct[lowerLabel] || null}
                         onChange={(e) => handleNewProduct(lowerLabel, e)}
                         className="block border w-full h-[32px] rounded-md"
+                        onBlur={() => {handleOnBlur(newProduct, newProduct, true)}}
                     >
                         <option value={null}>Please Select a Gender</option>
                         <option value="Other">Other</option>
@@ -87,6 +72,7 @@ export default function AddProductModal({ showModal, setShowModal }) {
                         onChange={(e) => handleNewProduct(lowerLabel, e)}
                         className="block border p-1 h-[32px] w-11/12 rounded-md"
                         disabled={lowerLabel === 'rating'}
+                        onBlur={() => {handleOnBlur(newProduct, newProduct, true)}}
                     />
                 )}
             </div>
@@ -151,16 +137,16 @@ export default function AddProductModal({ showModal, setShowModal }) {
                                     <button
                                         className="text-custom-red background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                         type="button"
-                                        onClick={() => HandleClose()}
+                                        onClick={() => setShowModal(false)}
                                     >
                                         Close
                                     </button>
                                     
                                     <button
-                                        className={`${!isFormFilled ? 'bg-gray-200' : 'bg-custom-black'} text-white active:bg-custom-black font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150`}
+                                        className={`bg-gray-200 disabled: text-white active:bg-custom-black font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150`}
                                         type="button"
-                                        onClick={() => SubmitChanges()}
-                                        disabled={!isFormFilled}
+                                        onClick={SubmitChanges}
+                                        id="save_changes_btn"
                                     >
                                         Add
                                     </button>

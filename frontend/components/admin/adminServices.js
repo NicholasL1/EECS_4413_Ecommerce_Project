@@ -5,15 +5,20 @@ export default class AdminServices {
 
     static async GetAllOrders(token) {
         try {
+
             const response = await this.DB.get('/Order/GetAllOrders', {
                 headers: {
                     Authorization: token
                 }
             });
+
+            if (response.data?.length === 0)
+                return { message: 'No Orders Have Been Placed', data: [] };
             return { message: '', data: response.data };
+
         } catch (err) {
-            console.error('Error fetching Orders:', err);
-            return { message: 'No Data to Display, check logs', data: [] };
+            console.error('Token Expired')
+            return { message: 'Your session has expired, please log back in', data: [] };
         }
     }
 
@@ -88,11 +93,10 @@ export default class AdminServices {
 
             return response.data
         } catch(err) {
-            console.log(err)
-            return []
+            console.error('Error fetching Product(s):', err);
+            throw new Error('Your session has expired, please log back in')
         }
     }
-
 
     static async RemoveUser(token, user_id) {
         try {
@@ -108,10 +112,10 @@ export default class AdminServices {
         }
     }
 
-    static async EditCustomer(token, changes) {
+    static async EditCustomer(token, changes, prev_email) {
         try {
             await this.DB.post('/Admin/UpdateCustInfo', {
-                email: changes.email,
+                email: prev_email,
                 update: {
                     email: changes.email,
                     first_name: changes.first_name,
@@ -130,4 +134,34 @@ export default class AdminServices {
             return false
         }
     }
+
+    static async GetTotals(token) {
+        try {
+            const response = await this.DB.get('/Order/GetSales', {
+                headers: {
+                    Authorization: token
+                }
+            })
+
+            const totals = response.data.totals
+
+            const totals_output = []
+            for (const [key, value] of Object.entries(totals)) {
+                const title = key.split('_').map(w => {return w.charAt(0).toUpperCase() + w.substring(1, w.length)}).join(' ')
+                totals_output.push({title: title, value: value})
+            }
+
+            return {message: '', data: {
+                totals: totals_output,
+                shoes: response.data.shoes,
+                dates: response.data.dates
+            }}
+
+        } catch (err) {
+            console.error(err)
+            throw new Error('Your session has expired, please log back in')
+        }
+    }
+
+
 }
