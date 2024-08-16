@@ -9,7 +9,7 @@ import MobileNav from "./MobileNav";
 export default function Header() {
   return (
     <header className="py-8 xl:py-8 bg-primary">
-      <div className="container mx-auto flex justify-between text-center">
+      <div className="w-full flex justify-between px-4 xl:px-8">
         {/** logo */}
         <Link href="/">
           <Image
@@ -20,11 +20,11 @@ export default function Header() {
             className="object-contain"
           />
         </Link>
-        {/* desktop nav & hire me button*/}
+        {/* desktop nav & sign up button */}
         <div className="hidden xl:flex items-center gap-8">
           <Nav />
           <Link href="/signup">
-            <Button className="bg-custom-red font-signika-negative text-lg  text-custom-white hover:text-gray-700">
+            <Button className="bg-custom-red font-signika-negative text-lg text-custom-white hover:text-gray-700">
               Sign Up
             </Button>
           </Link>
