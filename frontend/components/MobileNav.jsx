@@ -10,7 +10,7 @@ import { addAdminLink } from "@/lib/utils";
 const links = [
   {
     name: "home",
-    path: "/home",
+    path: "/",
   },
   {
     name: "shoes",
@@ -22,7 +22,7 @@ const links = [
   },
 ];
 
-addAdminLink(links)
+addAdminLink(links);
 
 const MobileNav = () => {
   const pathname = usePathname();
