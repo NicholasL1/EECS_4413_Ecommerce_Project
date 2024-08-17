@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 
+const { transform } = require("next/dist/build/swc");
 const { fontFamily } = require("tailwindcss/defaultTheme");
 
 module.exports = {
@@ -28,6 +29,65 @@ module.exports = {
       },
       fontFamily: {
         "signika-negative": ["var(--font-signikaNegative)", ...fontFamily.sans],
+      },
+      keyframes: {
+        // Floating animation for signup and login shapes (background of shoe animation)
+        float1: {
+          "0%": {
+            transform: "translate(0px, 0px)",
+          },
+          "25%": {
+            transform: "translate(-20px, -45px)",
+          },
+          "50%": {
+            transform: "translate(15px, -20px)",
+          },
+          "75%": {
+            transform: "translate(-15px, 30px)",
+          },
+          "100%": {
+            transform: "translate(0px, 0px)",
+          },
+        },
+        float2: {
+          "0%": {
+            transform: "translate(0px, 0px)",
+          },
+          "25%": {
+            transform: "translate(25px, 45px)",
+          },
+          "50%": {
+            transform: "translate(-15px, 20px)",
+          },
+          "75%": {
+            transform: "translate(10px, -30px)",
+          },
+          "100%": {
+            transform: "translate(0px, 0px)",
+          },
+        },
+        float3: {
+          "0%": {
+            transform: "translate(0px, 0px)",
+          },
+          "25%": {
+            transform: "translate(-10px, -25px)",
+          },
+          "50%": {
+            transform: "translate(10px, 20px)",
+          },
+          "75%": {
+            transform: "translate(0px, -10px)",
+          },
+          "100%": {
+            transform: "translate(0px, 0px)",
+          },
+        },
+      },
+      animation: {
+        float1: "float1 8s ease-in-out infinite",
+        float2: "float2 8s ease-in-out infinite",
+        float3: "float3 8s ease-in-out infinite",
       },
     },
   },
