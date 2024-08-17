@@ -54,10 +54,10 @@ module.exports = {
             transform: "translate(0px, 0px)",
           },
           "25%": {
-            transform: "translate(25px, 45px)",
+            transform: "translate(-70px, -45px)",
           },
           "50%": {
-            transform: "translate(-15px, 20px)",
+            transform: "translate(-50px, 80px)",
           },
           "75%": {
             transform: "translate(10px, -30px)",
@@ -68,19 +68,19 @@ module.exports = {
         },
         float3: {
           "0%": {
-            transform: "translate(0px, 0px)",
+            transform: "translate(-50px, -50px)",
           },
           "25%": {
-            transform: "translate(-10px, -25px)",
+            transform: "translate(70px, 70px)",
           },
           "50%": {
-            transform: "translate(10px, 20px)",
+            transform: "translate(-90px, -30px)",
           },
           "75%": {
-            transform: "translate(0px, -10px)",
+            transform: "translate(80px, 50px)",
           },
           "100%": {
-            transform: "translate(0px, 0px)",
+            transform: "translate(-50px, -50px)",
           },
         },
       },

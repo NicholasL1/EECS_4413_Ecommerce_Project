@@ -33,7 +33,7 @@ function page() {
   return (
     <div className="flex w-full h-screen">
       <div className="w-full flex items-center justify-center lg:w-1/2">
-        <div className="bg-white px-10 py-20 rounded-3xl border-2 border-gray-200">
+        <div className="bg-white px-10 py-20 rounded-3xl border-2 border-gray-200 shadow-xl shadow-gray-600">
           <h1 className="text-5xl font-semibold font-signika-negative">
             Welcome back to{" "}
             <span className="font-bold italic text-red-500">6ix Kicks!</span>
