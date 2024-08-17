@@ -7,7 +7,7 @@ import { addAdminLink } from "@/lib/utils";
 const links = [
   {
     name: "home",
-    path: "/home",
+    path: "/",
   },
   {
     name: "shoes",
@@ -19,7 +19,7 @@ const links = [
   },
 ];
 
-addAdminLink(links)
+addAdminLink(links);
 
 export default function Nav() {
   const pathname = usePathname(); // Correct function name
