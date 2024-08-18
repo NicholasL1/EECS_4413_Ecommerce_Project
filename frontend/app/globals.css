@@ -1,4 +1,4 @@
-@tailwind base;
+/*@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -13,3 +13,6 @@
     text-wrap: balance;
   }
 }
+*/
+
+/* Not sure what these are for but they made the products page all black so I've just commented them out */
