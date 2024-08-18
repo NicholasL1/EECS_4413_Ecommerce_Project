@@ -7,19 +7,23 @@ function cn(...inputs) {
 }
 
 const addAdminLink = (links) => {
-  const JWT_token = JSON.parse(localStorage.getItem('Authorization'))
-  if (JWT_token) {
-    const decodedToken = (jwtDecode(JWT_token))
-
-    // console.log(decodedToken.userData[7])
-    const isAdmin = decodedToken.userData[7]
-    if (isAdmin && links.find(e => {e.name == 'Admin'}) == null) {
-      links.push({
-        name: 'Admin',
-        path: '/admin'
-      })
+  // Check if the code is running in the browser
+  if (typeof window !== 'undefined') {
+    const JWT_token = JSON.parse(localStorage.getItem('Authorization'));
+    if (JWT_token) {
+      const decodedToken = jwtDecode(JWT_token);
+      const isAdmin = decodedToken.userData[7];
+      
+      // Check if the "Admin" link is already present
+      if (isAdmin && !links.find(e => e.name === 'Admin')) {
+        links.push({
+          name: 'Admin',
+          path: '/admin',
+        });
+      }
     }
   }
-}
+};
+
 
 export { cn, addAdminLink };
