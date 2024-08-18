@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import './SearchBar.css';
 import 'primeicons/primeicons.css';
-import ProductServices from '../ProductServices.js';
+import ProductServices from '@/services/ProductServices';
 
 const SearchBar = ({setSearchQuery}) => {
 

@@ -2,15 +2,15 @@
 
 import React, {useState, useEffect} from 'react';
 import './App.css';
-import './ProductCard/ProductCard.css';
-import './Sidebar/Sidebar.css';
-import Sidebar1 from './Sidebar/Sidebar1.jsx';
+import '../components/products/ProductCard/ProductCard.css';
+import '../components/products/Sidebar/Sidebar.css';
+import Sidebar1 from '../components/products/Sidebar/Sidebar1.jsx';
 import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
-import ProductList from './ProductList/ProductList.jsx';
-import SearchBar from './SearchBar/SearchBar.jsx';
-import ProductServices from './ProductServices.js';
+import ProductList from '../components/products/ProductList/ProductList.jsx';
+import SearchBar from '../components/products/SearchBar/SearchBar.jsx';
+import ProductServices from '@/services/ProductServices';
 import {Paginator} from 'primereact/paginator';
 
 function page() {

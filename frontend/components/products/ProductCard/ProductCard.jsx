@@ -1,6 +1,6 @@
 import React from 'react';
 import './ProductCard.css';
-import img1 from '../../public/4413 Shoe Pics/NIKE+AIR+MAX+270+WHITE+1.png';
+import img1 from '../../../public/4413 Shoe Pics/NIKE+AIR+MAX+270+WHITE+1.png'
 
 const ProductCard = ({product}) => {
 
