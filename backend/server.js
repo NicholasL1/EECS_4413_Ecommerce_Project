@@ -2,6 +2,9 @@
 const express = require("express");
 const dotenv = require("dotenv").config(); // Retrieves sensitive values from .env file, I.E.: API Keys, Passwords, etc
 const cors = require('cors');
+const cookieParser = require('cookie-parser')
+const session = require('express-session')
+const memoryStore = new session.MemoryStore()
 
 // Config
 const connectDB = require("./config/db");
@@ -23,9 +26,29 @@ connectDB();
 
 const app = express();
 
-app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(cors());
+app.use(express.urlencoded({extended: false}));
+app.use(cookieParser())
+app.use(session({
+  secret: '1234',
+  resave: false,
+  saveUninitialized: false,
+  store: memoryStore
+}))
+app.use(cors({
+  origin: 'http://localhost:3000',  // Replace with your client URL
+  credentials: true
+}));
+
+app.use((req, res, next) => {
+  if (!req.sessionStore.cart) {
+    req.sessionStore.cart = {};
+  }
+  if (req.sessionStore.loggedIn === undefined) {
+    req.sessionStore.loggedIn = false;
+  }
+  next();
+});
 
 // How to add controller to application
 // app.use('/CONTROLLER', CONTROLLER)
