@@ -29,8 +29,8 @@ function PriceCard({ category, link, background, height }) {
   return (
     <Link href={link}>
       <div
-        className={`h-[${height}] flex flex-col items-center justify-center p-4 shadow-lg rounded-lg hover:shadow-xl hover:scale-[1.05] transition-all duration-800 cursor-pointer bg-cover bg-center`}
-        style={{ backgroundImage: `url(${background.src})` }}
+        className="flex flex-col items-center justify-center p-4 shadow-lg rounded-lg hover:shadow-xl hover:scale-[1.05] transition-all duration-800 cursor-pointer bg-cover bg-center"
+        style={{ backgroundImage: `url(${background.src})`, height: height }}
       >
         <h3 className="text-6xl font-semibold text-white">{category}</h3>
       </div>
@@ -40,7 +40,7 @@ function PriceCard({ category, link, background, height }) {
 
 export default function Price() {
   return (
-    <section className="relative px-4 py-16 m-auto w-full max-w-[1700px]">
+    <section className="relative px-4 py-16 m-auto w-full max-w-[1700px] max-h-screen">
       <h1 className="text-3xl font-semibold font-signika-negative underline mb-8">
         Shop By Price
       </h1>
@@ -59,48 +59,3 @@ export default function Price() {
     </section>
   );
 }
-
-//   <div className="flex flex-col lg:flex-row w-full h-full gap-4">
-//   {/* Row 1: Two Cards */}
-//   <div className="flex flex-col lg:flex-row md:flex-row gap-4 w-full">
-//     <Link href={priceCardInfo[0].link}>
-//       <div
-//         className="flex-1 flex flex-col items-center justify-center p-4 shadow-lg rounded-lg hover:shadow-xl hover:scale-[1.05] transition-all duration-800 cursor-pointer bg-cover bg-center"
-//         style={{
-//           backgroundImage: `url(${priceCardInfo[0].background.src})`,
-//         }}
-//       >
-//         <h3 className="text-xl font-semibold text-white">
-//           {priceCardInfo[0].category}
-//         </h3>
-//       </div>
-//     </Link>
-//     <Link href={priceCardInfo[1].link}>
-//       <div
-//         className="flex-1 flex flex-col items-center justify-center p-4 shadow-lg rounded-lg hover:shadow-xl hover:scale-[1.05] transition-all duration-800 cursor-pointer bg-cover bg-center"
-//         style={{
-//           backgroundImage: `url(${priceCardInfo[1].background.src})`,
-//         }}
-//       >
-//         <h3 className="text-xl font-semibold text-white">
-//           {priceCardInfo[1].category}
-//         </h3>
-//       </div>
-//     </Link>
-//   </div>
-//   {/* Row 2: Single Card */}
-//   <div className="w-full mt-4 lg:mt-0">
-//     <Link href={priceCardInfo[2].link}>
-//       <div
-//         className="flex flex-col items-center justify-center p-4 shadow-lg rounded-lg hover:shadow-xl hover:scale-[1.05] transition-all duration-800 cursor-pointer bg-cover bg-center h-[200px]"
-//         style={{
-//           backgroundImage: `url(${priceCardInfo[2].background.src})`,
-//         }}
-//       >
-//         <h3 className="text-xl font-semibold text-white">
-//           {priceCardInfo[2].category}
-//         </h3>
-//       </div>
-//     </Link>
-//   </div>
-// </div>
