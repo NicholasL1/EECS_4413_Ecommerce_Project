@@ -1,25 +1,37 @@
 import React, { useEffect, useState } from "react";
 import AdminServices from "../../services/adminServices";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import { handleOnBlur } from "@/lib/utils";
 
-export default function AddProductModal({ showModal, setShowModal }) {
-  const [newProduct, setNewProduct] = useState({
-    brand: null,
-    size: null,
-    name: null,
-    colour: null,
-    gender: null,
-    stock: null,
-    price: null,
-    rating: 0,
-    category: null,
-  });
+export default function EditProductModalV2({
+  showModal,
+  setShowModal,
+  product,
+}) {
+  const [newProduct, setNewProduct] = useState({ ...product });
 
-  const handleNewProduct = (field, e) => {
-    let value = e.target.value;
+  useEffect(() => {
+    if (showModal) {
+      setNewProduct({ ...product });
+    }
+  }, [product, showModal]);
 
-    // Stock is the only field that must be a whole digit
-    if (field === "stock" && value.includes(".")) {
+  const SubmitChanges = async () => {
+    const response = await AdminServices.EditProduct(
+      JSON.parse(localStorage.getItem("Authorization")),
+      newProduct
+    );
+    if (response) {
+      window.location.reload();
+    }
+    setShowModal(false);
+  };
+
+  const handleNewProduct = (label, e) => {
+    const value = e.target.value;
+    if (label === "stock" && value.includes(".")) {
       document.getElementById("stock_input").value = value.substring(
         0,
         value.indexOf(".")
@@ -28,27 +40,14 @@ export default function AddProductModal({ showModal, setShowModal }) {
       return;
     } else {
       const x = newProduct;
-      value = value
-        .split(" ")
-        .map((word) => {
-          return word.charAt(0).toUpperCase() + word.slice(1);
-        })
-        .join(" ");
-      x[field.toLowerCase()] = value;
-      setNewProduct(x);
-    }
-  };
 
-  const SubmitChanges = async () => {
-    const response = await AdminServices.AddProduct(
-      JSON.parse(localStorage.getItem("Authorization")),
-      newProduct
-    );
-    if (!response) {
-      alert("Please Fill All Fields");
-    } else {
-      setShowModal(false);
-      window.location.reload();
+      // no change, skip update
+      if (x[label] === value) {
+        return;
+      }
+
+      x[label] = value;
+      setNewProduct(x);
     }
   };
 
@@ -67,14 +66,13 @@ export default function AddProductModal({ showModal, setShowModal }) {
           <select
             name={id}
             id={id}
-            defaultValue={newProduct[lowerLabel] || null}
+            defaultValue={newProduct[lowerLabel]}
             onChange={(e) => handleNewProduct(lowerLabel, e)}
             className="block border w-full h-[32px] rounded-md"
             onBlur={() => {
-              handleOnBlur(newProduct, newProduct, true);
+              handleOnBlur(product, newProduct);
             }}
           >
-            <option value={null}>Please Select a Gender</option>
             <option value="Other">Other</option>
             <option value="Men's">Men's</option>
             <option value="Women's">Women's</option>
@@ -86,13 +84,13 @@ export default function AddProductModal({ showModal, setShowModal }) {
             type={type}
             min={0}
             placeholder={placeholder}
+            defaultValue={newProduct[lowerLabel]}
             required
-            defaultValue={newProduct[lowerLabel] || ""}
             onChange={(e) => handleNewProduct(lowerLabel, e)}
             className="block border p-1 h-[32px] w-11/12 rounded-md"
             disabled={lowerLabel === "rating"}
             onBlur={() => {
-              handleOnBlur(newProduct, newProduct, true);
+              handleOnBlur(product, newProduct);
             }}
           />
         )}
@@ -108,12 +106,14 @@ export default function AddProductModal({ showModal, setShowModal }) {
             <div className="relative w-1/3 my-6 mx-auto max-w-3xl">
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
-                  <h3 className="text-3xl font-semibold">Add Product</h3>
+                  <h3 className="text-3xl font-semibold">
+                    Edit Product Inventory
+                  </h3>
                   <button
-                    className="p-1 ml-auto bg-transparent border-0 text-custom-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                    className="p-1 ml-auto bg-transparent float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                     onClick={() => setShowModal(false)}
                   >
-                    <span className="bg-transparent text-custom-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                    <span className="bg-transparent text-custom-black h-6 w-6 text-2xl block outline-none focus:outline-none">
                       ×
                     </span>
                   </button>
@@ -179,14 +179,13 @@ export default function AddProductModal({ showModal, setShowModal }) {
                   >
                     Close
                   </button>
-
                   <button
-                    className={`bg-gray-200 disabled: text-white active:bg-custom-black font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150`}
+                    className={`bg-gray-200 disabled: text-white font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 cursor-not-allowed`}
                     type="button"
                     onClick={SubmitChanges}
                     id="save_changes_btn"
                   >
-                    Add
+                    Save <FontAwesomeIcon icon={faCircleCheck} size="lg" />
                   </button>
                 </div>
               </div>
