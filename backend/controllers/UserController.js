@@ -13,19 +13,15 @@ router.post("/Login", async (req, res) => {
 
   // check if all fields are filled
   if (!email || !password) {
-    res.status(400).json({ message: "Please enter all fields" });
+    return res.status(400).json({ message: "Please enter all fields" });
   }
 
-  /*
-logs in 
-gen jwt 
-return jwt back to client
-store jwt on local storage (client side)
-*/
-
-  // call UserService to login
   try {
     const user = await UserService.login(email, password); // send login info
+    
+    req.sessionStore.loggedIn = true
+    req.sessionStore.user = user
+
     res.status(201).json({
       token: generateToken(
         user._id,
@@ -69,6 +65,9 @@ router.post("/Register", async (req, res) => {
     );
 
     // ToDo -- store generated token on the client-side
+    req.sessionStore.loggedIn = true
+    req.sessionStore.user = user
+
     res.status(201).json({
       token: generateToken(
         user._id,
