@@ -1,0 +1,52 @@
+
+
+.page-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+h2 {
+  padding-left: 25px;
+}
+
+h3 {
+  padding: 5px;
+  margin-left: 12px;
+  margin-bottom: 45px;
+}
+
+
+.results-container {
+  flex: 1;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: calc(100% - 750px);
+  background-color: #ffffff;
+  padding-left: 5px;
+  padding-bottom: 40px;
+  margin-top: 10px;
+  margin-bottom: 40px;
+  box-sizing: border-box;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  border: solid rgba(39, 47, 41, 0.2);
+  border-width: 1px;
+  border-radius: 8px;
+  position: absolute;
+  right: 350px;
+  min-width: calc(100% - 750px);
+} 
+
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
