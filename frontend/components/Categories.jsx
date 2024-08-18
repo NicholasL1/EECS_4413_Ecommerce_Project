@@ -25,7 +25,7 @@ const categories = [
 function Categories() {
   return (
     <section className="relative px-4 py-16 m-auto w-full max-w-[1700px]">
-      <h1 className="text-3xl font-semibold font-signika-negative underline text-custom-black">
+      <h1 className="text-3xl font-semibold font-signika-negative text-custom-black">
         Shop By Category
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">

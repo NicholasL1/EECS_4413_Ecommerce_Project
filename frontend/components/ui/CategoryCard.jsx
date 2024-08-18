@@ -20,7 +20,7 @@ export default function CategoryCard({
         }}
       >
         <div className="w-[300px] h-[300px] relative"></div>
-        <h3 className="text-lg font-semibold mt-4 text-white">
+        <h3 className="text-2xl font-semibold mt-4 text-white">
           Shop {category} shoes
         </h3>
       </div>

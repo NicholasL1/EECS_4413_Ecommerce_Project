@@ -41,7 +41,7 @@ function PriceCard({ category, link, background, height }) {
 export default function Price() {
   return (
     <section className="relative px-4 py-16 m-auto w-full max-w-[1700px] max-h-screen">
-      <h1 className="text-3xl font-semibold font-signika-negative underline mb-8">
+      <h1 className="text-3xl font-semibold font-signika-negative mb-8">
         Shop By Price
       </h1>
       {/* Three cards */}
