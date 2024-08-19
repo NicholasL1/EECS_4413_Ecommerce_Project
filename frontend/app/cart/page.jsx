@@ -28,7 +28,7 @@ export default function page() {
         <header className="flex flex-col sm:flex-row justify-between items-center mb-6">
           <h1 className="text-2xl sm:text-3xl font-bold">My Cart</h1>
           <h2 className="text-xl sm:text-2xl font-extralight underline mt-2 sm:mt-0">
-            ${cart?.estTotal.toLocaleString() || '0.00'}
+            ${cart?.estTotal?.toLocaleString() || '0.00'}
           </h2>
         </header>
         {label !== null && <p className="text-sm sm:text-base">{label}</p>}

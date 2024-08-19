@@ -4,6 +4,8 @@ import ShoeView from "../ui/ShoeView";
 import Loading from "../ui/Loading";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CartService from "@/services/cartServices";
+import OrderSummaryInfo from "../ui/OrderSummaryInfo";
+import Link from "next/link";
 
 export default function CartView({mini = false, cart = [], total, gst, estTotal, setCart}) {
     if (cart == null) {
@@ -48,28 +50,9 @@ export default function CartView({mini = false, cart = [], total, gst, estTotal,
             {IsLoggedIn()}
             <div id="order_summary_container" className="w-full h-fit border shadow-md bg-white rounded-md">
               <div id="order_summary" className="h-fit p-4 flex flex-col">
-                <header className="font-bold text-2xl text-custom-black ">Order Summary</header>
-                <hr />
-                <div className="py-1 text-lg flex-grow">
-                  <div className="">
-                    <p className="flex justify-between my-4">
-                      <span>
-                        <span>Subtotal</span>
-                        <span className="mx-1">({cart?.length} {cart?.length > 1 ? 'items' : 'item'}):</span>
-                      </span>
-                      <span>${total?.toLocaleString()}</span>
-                    </p>
-                  </div>
-                  <div className="flex justify-between my-2">
-                    <span>HST/GST:</span>
-                    <span>${gst?.toLocaleString()}</span>
-                  </div>
-                  <hr />
-                  <div className="flex justify-between text-xl py-2 my-2 font-semibold">
-                    <span>Estimated Total:</span>
-                    <span>${estTotal?.toLocaleString()}</span>
-                  </div>
-                </div>
+                
+                <OrderSummaryInfo cart={cart} total={total} gst={gst} estTotal={estTotal} />
+
                 <div id="action_center" className="flex flex-col space-y-2">
                   <button
                     onClick={clearCart}
@@ -78,12 +61,13 @@ export default function CartView({mini = false, cart = [], total, gst, estTotal,
                     Clear cart
                   </button>
 
-                  <button
+                  <Link
                     className="p-2 bg-custom-black font-bold text-white rounded-md shadow-md w-full text-lg hover:bg-gray-600 flex items-center justify-center"
+                    href='/checkout'
                   >
                     <span className="mr-2">Checkout</span>
                     <FontAwesomeIcon icon={faShoppingBasket} />
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>

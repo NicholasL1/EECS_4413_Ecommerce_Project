@@ -1,4 +1,5 @@
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 export default class userServices {
   static DB = axios.create({ baseURL: "http://localhost:3001/" });
@@ -31,5 +32,11 @@ export default class userServices {
         message: err.response.data.message,
       };
     }
+  }
+
+  static getUser (token) {
+    // debugger
+    const decodedToken = jwtDecode(token)
+    return decodedToken
   }
 }
