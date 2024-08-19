@@ -1,0 +1,62 @@
+* {
+    font-family:'Gill Sans', 'Gill Sans MT', 'Calibri', 'Trebuchet MS', sans-serif
+}
+
+
+
+
+.product-card {
+    flex: 0 0 auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 300px;
+    background-color: rgb(241, 241, 241);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 2px 2px 5px 0px rgba(0, 64, 128, 0.2);
+    margin-left: auto;
+    margin-right: auto;
+    
+}
+
+
+.product {
+    font-size: 1.2rem;
+    /*background-color: rgb(39, 47, 41); */
+    width: 100%;
+    border-radius: 8px;
+    color: rgb(39, 47, 41);
+    text-align: left;
+    padding-left: 1.5rem;
+}
+
+
+.product-img {
+    width: 100%;
+    height: 16rem;
+    overflow: hidden;
+    background-color: rgb(222, 221, 228);
+    /*border-bottom: 0.5px solid rgb(221, 44, 44);*/
+}
+
+
+.name {
+    font-weight: 700;
+    font-size: 1.3rem;
+    margin-bottom: 5px;
+}
+
+.price {
+    font-weight: 600;
+    margin-top: 5px;
+}
+
+.gender {
+    font-size: 16px;
+    color: rgba(39, 47, 41, 0.6);
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
