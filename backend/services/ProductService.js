@@ -43,6 +43,10 @@ class ProductService {
     return await ProductDAO.fetchShoes(filteredQuery);
   }
 
+  static async fetchShoeById(product_id) {
+    return await ProductDAO.fetchShoeById(product_id);
+  }
+
   static async fetchAllShoes() {
     return await ProductDAO.fetchAll();
   }

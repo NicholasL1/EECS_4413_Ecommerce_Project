@@ -58,4 +58,17 @@ const handleOnBlur = (old_obj, new_obj, checkAll = false) => {
   }
 };
 
-export { cn, addAdminLink, isAdmin, handleOnBlur };
+const constructSearchQuery = (params) => {
+  const baseURL = "/search?";
+  const searchParams = new URLSearchParams();
+
+  for (const [key, value] of Object.entries(params)) {
+    if (value !== undefined && value !== null) {
+      searchParams.append(key, value);
+    }
+  }
+
+  return baseURL + searchParams.toString();
+};
+
+export { cn, addAdminLink, isAdmin, handleOnBlur, constructSearchQuery };

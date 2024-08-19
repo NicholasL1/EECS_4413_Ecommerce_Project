@@ -1,24 +1,14 @@
 "use client";
+
+import { useState, useEffect } from "react";
 import React from "react";
 import { useSearchParams } from "next/navigation";
 import ReviewStars from "@/components/ui/ReviewStars";
 import Link from "next/link";
 import AffirmLogo from "@/public/affirm-logo.svg";
 import Image from "next/image";
-
-const stubData = {
-  id: 1,
-  brand: "Nike",
-  size: 11,
-  name: "Nike Air Max 270",
-  colour: "Red",
-  gender: "Men's",
-  stock: 190,
-  price: 173.5,
-  rating: 3.5,
-  category: "Casual Basketball Sneakers",
-  image: "/nike.png",
-};
+import shoeService from "@/services/shoeService";
+import imageStub from "@/public/nike.png";
 
 const shoeResponses = [
   {
@@ -43,7 +33,37 @@ const shoeResponses = [
 
 export default function ShoePage() {
   const searchParams = useSearchParams();
-  const id = parseInt(searchParams.get("id"), 10); // Convert id to an integer
+  const id = searchParams.get("id"); // convert id to an integer
+
+  const [shoeData, setShoeData] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchShoeInfo = async () => {
+      try {
+        const response = await shoeService.GetShoeInfo(id);
+        setShoeData(response);
+      } catch (err) {
+        setError(err);
+      }
+    };
+
+    if (id) {
+      fetchShoeInfo();
+    }
+  }, [id]);
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  while (!shoeData) {
+    return (
+      <div className="flex w-full h-full items-center justify-center">
+        <img src="/spinner.svg" alt="Loading..." />
+      </div>
+    );
+  }
 
   return (
     <div className="w-10/12 h-3/4 flex flex-col md:flex-row p-16 bg-gray-300 mx-auto rounded-3xl">
@@ -52,7 +72,7 @@ export default function ShoePage() {
         <div
           className="w-full max-w-[600px] relative aspect-square mx-auto"
           style={{
-            backgroundImage: `url(${stubData.image})`,
+            backgroundImage: `url(${imageStub.src})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
@@ -65,12 +85,12 @@ export default function ShoePage() {
           {/* TODO: Shop by category, call search (maybe with query params?) */}
           <Link href={"/"}>
             <h3 className="text-gray-400 italic font-signika-negative underline cursor-pointer">
-              {stubData.category}
+              {shoeData.category}
             </h3>
           </Link>
           <div className="flex mt-4 md:mt-0 flex-col">
             <span className="font-bold flex">
-              {ReviewStars(stubData.rating)}
+              {ReviewStars(shoeData.rating)}
             </span>
             {/* TODO: Add link to reviews when it is implemented */}
             <Link href={"/"}>
@@ -82,22 +102,22 @@ export default function ShoePage() {
         </div>
         <div className="flex flex-col w-full mt-4">
           <h1 className="text-3xl md:text-4xl font-bold font-signika-negative">
-            {stubData.name}
+            {shoeData.name}
           </h1>
           <h3 className="text-lg text-gray-700 font-signika-negative mt-2">
-            {stubData.gender}
+            {shoeData.gender}
           </h3>
           <h3 className="text-sm text-gray-500 font-signika-negative mt-1 underline italic cursor-pointer">
-            Shop {stubData.brand} shoes
+            Shop {shoeData.brand} shoes
           </h3>
           <h1 className="mt-4 text-3xl md:text-4xl font-semibold font-signika-negative text-green-600">
-            ${stubData.price}
+            ${shoeData.price}
           </h1>
           <h3 className="text-sm text-gray-500 font-signika-negative mt-1">
-            {stubData.stock} Left In Stock!
+            {shoeData.stock} Left In Stock!
           </h3>
           <h4 className="text-lg font-signika-negative mt-4 flex items-center">
-            Or 4 interest-free payments of {stubData.price / 4} bi-weekly with{" "}
+            Or 4 interest-free payments of ${shoeData.price / 4} bi-weekly with{" "}
             <Image
               src={AffirmLogo}
               alt="Affirm"
@@ -118,12 +138,14 @@ export default function ShoePage() {
               <Link href={`/shoe?id=${shoe.id}`} key={index}>
                 <div
                   className={`inline-flex flex-col items-center justify-center aspect-square w-20 border ${
-                    shoe.id === id ? "border-black border-4" : "border-gray-200"
+                    shoe.id.toString() === id
+                      ? "border-black border-4"
+                      : "border-gray-200"
                   }`}
                 >
                   {/* Shoe Image */}
-                  <img
-                    src={shoe.image} // Replace with your image source
+                  <Image
+                    src={imageStub} // TODO: Replace with shoe.image
                     alt={shoe.colour}
                     className="w-full h-auto object-cover rounded"
                   />
