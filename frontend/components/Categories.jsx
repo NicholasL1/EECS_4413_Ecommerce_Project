@@ -7,17 +7,17 @@ import KidsBackground from "@/public/kids-background.jpg";
 const categories = [
   {
     category: "Men's",
-    link: "/",
+    link: "/shoes?gender=Men's",
     background: MensBackground,
   },
   {
     category: "Women's",
-    link: "/",
+    link: "/shoes?gender=Women's",
     background: WomensBackground,
   },
   {
     category: "Kid's",
-    link: "/",
+    link: "/shoes",
     background: KidsBackground,
   },
 ];

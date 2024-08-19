@@ -5,7 +5,7 @@ import BannerText from "./BannerText";
 const BannerInfo = {
   header: "Women's Collection",
   subHeader: "Find the latest trends from our women's collection.",
-  buttonLink: "/",
+  buttonLink: "/shoes?gender=Women's",
   colour: "text-purple-600",
 };
 

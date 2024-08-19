@@ -61,7 +61,7 @@ function Carousel() {
         </div>
       </div>
       <div className="flex top-4 justify-center py-2">
-        {slides.map((slide, index) => (
+        {slides.map((_, index) => (
           <div
             key={index}
             className={`text-2xl cursor-pointer ${

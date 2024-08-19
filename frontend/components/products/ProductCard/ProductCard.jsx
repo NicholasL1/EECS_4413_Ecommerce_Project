@@ -1,23 +1,36 @@
-import React from 'react';
-import './ProductCard.css';
-import img1 from '../../../public/4413 Shoe Pics/NIKE+AIR+MAX+270+WHITE+1.png'
+import React from "react";
+import "./ProductCard.css";
+import nike from "@/public/nike.png";
+import Image from "next/image";
+import Link from "next/link";
+import ReviewStars from "@/components/ui/ReviewStars";
 
-const ProductCard = ({product}) => {
-
-    return (
-        <div className='product-card'>
-            <div className='product-img'>
-                <img src={product.image ? product.image : img1} alt={product.name}></img>
-            </div>
-            <div className='product'>
-                <p className='name'>{product.name}</p>
-                <p className='gender'>{product.gender}</p>
-                <p className='price'>${product.price}</p>
-
-            </div>
+const ProductCard = ({ product }) => {
+  return (
+    <Link href={`/shoeView?id=${product._id}`}>
+      <div className="flex relative flex-col items-center w-[250px] bg-white rounded-lg shadow-md hover:scale-[1.05] hover:cursor-pointer transition-all duration-300">
+        <div className="w-full h-64 overflow-hidden bg-gray-300">
+          <Image
+            src={product.image ? product.image : nike}
+            alt={product.name}
+            className="w-full h-full object-cover"
+          ></Image>
         </div>
-    );
-
-}
+        <div className="text-lg w-full rounded-lg text-gray-800 pl-5 pt-3">
+          <div className="flex flex-row justify-between mb-1">
+            <p className="font-bold text-xl">{product.name}</p>
+            <p className="font-bold text-xl pr-5 text-green-600">
+              ${product.price}
+            </p>
+          </div>
+          <div>{ReviewStars(product.rating)}</div>
+          <p className="text-base text-gray-600 mt-2">
+            {product.gender} - {product.category}
+          </p>
+        </div>
+      </div>
+    </Link>
+  );
+};
 
 export default ProductCard;

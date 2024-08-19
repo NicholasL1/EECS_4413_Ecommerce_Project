@@ -6,7 +6,7 @@ const BannerInfo = {
   header: "Kid's Collection",
   subHeader:
     "Kickstart the school year with some new styles from our kids collection.",
-  buttonLink: "/",
+  buttonLink: "/shoes",
   colour: "text-orange-700",
 };
 

@@ -71,4 +71,41 @@ const constructSearchQuery = (params) => {
   return baseURL + searchParams.toString();
 };
 
-export { cn, addAdminLink, isAdmin, handleOnBlur, constructSearchQuery };
+/**
+ * Parses search parameters and builds an object with default values for missing fields.
+ *
+ * @param {useSearchParams} searchParams - The URL search parameters to parse.
+ * @returns {Object} The object with fields populated from the search parameters.
+ */
+function parseSearchParams(searchParams) {
+  const stubData = {
+    brand: "Brand",
+    size: 0,
+    name: "Name",
+    colour: "Colour",
+    gender: "Gender",
+    stock: 190,
+    price: 100,
+    rating: 5,
+    category: "Category",
+  };
+
+  const result = {};
+
+  for (const key of Object.keys(stubData)) {
+    if (searchParams.has(key)) {
+      const value = searchParams.get(key);
+      result[key] = isNaN(value) ? value : Number(value);
+    }
+  }
+  return result;
+}
+
+export {
+  cn,
+  addAdminLink,
+  isAdmin,
+  handleOnBlur,
+  constructSearchQuery,
+  parseSearchParams,
+};
