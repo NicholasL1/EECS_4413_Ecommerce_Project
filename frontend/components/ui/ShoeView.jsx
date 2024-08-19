@@ -15,7 +15,7 @@ export default function ShoeView({shoe, adminView}) {
         
         if (!confirmOption) return
         
-        const response = await CartService.removeFromCart(shoe_id)
+        await CartService.removeFromCart(shoe_id)
         window.location.reload()
     }
 
@@ -32,53 +32,64 @@ export default function ShoeView({shoe, adminView}) {
     }
 
     return (
-        <div id="shoe_info" className="flex w-full mb-4 rounded-md border bg-white">
-            <div>
-                <img src="https://static.nike.com/a/images/t_PDP_936_v1/f_auto,q_auto:eco,u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/6d4c9304-2078-4f17-b5de-0282180af1e8/AIR+JORDAN+1+MID+SE.png" alt="img" width='256px' height='256px' className=""/>
-            </div>
-            <div className="flex flex-col justify-between h-full w-full p-4">
-                <div>
-                    
-                    <div className="flex flex-row justify-between">
-                        <h1 className="font-bold text-2xl">{shoe.name}</h1>
-                        <button onClick={() => {removeFromCart(shoe._id)}} className="w-8 h-8 rounded-sm shadow-sm bg-custom-red text-white hover:bg-red-700 hover:shadow-md"><FontAwesomeIcon icon={faTrashCan}/></button>
-                    </div>
-                    
-                    <h4 className="text-sm font-thin mb-2">{shoe.brand}</h4>
-                    <h2 className="text-md">
-                        {shoe.colour} | {shoe.gender} | {shoe.size}
-                    </h2>
-                    <h2> Category: <span>{shoe.category}</span></h2>
-                    <h2> Sale Price: $<span>{shoe.price.toLocaleString()}</span></h2>
-                    
-                    {
-                        adminView && 
-                        <div>
-                            <h2> 
-                                Stock: <span>{shoe.stock}</span>
-                                {
-                                    shoe.stock < 20 &&
-                                    <span className="p-1 mx-2 text-sm font-bold text-white rounded-md bg-orange-500">Low Stock</span>
-                                }
-                            </h2>
-                            <ReviewStars rating={shoe.rating}/>
-                        </div>
-                    }
-                    
-                    {
-                        !adminView &&
-                        <div className="flex flex-row justify-between w-full">
-                            <div>
-                                <label htmlFor="qty">Qty:</label>
-                                <input type="number" min={1} max={shoe.stock} step={1} defaultValue={shoe.qty} onBlur={(e) => {updateQuantity(e.target.value, shoe._id)}} className="w-24 pl-2 border border-gray-500 rounded-md mx-2"/>
-                            </div>
-                        </div>                        
-                    }    
-                    
-                </div>
+      <>
+        <div id="shoe_info" className="flex flex-col sm:flex-row w-full mb-4 rounded-md border bg-white">
+          <div className=" w-full md:w-1/3 flex justify-center md:justify-start ">
+            <img 
+              src="https://static.nike.com/a/images/t_PDP_936_v1/f_auto,q_auto:eco,u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/6d4c9304-2078-4f17-b5de-0282180af1e8/AIR+JORDAN+1+MID+SE.png" 
+              alt="img" 
+              className="w-auto h-auto object-contain"
+            />
+          </div>
+        <div className="flex-1 p-4 flex flex-col border">
+          <div className="flex flex-row justify-between items-center w-full mb-4">
+            <h1 className="font-bold text-2xl">{shoe.name}</h1>
+            <button 
+              onClick={() => {removeFromCart(shoe._id)}} 
+              className="w-8 h-8 rounded-sm shadow-sm bg-custom-red text-white hover:bg-red-700 hover:shadow-md"
+            >
+              <FontAwesomeIcon icon={faTrashCan} />
+            </button>
+          </div>
 
-                
+          <h4 className="text-sm font-thin mb-2">{shoe.brand}</h4>
+          <h2 className="text-md">
+            {shoe.colour} | {shoe.gender} | {shoe.size}
+          </h2>
+          <h2>Category: <span>{shoe.category}</span></h2>
+          <h2>Sale Price: $<span>{shoe.price.toLocaleString()}</span></h2>
+      
+          {adminView && (
+            <div>
+              <h2>
+                Stock: <span>{shoe.stock}</span>
+                {shoe.stock < 20 && (
+                  <span className="p-1 mx-2 text-sm font-bold text-white rounded-md bg-orange-500">Low Stock</span>
+                )}
+              </h2>
+              <ReviewStars rating={shoe.rating} />
             </div>
+          )}
+      
+          {!adminView && (
+            <div className="flex flex-row justify-between w-full">
+              <div>
+                <label htmlFor="qty">Qty:</label>
+                <input 
+                  type="number" 
+                  min={1} 
+                  max={shoe.stock} 
+                  step={1} 
+                  defaultValue={shoe.qty} 
+                  onBlur={(e) => {updateQuantity(e.target.value, shoe._id)}} 
+                  className="w-24 pl-2 border border-gray-500 rounded-md mx-2"
+                />
+              </div>
+            </div>                        
+          )}
         </div>
-    )
+      </div>
+    </>
+
+  )
 }
