@@ -119,6 +119,8 @@ class CartDAO {
    * @param {Object} cart 
    */
   static async updateGuestCartQuantity(qty, shoe_id, cart) {
+    qty = parseInt(qty)
+
     if (!(shoe_id in cart))
       return {message: '', data: cart}
 
@@ -150,10 +152,21 @@ class CartDAO {
    * @returns 
    */
   static async updateRegisteredCartQuantity(qty, shoe_id, cart_id) {
+    qty = parseInt(qty)
+
     const cart = await Cart.findById(cart_id);
     const shoe = await Shoe.findById(shoe_id);
     
     if (cart) {
+
+      if (qty == 0) {
+        const response = await this.removeFromRegisteredCart(shoe_id, cart_id)
+        return response
+      }
+
+      if (qty > shoe.stock || qty < 0)
+        return {message: 'Shoe is out of stock for that quantity', data: cart}
+
       cart.shoes.set(shoe_id, { qty: qty, price: shoe.price });
       await cart.save();
       const response = await this.getCart(false, cart)
@@ -193,6 +206,15 @@ class CartDAO {
       return "Error checking out.";
     }
   }
+
+  static async clearCart(cart_id) {
+    const cart = await Cart.findById(cart_id)
+    cart.shoes = new Map();
+    await cart.save()
+    return {message: '', data: []}
+  }
+
+
 }
 
 module.exports = CartDAO;

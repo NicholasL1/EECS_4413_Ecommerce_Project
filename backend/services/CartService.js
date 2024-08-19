@@ -61,6 +61,11 @@ class CartService {
     const response = await CartDAO.checkout(cart_id, user_id, payment_id);
     return response;
   }
+
+  static async clearCart(cart_id) {
+    const response = await CartDAO.clearCart(cart_id)
+    return response
+  }
 }
 
 module.exports = CartService;

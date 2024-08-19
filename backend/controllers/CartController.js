@@ -16,7 +16,6 @@ router.get('/GetCart', async (req, res) => {
     const session_cart = req.sessionStore.cart
     
     if (session_cart) {
-      //const cart_id = req.user.userData[1]
       await CartService.addGuestCartToRegisteredCart(session_cart, cart_id)
     }
 
@@ -41,7 +40,7 @@ router.post("/AddToCart", async (req, res) => {
     } 
     
     else {
-      const cart_id = req.user.userData[1]
+      const cart_id = req.sessionStore.user.cart_id
       const response = await CartService.addToRegisteredCart(shoe_id, cart_id)
       return res.status(201).json({message: response})
     }
@@ -63,7 +62,7 @@ router.post("/RemoveFromCart", async (req, res) => {
       return res.status(200).json({message: response.message, data: req.sessionStore.cart})
 
     } else {
-      const cart_id = req.user.userData[1]
+      const cart_id = req.sessionStore.user.cart_id
       const response = await CartService.removeFromRegisteredCart(shoe_id, cart_id)  
       return res.status(200).json({message: response.message, data: response.data})
     }
@@ -89,12 +88,12 @@ router.post("/UpdateQuantity", async (req, res) => {
     } 
     
     else {
-      const cart_id = req.user.userData[1]
+      const cart_id = req.sessionStore.user.cart_id
       const response = await CartService.updateRegisteredCartQuantity(qty, shoe_id, cart_id)
       return res.status(200).json({message: response.message, data: response.data})
     }
 
-  } catch (error) {
+  } catch (err) {
     return res.status(401).json({message: err.message, data: null})
   }
 });
@@ -109,8 +108,8 @@ router.post("/Checkout", async (req, res) => {
   }
 
   const { payment_id } = req.body;
-  const cart_id = req.user.userData[1];
-  const user_id = req.user.userData[0];
+  const cart_id = req.sessionStore.user.cart_id
+  const user_id = req.sessionStore.user.user_id
 
   try {
     const response = await CartService.checkout(cart_id, user_id, payment_id);
@@ -121,5 +120,24 @@ router.post("/Checkout", async (req, res) => {
     res.status(401).json({ message: error.message });
   }
 });
+
+router.post('/ClearCart', async (req, res) => {
+  const loggedIn = req.sessionStore.loggedIn
+
+  if (!loggedIn) {
+    req.sessionStore.cart = []
+    return res.status(201).json({message: '', data: req.sessionStore.cart})
+  } else {
+    const cart_id = req.sessionStore.user.cart_id
+    try {
+      const response = await CartService.clearCart(cart_id)
+      req.sessionStore.cart = []
+      return res.status(200).json({message: response.message, data: response.data})
+    } catch (err) {
+      console.log(err)
+      return res.status(401).json({message: err.message, data: []})
+    }
+  }
+})
 
 module.exports = router;
