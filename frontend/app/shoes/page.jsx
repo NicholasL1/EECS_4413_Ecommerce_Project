@@ -6,11 +6,11 @@ import "primereact/resources/themes/saga-blue/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import ProductList from "@/components/products/ProductList/ProductList.jsx";
-import ProductServices from "@/services/productServices";
+import ProductServices from "@/services/ProductServices";
 import { Paginator } from "primereact/paginator";
 import { useSearchParams } from "next/navigation";
 import { parseSearchParams } from "@/lib/utils";
-import PageV2 from "./pageV2"
+import PageV2 from "./pageV2";
 
 export default function shoes() {
   const searchParams = useSearchParams();
@@ -141,9 +141,6 @@ export default function shoes() {
   //   </div>
   // );
 
-
   // for some reason when i paste PageV2's code in page.jsx, it doesn't register
-  return (
-    <PageV2/>
-  )
+  return <PageV2 />;
 }

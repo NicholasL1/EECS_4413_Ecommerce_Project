@@ -9,9 +9,6 @@ const verifyToken = require("../config/verifyToken.js");
 
 router.get("/FetchShoe", async (req, res) => {
   const query = req.query; // Get query params from request
-
-  
-
   // Checks if query is empty
   if (
     !query.brand &&

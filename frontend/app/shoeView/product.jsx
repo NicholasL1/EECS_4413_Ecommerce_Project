@@ -4,8 +4,10 @@ import Link from "next/link";
 import Image from "next/image";
 import AffirmLogo from "@/public/affirm-logo.svg";
 import imageStub from "@/public/nike.png";
+import ReviewStars from "@/components/ui/ReviewStars";
 
-export default function product({ shoeData, shoeResponses, id, reviewStars }) {
+export default function product({ shoeData, alternatives, id }) {
+  console.log(alternatives);
   return (
     <div className="w-10/12 flex flex-col md:flex-row p-16 bg-gray-300 mx-auto rounded-3xl">
       {/* Shoe display picture */}
@@ -31,7 +33,9 @@ export default function product({ shoeData, shoeResponses, id, reviewStars }) {
             {shoeData.category}
           </a>
           <div className="flex mt-4 md:mt-0 flex-col">
-            <span className="font-bold flex">{reviewStars}</span>
+            <span className="font-bold flex">
+              {ReviewStars(shoeData.rating)}
+            </span>
             {/* TODO: See all reviews */}
             <a
               href={"/"}
@@ -79,11 +83,13 @@ export default function product({ shoeData, shoeResponses, id, reviewStars }) {
             Select a Colour:
           </h1>
           <div className="flex mt-2 flex-wrap gap-4">
-            {shoeResponses.map((shoe) => (
-              <Link href={`/shoe?id=${shoe.id}`} key={shoe.id}>
+            {alternatives.map((shoe, index) => (
+              <Link href={`/shoeView?id=${shoe._id}`} key={index}>
                 <div
                   className={`inline-flex flex-col items-center justify-center aspect-square w-20 border ${
-                    shoe.id === id ? "border-black border-2" : "border-gray-200"
+                    shoe._id === id
+                      ? "border-black border-2"
+                      : "border-gray-200"
                   }`}
                 >
                   <Image
@@ -104,11 +110,13 @@ export default function product({ shoeData, shoeResponses, id, reviewStars }) {
             Select a Size:
           </h1>
           <div className="flex mt-2 flex-wrap gap-4">
-            {shoeResponses.map((shoe) => (
-              <Link href={`/shoe?id=${shoe.id}`} key={shoe.id}>
+            {alternatives.map((shoe, index) => (
+              <Link href={`/shoeView?id=${shoe._id}`} key={index}>
                 <div
                   className={`inline-flex flex-col items-center justify-center aspect-square w-20 border rounded-full ${
-                    shoe.id === id ? "border-black border-2" : "border-gray-200"
+                    shoe._id === id
+                      ? "border-black border-2"
+                      : "border-gray-200"
                   }`}
                 >
                   <h1 className="text-2xl font-bold">{shoe.size}</h1>

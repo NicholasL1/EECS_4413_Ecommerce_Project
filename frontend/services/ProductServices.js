@@ -5,19 +5,18 @@ class ProductServices {
 
   static async fetchShoes(query) {
     try {
-        const response = await this.DB.get("/FetchShoe", {
-            params: query,
-        });
+      const response = await this.DB.get("/FetchShoe", {
+        params: query,
+      });
 
-        if (response.data.length === 0)
-            return null
-        
-        return response.data
+      if (response.data.length === 0) return null;
+
+      return response.data;
     } catch (err) {
-        console.log(err.message)
-        return null
+      console.log(err.message);
+      return null;
     }
-}
+  }
 
   static filterDuplicates = (products) => {
     // Used to filter out duplicate results of shoes (only differ by size, colour)
@@ -76,7 +75,7 @@ class ProductServices {
 
       if (filter.name) {
         // used for the search bar query
-        query.name = filter.name
+        query.name = filter.name;
       }
 
       const response = await this.DB.get("FetchShoe", {
@@ -86,6 +85,41 @@ class ProductServices {
       const responseU = this.filterDuplicates(response.data);
 
       return { data: responseU };
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  static async getAlternativeProducts(filter) {
+    try {
+      const query = {};
+
+      if (filter.brand) {
+        query.brand = filter.brand;
+      }
+
+      if (filter.category) {
+        query.category = filter.category;
+      }
+
+      if (filter.colour) {
+        query.colour = filter.colour;
+      }
+
+      if (filter.gender) {
+        query.gender = filter.gender;
+      }
+
+      if (filter.name) {
+        // used for the search bar query
+        query.name = filter.name;
+      }
+
+      const response = await this.DB.get("FetchShoe", {
+        params: query,
+      });
+
+      return { data: response.data };
     } catch (err) {
       console.error(err);
     }

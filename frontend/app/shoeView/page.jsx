@@ -2,9 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import ProductServices from "@/services/productServices";
+import ProductServices from "@/services/ProductServices";
 import Product from "./product";
-import ReviewStars from "@/components/ui/ReviewStars";
 
 const shoeResponses = [
   { id: "1", image: "/nike.png", size: 11, colour: "black" },
@@ -17,43 +16,59 @@ const shoeResponses = [
   { id: "3", image: "/nike.png", size: 9, colour: "red" },
 ];
 
-const stubData = {
-  brand: "Brand",
-  size: 0,
-  name: "Name",
-  colour: "Colour",
-  gender: "Gender",
-  stock: 190,
-  price: 100,
-  rating: 5,
-  category: "Category",
-};
-
 export default function ShoePage() {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
 
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [shoeData, setShoeData] = useState(stubData);
+  const [shoeData, setShoeData] = useState(null); // state to hold shoe data
+  const [alternatives, setAlternatives] = useState([]); // state to hold alternative shoes
+  const [error, setError] = useState(null); // state to handle errors
+  const [loading, setLoading] = useState(true); // state to manage loading
 
-  const reviewStars = ReviewStars(shoeData.rating, "text-2xl");
-
-  useEffect(() => {
-    const fetchShoeInfo = async () => {
-      try {
-        if (id) {
-          const response = await ProductServices.getShoeInfo(id);
-          setShoeData(response);
-        }
-      } catch (err) {
-        setError(err);
+  // Fetch the shoe info based on the provided id
+  const fetchShoeInfo = async () => {
+    try {
+      if (id) {
+        const response = await ProductServices.getShoeInfo(id);
+        setShoeData(response);
       }
-    };
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    setLoading(false);
+  // Fetch alternative shoes based on the loaded shoe data
+  const fetchShoeAlternatives = async () => {
+    try {
+      if (shoeData) {
+        const filter = {
+          brand: shoeData.brand,
+          name: shoeData.name,
+          gender: shoeData.gender,
+        };
+        const alternativeData = await ProductServices.getAlternativeProducts(
+          filter
+        );
+        setAlternatives(alternativeData.data);
+      }
+    } catch (error) {
+      setError(error);
+    }
+  };
+
+  // Trigger the fetchShoeInfo function when the id changes
+  useEffect(() => {
     fetchShoeInfo();
   }, [id]);
+
+  // Trigger the fetchShoeAlternatives function only when shoeData is loaded
+  useEffect(() => {
+    if (shoeData) {
+      fetchShoeAlternatives();
+    }
+  }, [shoeData]);
 
   // Ensure fallback rendering during loading and errors
   if (!shoeData) {
@@ -78,12 +93,7 @@ export default function ShoePage() {
 
   return (
     <div>
-      <Product
-        shoeData={shoeData}
-        shoeResponses={shoeResponses}
-        id={id}
-        reviewStars={reviewStars}
-      />
+      <Product shoeData={shoeData} alternatives={alternatives} id={id} />
     </div>
   );
 }
