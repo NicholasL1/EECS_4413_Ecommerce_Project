@@ -1,5 +1,6 @@
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+axios.defaults.withCredentials = true
 
 export default class userServices {
   static DB = axios.create({ baseURL: "http://localhost:3001/" });
@@ -67,6 +68,12 @@ export default class userServices {
     })
     
     return {payment_info: response.data.message, email: user[2], first_name: user[4], last_name: user[5], address: user[6]}
+  }
+
+  static async getUserSession() {
+    const response = await this.DB.get('/User/UserSession')
+    console.log(response)
+    return response
   }
 }
 

@@ -1,7 +1,16 @@
 import axios from "axios";
-
+axios.defaults.withCredentials = true
 export default class CartService {
     static DB = axios.create({baseURL: 'http://localhost:3001/Cart'})
+
+        static async addtoCart(shoe_id) {
+            try {
+                const response = await this.DB.post('/AddToCart', {shoe_id})
+                return response
+            } catch (err) {
+                console.log(err)
+            }
+        }
 
     static async getCart() {
         try {

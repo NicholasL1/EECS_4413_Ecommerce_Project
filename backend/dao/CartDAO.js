@@ -44,6 +44,7 @@ class CartDAO {
    * @param {Object} cart 
    */
   static async addToGuestCart(shoe_id, cart) {
+    console.log(typeof cart)
     if (!(shoe_id in cart)) {
       const shoe = await Shoe.findById(shoe_id)
       if (shoe.stock === 0)

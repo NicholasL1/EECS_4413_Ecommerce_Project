@@ -22,7 +22,7 @@ function page() {
         setError("Invalid Login Credentials");
       } else {
         setError(""); // Clear error message on successful login
-        localStorage.setItem("Authorization", JSON.stringify(response.token));
+        sessionStorage.setItem("Authorization", JSON.stringify(response.token));
         window.location.href = "/"; // Redirect to home page
       }
     } catch (error) {

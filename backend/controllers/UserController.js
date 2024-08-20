@@ -19,8 +19,9 @@ router.post("/Login", async (req, res) => {
   try {
     const user = await UserService.login(email, password); // send login info
     
-    req.sessionStore.loggedIn = true
-    req.sessionStore.user = user
+    req.session.loggedIn = true
+    req.session.user = user
+    req.session.save()
 
     res.status(201).json({
       token: generateToken(
@@ -41,7 +42,13 @@ router.post("/Login", async (req, res) => {
   }
 });
 
-router.post("/Logout", async (req, res) => {});
+router.post("/Logout", async (req, res) => {
+  req.session.loggedIn = false
+  req.session.user = null
+  req.session.cart = {}
+  req.session.save()
+
+});
 
 router.post("/Register", async (req, res) => {
   const { email, password, first_name, last_name, address } = req.body;
@@ -65,8 +72,9 @@ router.post("/Register", async (req, res) => {
     );
 
     // ToDo -- store generated token on the client-side
-    req.sessionStore.loggedIn = true
-    req.sessionStore.user = user
+    req.session.loggedIn = true
+    req.session.user = user
+    req.session.save()
 
     res.status(201).json({
       token: generateToken(

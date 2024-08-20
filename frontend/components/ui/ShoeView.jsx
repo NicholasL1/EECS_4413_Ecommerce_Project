@@ -43,31 +43,31 @@ export default function ShoeView({shoe, adminView}) {
           </div>
         <div className="flex-1 p-4 flex flex-col border">
           <div className="flex flex-row justify-between items-center w-full mb-4">
-            <h1 className="font-bold text-2xl">{shoe.name}</h1>
+            <h1 className="font-bold text-2xl">{shoe?.name}</h1>
             <button 
-              onClick={() => {removeFromCart(shoe._id)}} 
+              onClick={() => {removeFromCart(shoe?._id)}} 
               className="w-8 h-8 rounded-sm shadow-sm bg-custom-red text-white hover:bg-red-700 hover:shadow-md"
             >
               <FontAwesomeIcon icon={faTrashCan} />
             </button>
           </div>
 
-          <h4 className="text-sm font-thin mb-2">{shoe.brand}</h4>
+          <h4 className="text-sm font-thin mb-2">{shoe?.brand}</h4>
           <h2 className="text-md">
-            {shoe.colour} | {shoe.gender} | {shoe.size}
+            {shoe?.colour} | {shoe?.gender} | {shoe?.size}
           </h2>
-          <h2>Category: <span>{shoe.category}</span></h2>
-          <h2>Sale Price: $<span>{shoe.price.toLocaleString()}</span></h2>
+          <h2>Category: <span>{shoe?.category}</span></h2>
+          <h2>Sale Price: $<span>{shoe?.price?.toLocaleString()}</span></h2>
       
           {adminView && (
             <div>
               <h2>
-                Stock: <span>{shoe.stock}</span>
+                Stock: <span>{shoe?.stock}</span>
                 {shoe.stock < 20 && (
                   <span className="p-1 mx-2 text-sm font-bold text-white rounded-md bg-orange-500">Low Stock</span>
                 )}
               </h2>
-              <ReviewStars rating={shoe.rating} />
+              <ReviewStars rating={shoe?.rating} />
             </div>
           )}
       
@@ -78,10 +78,10 @@ export default function ShoeView({shoe, adminView}) {
                 <input 
                   type="number" 
                   min={1} 
-                  max={shoe.stock} 
+                  max={shoe?.stock} 
                   step={1} 
-                  defaultValue={shoe.qty} 
-                  onBlur={(e) => {updateQuantity(e.target.value, shoe._id)}} 
+                  defaultValue={shoe?.qty} 
+                  onBlur={(e) => {updateQuantity(e.target.value, shoe?._id)}} 
                   className="w-24 pl-2 border border-gray-500 rounded-md mx-2"
                 />
               </div>

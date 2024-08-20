@@ -41,7 +41,7 @@ export default function AddProductModal({ showModal, setShowModal }) {
 
   const SubmitChanges = async () => {
     const response = await AdminServices.AddProduct(
-      JSON.parse(localStorage.getItem("Authorization")),
+      JSON.parse(sessionStorage.getItem("Authorization")),
       newProduct
     );
     if (!response) {

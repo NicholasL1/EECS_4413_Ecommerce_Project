@@ -14,10 +14,6 @@ const links = [
     path: "/shoes",
   },
   {
-    name: "contact",
-    path: "/contact",
-  },
-  {
     name: "cart",
     path: "/cart",
   },

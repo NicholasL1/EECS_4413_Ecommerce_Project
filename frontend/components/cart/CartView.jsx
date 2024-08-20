@@ -5,7 +5,8 @@ import Loading from "../ui/Loading";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CartService from "@/services/cartServices";
 import OrderSummaryInfo from "../ui/OrderSummaryInfo";
-import Link from "next/link";
+import { jwtDecode } from "jwt-decode";
+import userServices from "@/services/userServices";
 
 export default function CartView({mini = false, cart = [], total, gst, estTotal, setCart}) {
     if (cart == null) {
@@ -21,6 +22,31 @@ export default function CartView({mini = false, cart = [], total, gst, estTotal,
         )
     }
 
+    const isTokenExpired = () => {
+      const token = JSON.parse(sessionStorage.getItem('Authorization'))
+      if (!token) return true
+      
+      try {
+        const decodedToken = jwtDecode(token)
+        const exp = decodedToken.exp
+        const currentTime = Math.floor(Date.now() / 1000)
+        return exp < currentTime
+      } catch (error) {
+        console.error('Error decoding token:', error)
+        return true
+      }
+    }
+
+    const proccedToCheckout = async () => {
+      if (isTokenExpired()) {
+        alert('Please Login/SignUp to continue to checkout')
+        window.location.href = '/signup'
+      } else {
+        window.location.href = '/checkout'
+      }
+
+    }
+
     const clearCart = async () => {
         const response = await CartService.clearCart()
         if (response.data.message) 
@@ -33,7 +59,7 @@ export default function CartView({mini = false, cart = [], total, gst, estTotal,
     }
 
     const IsLoggedIn = () => {
-        const token = JSON.parse(localStorage.getItem('Authorization'))
+        const token = JSON.parse(sessionStorage.getItem('Authorization'))
         if (token == null)
           return (
               <div className="border rounded-md shadow-md p-3 mb-4 text-sm">
@@ -66,13 +92,13 @@ export default function CartView({mini = false, cart = [], total, gst, estTotal,
                     Clear cart
                   </button>
 
-                  <Link
+                  <button
                     className="p-2 bg-custom-black font-bold text-white rounded-md shadow-md w-full text-lg hover:bg-gray-600 flex items-center justify-center"
-                    href='/checkout'
+                    onClick={proccedToCheckout}
                   >
                     <span className="mr-2">Checkout</span>
                     <FontAwesomeIcon icon={faShoppingBasket} />
-                  </Link>
+                  </button>
                 </div>
               </div>
             </div>

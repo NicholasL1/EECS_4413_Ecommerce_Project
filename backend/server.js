@@ -33,7 +33,11 @@ app.use(session({
   secret: '1234',
   resave: false,
   saveUninitialized: false,
-  store: memoryStore
+  store: memoryStore,
+  cookie: {
+    httpOnly: true,
+    sameSite: 'lax' 
+  }
 }))
 app.use(cors({
   origin: 'http://localhost:3000',  // Replace with your client URL
@@ -41,14 +45,26 @@ app.use(cors({
 }));
 
 app.use((req, res, next) => {
-  if (!req.sessionStore.cart) {
-    req.sessionStore.cart = {};
+  // Initialize session variables on the req.session object
+  if (!req.session.cart) {
+    req.session.cart = {};
   }
-  if (req.sessionStore.loggedIn === undefined) {
-    req.sessionStore.loggedIn = false;
+  if (req.session.loggedIn === undefined) {
+    req.session.loggedIn = false;
   }
   next();
 });
+
+
+// app.use((req, res, next) => {
+//   if (!req.sessionStore.cart) {
+//     req.sessionStore.cart = {};
+//   }
+//   if (req.sessionStore.loggedIn === undefined) {
+//     req.sessionStore.loggedIn = false;
+//   }
+//   next();
+// });
 
 // How to add controller to application
 // app.use('/CONTROLLER', CONTROLLER)

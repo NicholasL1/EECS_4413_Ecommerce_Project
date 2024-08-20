@@ -11,146 +11,173 @@ import Shipping from "@/components/checkout/Shipping";
 import PaymentSelection from "@/components/checkout/PaymentSelection";
 import userServices from "@/services/userServices";
 import PaymentServices from "@/services/paymentServices";
-
+import Confetti from "react-confetti";
+import PageV2 from "./pageV2";
 
 // Checkout
 export default function page() {
     
-    const [cart, setCart] = useState(null)
-  
-    const [user, setUser] = useState(null)
-    const [paymentMethod, setPaymentMethod] = useState(null)
+    // const [cart, setCart] = useState(null)
+    // const [user, setUser] = useState(null)
+    // const [paymentMethod, setPaymentMethod] = useState(null)
+    // const [showConfetti, setShowConfetti] = useState(false)
 
-    //#region Edit/Save button states
-    const [showContact, setShowContact] = useState(true)
-    const [editContact, setEditContact] = useState(false)
-    const [showShipping, setShowShipping] = useState(false)
-    const [editShipping, setEditShipping] = useState(true)
-    const [showPayment, setShowPayment] = useState(false)
-    const [editPayment, setEditPayment] = useState(true)
+    // //#region Edit/Save button states
+    // const [showContact, setShowContact] = useState(true)
+    // const [editContact, setEditContact] = useState(false)
+    // const [showShipping, setShowShipping] = useState(false)
+    // const [editShipping, setEditShipping] = useState(true)
+    // const [showPayment, setShowPayment] = useState(false)
+    // const [editPayment, setEditPayment] = useState(true)
 
 
-    const handleShowContact = () => {
-        console.log(showShipping + ' ' + showPayment)
-        if (showShipping || showPayment) {
-            return
-        } else {
-            setShowContact(false)
-            setEditContact(true)
-            setShowShipping(true)
-            setEditShipping(false)
-        }
-    }
+    // const handleShowContact = () => {
+    //     console.log(showShipping + ' ' + showPayment)
+    //     if (showShipping || showPayment) {
+    //         return
+    //     } else {
+    //         setShowContact(false)
+    //         setEditContact(true)
+    //         setShowShipping(true)
+    //         setEditShipping(false)
+    //     }
+    // }
 
-    const handleEditContact = () => {
-        if (showShipping || showPayment) {
-            return
-        }
-        else {
-            setShowContact(true)
-            setEditContact(false)
-        }
-    }
+    // const handleEditContact = () => {
+    //     if (showShipping || showPayment) {
+    //         return
+    //     }
+    //     else {
+    //         setShowContact(true)
+    //         setEditContact(false)
+    //     }
+    // }
 
-    const handleShowShipping = () => {
-        if (showContact || showPayment) {
-            console.log('cant show shipping')
-            return
-        } else {
-            setShowShipping(false)
-            setEditShipping(true)
-            setShowContact(false)
-            setEditContact(true)
-            setShowPayment(true)
-        }
-    }
+    // const handleShowShipping = () => {
+    //     if (showContact || showPayment) {
+    //         console.log('cant show shipping')
+    //         return
+    //     } else {
+    //         setShowShipping(false)
+    //         setEditShipping(true)
+    //         setShowContact(false)
+    //         setEditContact(true)
+    //         setShowPayment(true)
+    //     }
+    // }
 
-    const handleEditShipping = () => {
-        if (!showContact) {
-            setShowShipping(true)
-            setEditShipping(false)
-        }
-    }
+    // const handleEditShipping = () => {
+    //     if (!showContact) {
+    //         setShowShipping(true)
+    //         setEditShipping(false)
+    //     }
+    // }
 
-    const handleShowPayment = () => {
-        if (showPayment) {
-            setShowPayment(false)
-        }
-    }
-    //#endregion
+    // const handleShowPayment = () => {
 
-    const getUserInfo = async () => {
-        const token = JSON.parse(localStorage.getItem('Authorization'))
-        const response = await userServices.getUser(token)
-        console.log(response)
-        setUser(response)
-    }
+    //     if (showPayment) {
+    //         setShowPayment(false)
+    //     }
+    // }
+    // //#endregion
 
-    const getCart = async () => {
-        const token = JSON.parse(localStorage.getItem('Authorization'))
-        const response = await CartService.getCart()
-        setCart(response)
-        
-    }     
+    // const getUserInfo = async () => {
+    //     const token = JSON.parse(sessionStorage.getItem('Authorization'))
+    //     const response = await userServices.getUser(token)
+    //     console.log(response)
+    //     setUser(response?.data?.message)
+    // }
 
-    const checkout = async () => {
-        const token = JSON.parse(localStorage.getItem('Authorization'))
-        const response = await CartService.checkout(token, paymentMethod)
-    }
+    // const getCart = async () => {
+    //     const token = JSON.parse(sessionStorage.getItem('Authorization'))
+    //     const response = await CartService.getCart()
+    //     setCart(response)
+    // }     
 
-    useEffect(() => {
-        getUserInfo()
-        getCart()
-    }, [])
+    // const checkout = async () => {
+    //     const token = JSON.parse(sessionStorage.getItem('Authorization'))
+    //     const response = await CartService.checkout(token, paymentMethod)
+    //     alert(response)
+    //     window.location.href = '/'
+    // }
+
+    // useEffect(() => {
+    //     getUserInfo()
+    //     getCart()
+    // }, [user])
 
     return (
-        <div id="checkout-page" className=" sm:mx-32 md:mx-48 lg:mx-64 p-4 sm:p-6 md:p-8 lg:p-10 mb-10 font-signika-negative shadow-md rounded-md bg-white">
-            
-            <h1 className="block text-3xl mb-4 font-bold">Checkout</h1>
-
-
-            <div id="container" className="flex flex-col md:flex-row justify-between gap-4 w-full mb-4">
-                                
-                <div id="order-info-container" className="w-3/4 text-custom-black font-signika-negative flex flex-col gap-4">
-
-                    <Contact 
-                        showContact={showContact} 
-                        handleShowContact={handleShowContact} 
-                        handleEditContact={handleEditContact} 
-                        editContact={editContact}
-                        user={user}
-                    />
-
-                    <Shipping
-                        showShipping={showShipping}
-                        handleShowShipping={handleShowShipping}
-                        handleEditShipping={handleEditShipping}
-                        editShipping={editShipping}
-                        address={user?.address}
-                    />
-
-                    <PaymentSelection 
-                        showPayment={showPayment} 
-                        paymentMethods={user?.payment_info}
-                        setPaymentMethod={setPaymentMethod}
-                        setShowPayment={handleShowPayment}
-                        setEditPayment={setEditPayment}
-                    />
-
-                </div>
-
-                <div id="order-summary-info" className="w-full h-fit md:w-1/2 lg:w-1/3 p-4 border shadow-md rounded-md">
-                    <OrderSummaryInfo cart={cart?.items} total={cart?.total} gst={cart?.gst} estTotal={cart?.estTotal} onCheckout={true}/>
-                    <button
-                        className="p-2 bg-custom-black font-bold text-white rounded-md shadow-md w-full text-lg hover:bg-gray-600 flex items-center justify-center"
-                        onClick={checkout}
-                        disabled={(showContact || showPayment || showShipping)}
-                    >           
-                    <span className="mr-2">Place Order</span>
-                    <FontAwesomeIcon icon={faTruck} />
-                  </button>
-                </div>
-            </div>
+        <div>
+            <PageV2/>
         </div>
+        // <div id="checkout-page" className=" sm:mx-32 md:mx-48 lg:mx-64 p-4 sm:p-6 md:p-8 lg:p-10 mb-10 font-signika-negative shadow-md rounded-md bg-white">
+
+        //     <h1 className="block text-3xl mb-4 font-bold">Checkout</h1>
+
+        //     {
+        //         (cart == null || cart.length == 0) && 
+        //         <p className="text-center flex-col gap-2">
+        //             <span className="block">Hey! You have to add some shoes to your cart, silly.</span>
+        //             <span>Check out some kicks <a href="/" className="text-blue-500 font-medium underline">here</a>.</span>   
+        //         </p>
+        //     }
+
+        //     {
+        //         !(cart == null || cart.length == 0) && 
+        //         <div id="container" className="flex flex-col md:flex-row justify-between gap-4 w-full mb-4">
+                                
+        //         <div id="order-info-container" className="w-3/4 text-custom-black font-signika-negative flex flex-col gap-4">
+
+        //                 <Contact 
+        //                     showContact={showContact} 
+        //                     handleShowContact={handleShowContact} 
+        //                     handleEditContact={handleEditContact} 
+        //                     editContact={editContact}
+        //                     user={user}
+        //                 />
+                    
+
+        //             <Shipping
+        //                 showShipping={showShipping}
+        //                 handleShowShipping={handleShowShipping}
+        //                 handleEditShipping={handleEditShipping}
+        //                 editShipping={editShipping}
+        //                 address={user?.address}
+        //             />
+
+        //             <PaymentSelection 
+        //                 showPayment={showPayment} 
+        //                 paymentMethods={user?.payment_info}
+        //                 setPaymentMethod={setPaymentMethod}
+        //                 setShowPayment={handleShowPayment}
+        //                 setEditPayment={setEditPayment}
+        //             />
+
+        //         </div>
+
+        //         <div id="order-summary-info" className="w-full h-fit md:w-1/2 lg:w-1/3 p-4 border shadow-md rounded-md">
+        //             <OrderSummaryInfo cart={cart?.items} total={cart?.total} gst={cart?.gst} estTotal={cart?.estTotal} onCheckout={true}/>
+        //             <button
+        //                 className={`p-2 bg-custom-black font-bold text-white rounded-md shadow-md w-full text-lg hover:bg-gray-600 flex items-center justify-center ${(showContact || showPayment || showShipping) ? 'bg-gray-200' : ''}`}
+        //                 onClick={checkout}
+        //                 disabled={(showContact || showPayment || showShipping)}
+        //             >           
+        //             <span className="mr-2">Place Order</span>
+        //             <FontAwesomeIcon icon={faTruck} />
+        //           </button>
+
+        //             {
+        //                 showConfetti &&
+        //                 <Confetti
+        //                     width='100%'
+        //                     height='100%'
+        //                 />
+        //             }
+        //         </div>
+        //     </div>
+        //     }
+
+
+        // </div>
     )
 }

@@ -2,12 +2,14 @@ import userServices from "@/services/userServices"
 
 export default function Contact({showContact, handleShowContact, editContact, handleEditContact, user}) {
     
+    console.log(user)
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         const formData = new FormData(e.target)
         const formObj = Object.fromEntries(formData.entries())
 
-        const token = JSON.parse(localStorage.getItem('Authorization'))
+        const token = JSON.parse(sessionStorage.getItem('Authorization'))
         await userServices.updateUser(token, formObj)
         handleShowContact(false)
     }

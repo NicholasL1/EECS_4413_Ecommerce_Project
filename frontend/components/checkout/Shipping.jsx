@@ -38,7 +38,7 @@ export default function Shipping({showShipping, editShipping, handleShowShipping
         }
 
         const full_address = `${formObj['unit']} ${formObj['street_address']}, ${formObj['city']}, ${formObj['province']}, ${formObj['postal_code']}`
-        const token = JSON.parse(localStorage.getItem('Authorization'))
+        const token = JSON.parse(sessionStorage.getItem('Authorization'))
         await userServices.updateUser(token, {address: full_address})
         handleShowShipping(false)
     }

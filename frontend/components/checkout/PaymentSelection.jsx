@@ -1,3 +1,5 @@
+import CartService from "@/services/cartServices";
+import PaymentServices from "@/services/paymentServices";
 import { useState } from "react";
 
 export default function PaymentSelection({ showPayment, paymentMethods, setShowPayment, setPaymentMethod, setEditPayment }) {
@@ -16,7 +18,9 @@ export default function PaymentSelection({ showPayment, paymentMethods, setShowP
     const formData = new FormData(e.target);
     const formObj = Object.fromEntries(formData.entries());
     // Your submit logic here
-
+    const token = JSON.parse(sessionStorage.getItem('Authorization'))
+    const response = await PaymentServices.addPaymentMethod(token, formObj)
+    
     setShowPayment(false)
 
   };
@@ -46,19 +50,9 @@ export default function PaymentSelection({ showPayment, paymentMethods, setShowP
       <hr />
 
       <div className="my-2">
-        {!showPayment && 
-          <div className="my-2">
-            <p className="mb-2">Payment Info</p>
-            <button
-                onClick={setEditPayment}
-                className="p-2 border border-custom-black font-bold text-custom-black rounded-md shadow-md w-full text-lg hover:bg-gray-100 flex items-center justify-center"
-            >
-                Edit
-            </button>
-          </div>
-        }
+        
 
-        {showPayment && !showNewPaymentForm && (
+        {!showPayment && (
           <form id="select_payment" className="block" onSubmit={selectPaymentSubmit}>
             <span>Select a Payment Method</span>
             <div className="flex overflow-x-scroll w-[650px] gap-2 py-4">
