@@ -17,7 +17,7 @@ const categories = [
   },
   {
     category: "Kid's",
-    link: "/shoes",
+    link: "/shoes?gender=Kid's",
     background: KidsBackground,
   },
 ];

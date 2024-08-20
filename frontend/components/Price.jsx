@@ -7,19 +7,19 @@ import Link from "next/link";
 const priceCardInfo = [
   {
     category: "Low to High",
-    link: "/",
+    link: "/shoes?price=Low+to+High",
     background: HighToLow,
     height: "500px",
   },
   {
     category: "High to Low",
-    link: "/",
+    link: "/shoes?price=High+to+Low",
     background: LowToHigh,
     height: "500px",
   },
   {
     category: "Our Best Deals",
-    link: "/",
+    link: "/shoes?price=Deals",
     background: BestDeals,
     height: "300px",
   },

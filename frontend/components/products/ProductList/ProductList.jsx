@@ -12,12 +12,10 @@ const ProductList = ({ products, currentPage }) => {
   const displayProducts = getProductsPage();
 
   return (
-    <div className="flex flex-wrap gap-10 items-center my-8 justify-between">
-      {
-        displayProducts.map((product) => (
-          <ProductCard key={product._id} product={product} />
-        ))
-      }
+    <div className="flex flex-wrap justify-center gap-10">
+      {displayProducts.map((product) => (
+        <ProductCard key={product._id} product={product} />
+      ))}
     </div>
   );
 };

@@ -16,12 +16,25 @@ const ProductCard = ({ product }) => {
             className="w-full h-full object-cover"
           ></Image>
         </div>
-        <div className="text-lg w-full rounded-lg text-gray-800 pl-5 pt-3">
+        <div className="text-lg w-full rounded-lg text-gray-800 pl-2 pt-3">
           <div className="flex flex-row justify-between mb-1">
-            <p className="font-bold text-xl">{product.name}</p>
-            <p className="font-bold text-xl pr-5 text-green-600">
-              ${product.price}
-            </p>
+            <p className="font-bold text-lg">{product.name}</p>
+            <div className="flex flex-col pr-2">
+              {product.dealPrice ? (
+                <div>
+                  <p className="font-bold text-xl text-green-600">
+                    ${product.dealPrice}
+                  </p>
+                  <p className="font-bold text-xl text-black line-through">
+                    ${product.price}
+                  </p>
+                </div>
+              ) : (
+                <p className="font-bold text-xl pr-5 text-green-600">
+                  ${product.price}
+                </p>
+              )}
+            </div>
           </div>
           <div>{ReviewStars(product.rating)}</div>
           <p className="text-base text-gray-600 mt-2">
