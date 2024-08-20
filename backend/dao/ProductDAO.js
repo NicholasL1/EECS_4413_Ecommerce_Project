@@ -4,6 +4,13 @@ const mongoose = require("mongoose");
 class ProductDAO {
   // Can construct the template string query here
   static async fetchShoes(query) {
+
+    if (query.name) {
+      const name = query.name.split(' ').map(w => {return w.charAt(0).toUpperCase() + w.substring(1, w.length)}).join(' ')
+      const escapedSearchTerm = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      query['name'] = { $regex: escapedSearchTerm}
+    }
+
     const shoes = await Shoe.find(query);
     return shoes;
   }

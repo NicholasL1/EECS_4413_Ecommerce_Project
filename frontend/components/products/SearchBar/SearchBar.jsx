@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import "./SearchBar.css";
 import "primeicons/primeicons.css";
-import ProductServices from "@/services/productServices";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 const SearchBar = ({ setSearchQuery }) => {
   const [query, setQuery] = useState("");
@@ -17,20 +17,18 @@ const SearchBar = ({ setSearchQuery }) => {
   };
 
   return (
-    <div className="search-bar-container">
-      <span className="p-input-icon-left">
-        <i className="pi pi-search" />
-        <input
-          type="text"
-          placeholder="Find products by name..."
-          className="search-bar"
-          value={query}
-          onChange={handleInput}
-          onKeyDown={handleKeyDown}
-        />
-      </span>
+    <div id="search-container" className="flex flex-row h-full w-1/2 border shadow-md rounded-lg">
+      <div className="w-16 h-full flex justify-center align-middle items-center text-white rounded-s-lg bg-custom-black">
+        <FontAwesomeIcon icon={faMagnifyingGlass} size="xl" />
+      </div>
+      <input type="text" 
+        value={query}
+        onChange={handleInput}
+        onKeyDown={handleKeyDown}
+        className="w-full rounded-e-lg px-4" placeholder="Find products by name..."
+      />
     </div>
-  );
+  )
 };
 
 export default SearchBar;
