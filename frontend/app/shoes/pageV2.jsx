@@ -104,7 +104,7 @@ export default function pageV2() {
             </div>
 
             <div>
-              {results?.length} Results found
+              {results?.length || 0} Result(s) found
             </div>
             
             {
