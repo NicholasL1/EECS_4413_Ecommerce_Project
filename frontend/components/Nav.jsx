@@ -27,6 +27,11 @@ addAdminLink(links);
 
 export default function Nav() {
   const pathname = usePathname(); // Correct function name
+
+  // Ensure pathname is not undefined or null
+  if (pathname === undefined || pathname === null) {
+    return null; // Or some placeholder
+  }
   return (
     <nav className="flex gap-8">
       {links.map((link, index) => {

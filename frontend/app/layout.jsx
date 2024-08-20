@@ -1,6 +1,7 @@
 import { Signika_Negative } from "next/font/google";
 import "./globals.css";
 import Header from "../components/Header";
+import Footer from "@/components/Footer";
 
 const signikaNegative = Signika_Negative({
   subsets: ["latin"],
@@ -19,6 +20,7 @@ export default function RootLayout({ children }) {
       <body className={signikaNegative.variable}>
         <Header />
         {children}
+        <Footer />
       </body>
     </html>
   );
