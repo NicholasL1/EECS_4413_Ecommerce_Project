@@ -3,6 +3,22 @@ import axios from "axios";
 class ProductServices {
   static DB = axios.create({ baseURL: "http://localhost:3001/Product/" });
 
+  static async fetchShoes(query) {
+    try {
+        const response = await this.DB.get("/FetchShoe", {
+            params: query,
+        });
+
+        if (response.data.length === 0)
+            return null
+        
+        return response.data
+    } catch (err) {
+        console.log(err.message)
+        return null
+    }
+}
+
   static filterDuplicates = (products) => {
     // Used to filter out duplicate results of shoes (only differ by size, colour)
     const uniques = [];
@@ -60,12 +76,13 @@ class ProductServices {
 
       if (filter.name) {
         // used for the search bar query
-        query.name = filter.name;
+        query.name = filter.name
       }
 
       const response = await this.DB.get("FetchShoe", {
         params: query,
       });
+
       const responseU = this.filterDuplicates(response.data);
 
       return { data: responseU };

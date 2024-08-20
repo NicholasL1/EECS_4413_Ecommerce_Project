@@ -24,7 +24,8 @@ router.get("/FetchShoe", async (req, res) => {
     !query.rating &&
     !query.category
   ) {
-    res.status(400).json({ message: "No parameters associated with query" });
+    const shoes = await ProductService.fetchAllShoes();
+    res.status(200).json(shoes);
     return;
   }
 
