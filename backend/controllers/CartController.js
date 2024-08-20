@@ -109,7 +109,7 @@ router.post("/Checkout", async (req, res) => {
 
   const { payment_id } = req.body;
   const cart_id = req.sessionStore.user.cart_id
-  const user_id = req.sessionStore.user.user_id
+  const user_id = req.sessionStore.user._id
 
   try {
     const response = await CartService.checkout(cart_id, user_id, payment_id);

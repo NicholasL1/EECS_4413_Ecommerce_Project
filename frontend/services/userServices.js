@@ -34,9 +34,40 @@ export default class userServices {
     }
   }
 
-  static getUser (token) {
+  static async updateUser(token, update) {
+    try {
+      const response = await this.DB.post('/User/UpdateUser', 
+        {
+          update: update,
+        },
+        {
+          headers: {
+              Authorization: token
+          }
+        }
+      );
+
+      return response
+
+    } catch (err) {
+      console.log(err.message)
+      return err.message
+    }
+  }
+
+  static async getUser (token) {
     // debugger
     const decodedToken = jwtDecode(token)
-    return decodedToken
+    const user = decodedToken.userData
+    
+    const response = await this.DB.get('Payment/GetAllPaymentMethods', {
+      headers: {
+          Authorization: token
+      }
+    })
+    
+    return {payment_info: response.data.message, email: user[2], first_name: user[4], last_name: user[5], address: user[6]}
   }
 }
+
+// 27 denlow drive, brampton, on, l6y2l3, canada

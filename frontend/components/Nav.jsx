@@ -17,6 +17,10 @@ const links = [
     name: "contact",
     path: "/contact",
   },
+  {
+    name: "cart",
+    path: "/cart",
+  },
 ];
 
 addAdminLink(links);

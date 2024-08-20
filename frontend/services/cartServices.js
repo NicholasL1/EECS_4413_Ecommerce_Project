@@ -65,5 +65,20 @@ export default class CartService {
         }
     }
 
-    static async 
+    static async checkout(token, payment_id) {
+        try {
+            const response = await this.DB.post('/Checkout', {
+                payment_id
+            }, {
+                headers: {
+                    Authorization: token
+                }
+            })
+
+            console.log(response)
+
+        } catch (err) {
+            console.log(err.message)
+        }
+    }
 } 

@@ -62,8 +62,8 @@ router.post("/DeletePaymentMethod", verifyToken, async (req, res) => {
   }
 });
 
-router.post("/GetAllPaymentMethods", verifyToken, async (req, res) => {
-  const { user_id } = req.body;
+router.get("/GetAllPaymentMethods", verifyToken, async (req, res) => {
+  const user_id = req.user['userData'][0]
 
   try {
     const payments = await PaymentService.getAllPaymentsForUser(user_id);

@@ -13,7 +13,12 @@ export default function CartView({mini = false, cart = [], total, gst, estTotal,
     }
 
     if (cart.length === 0) {
-        return <p className="text-center">Find something interesting? Add it to your cart and view it here!</p>
+        return (
+          <p className="text-center flex-col gap-2">
+            <span className="block">Oops! Looks like you haven't chosen any shoes yet.</span>
+            <span>Browse our <a href="/" className="text-blue-500 font-medium underline"> products</a> and view it right here in your cart!</span>   
+          </p>
+        )
     }
 
     const clearCart = async () => {

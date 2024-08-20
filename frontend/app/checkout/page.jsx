@@ -10,29 +10,29 @@ import Contact from "@/components/checkout/Contact";
 import Shipping from "@/components/checkout/Shipping";
 import PaymentSelection from "@/components/checkout/PaymentSelection";
 import userServices from "@/services/userServices";
+import PaymentServices from "@/services/paymentServices";
 
 
 // Checkout
 export default function page() {
     
     const [cart, setCart] = useState(null)
-    const [label, setLabel] = useState(null)
   
+    const [user, setUser] = useState(null)
+    const [paymentMethod, setPaymentMethod] = useState(null)
+
+    //#region Edit/Save button states
     const [showContact, setShowContact] = useState(true)
     const [editContact, setEditContact] = useState(false)
-
     const [showShipping, setShowShipping] = useState(false)
     const [editShipping, setEditShipping] = useState(true)
-
     const [showPayment, setShowPayment] = useState(false)
     const [editPayment, setEditPayment] = useState(true)
 
-    const [showReview, setShowReview] = useState(false)
-    const [editReview, setEditReview] = useState(true)
-
 
     const handleShowContact = () => {
-        if (showShipping) {
+        console.log(showShipping + ' ' + showPayment)
+        if (showShipping || showPayment) {
             return
         } else {
             setShowContact(false)
@@ -40,35 +40,10 @@ export default function page() {
             setShowShipping(true)
             setEditShipping(false)
         }
-        /*
-        debugger
-        if (showContact) {
-            setShowContact(false)
-            setEditContact(true)
-
-            setShowShipping(false)
-            setEditShipping(true)
-
-            setShowPayment(false)
-            setEditPayment(true)
-            
-            setShowReview(false)
-        } else {
-            setShowContact(false)
-            setEditContact(true)
-
-            setShowShipping(false)
-            setEditShipping(true)
-
-            setShowPayment(false)
-            setEditPayment(true)
-            
-            setShowReview(false)
-        }*/
     }
 
     const handleEditContact = () => {
-        if (showShipping) {
+        if (showShipping || showPayment) {
             return
         }
         else {
@@ -84,6 +59,8 @@ export default function page() {
         } else {
             setShowShipping(false)
             setEditShipping(true)
+            setShowContact(false)
+            setEditContact(true)
             setShowPayment(true)
         }
     }
@@ -95,27 +72,35 @@ export default function page() {
         }
     }
 
-    const getUserInfo = () => {
+    const handleShowPayment = () => {
+        if (showPayment) {
+            setShowPayment(false)
+        }
+    }
+    //#endregion
+
+    const getUserInfo = async () => {
         const token = JSON.parse(localStorage.getItem('Authorization'))
-        const response = userServices.getUser(token)
+        const response = await userServices.getUser(token)
         console.log(response)
+        setUser(response)
     }
 
     const getCart = async () => {
+        const token = JSON.parse(localStorage.getItem('Authorization'))
         const response = await CartService.getCart()
-        console.log(response)
         setCart(response)
-        if (response === null) {
-            setLabel('Empty Cart... nothing to see here')
-        }
+        
+    }     
+
+    const checkout = async () => {
+        const token = JSON.parse(localStorage.getItem('Authorization'))
+        const response = await CartService.checkout(token, paymentMethod)
     }
-  
-    useEffect(() => {
-        // getCart()
-    }, [])
-    
+
     useEffect(() => {
         getUserInfo()
+        getCart()
     }, [])
 
     return (
@@ -133,6 +118,7 @@ export default function page() {
                         handleShowContact={handleShowContact} 
                         handleEditContact={handleEditContact} 
                         editContact={editContact}
+                        user={user}
                     />
 
                     <Shipping
@@ -140,21 +126,29 @@ export default function page() {
                         handleShowShipping={handleShowShipping}
                         handleEditShipping={handleEditShipping}
                         editShipping={editShipping}
+                        address={user?.address}
                     />
 
-                    <PaymentSelection showPayment={showPayment}/>
+                    <PaymentSelection 
+                        showPayment={showPayment} 
+                        paymentMethods={user?.payment_info}
+                        setPaymentMethod={setPaymentMethod}
+                        setShowPayment={handleShowPayment}
+                        setEditPayment={setEditPayment}
+                    />
 
                 </div>
 
                 <div id="order-summary-info" className="w-full h-fit md:w-1/2 lg:w-1/3 p-4 border shadow-md rounded-md">
                     <OrderSummaryInfo cart={cart?.items} total={cart?.total} gst={cart?.gst} estTotal={cart?.estTotal} onCheckout={true}/>
-                    <Link
-                    className="p-2 bg-custom-black font-bold text-white rounded-md shadow-md w-full text-lg hover:bg-gray-600 flex items-center justify-center"
-                    href='/checkout'
-                  >
+                    <button
+                        className="p-2 bg-custom-black font-bold text-white rounded-md shadow-md w-full text-lg hover:bg-gray-600 flex items-center justify-center"
+                        onClick={checkout}
+                        disabled={(showContact || showPayment || showShipping)}
+                    >           
                     <span className="mr-2">Place Order</span>
                     <FontAwesomeIcon icon={faTruck} />
-                  </Link>
+                  </button>
                 </div>
             </div>
         </div>
