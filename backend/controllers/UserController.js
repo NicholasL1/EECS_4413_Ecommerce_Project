@@ -10,22 +10,17 @@ const verifyToken = require("../config/verifyToken.js");
 
 router.post("/Login", async (req, res) => {
   const { email, password } = req.body;
+  console.log("Login attempt with email:", email); // Log the received email
 
-  // check if all fields are filled
+  // Check if all fields are filled
   if (!email || !password) {
     res.status(400).json({ message: "Please enter all fields" });
   }
 
-  /*
-logs in 
-gen jwt 
-return jwt back to client
-store jwt on local storage (client side)
-*/
-
-  // call UserService to login
   try {
-    const user = await UserService.login(email, password); // send login info
+    const user = await UserService.login(email, password); // Attempt login
+    console.log("User found:", user); // Log the found user
+
     res.status(201).json({
       token: generateToken(
         user._id,
@@ -39,13 +34,15 @@ store jwt on local storage (client side)
       ),
     });
   } catch (error) {
+    console.error("Error during login:", error.message); // Log any errors
     if (error.message === "Invalid Login Credentials") {
       res.status(400).json({ message: error.message });
     }
   }
 });
 
-router.post("/Logout", async (req, res) => {});
+
+router.post("/Logout", async (req, res) => { });
 
 router.post("/Register", async (req, res) => {
   const { email, password, first_name, last_name, address } = req.body;
