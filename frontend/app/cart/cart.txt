@@ -1,0 +1,48 @@
+CartSession Branch
+
+Cart
+
+
+User flow:
+- On start, create session
+    - Have cart variable in session where cart = []
+        - ex: [ { shoe_id: number, shoe: Object } , … ]
+    - Have isLoggedIn variable, where it keeps track of there is someone logged-in
+
+- View shoe
+    - Click "Add to Cart"
+        - if isLoggedIn == True
+            - Shoe information gets added to Cart Table in MongoDB
+        - if isLoggedIn == False
+            - Shoe information gets added to Cart Session
+        - endpoint: /Cart/AddToCart/
+
+- On "View Cart"
+    - View all shoe information and totals
+        - if isLoggedIn == True
+            - Query from Cart Table
+                - Note: this will get all the cart information, even from previous sessions
+        - if isLoggedIn == False
+            - Query from Cart Session
+        - endpoint: /Cart/GetCart
+    - Can update/remove items
+        - endpoint: /Cart/UpdateQuantity/, /Cart/RemoveFromCart/
+            - updates the respective structure based on logged-in status
+
+- Click "Checkout"
+    - "Checkout" page renders two ways
+        - if isLoggedIn == True
+            - Since they have a valid account, retrieve previous cart items from Cart Table from MongoDB
+            - Update current cart-session variable with previous cart items
+            - Update Cart Table with cart-session items
+        - if isLoggedIn == False
+            - Prompt user to "Login" or "SignUp"
+    - On "Login" or "Register" redirect
+        - User logs in -> session.isLoggedIn = True -> redirect to "Checkout" page
+
+- Add Payment methods
+
+- Add or use Shipping Address
+
+- On "Place Order"
+    - Once they click "Place Order", delete cart items from cart
