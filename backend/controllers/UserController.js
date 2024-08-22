@@ -10,14 +10,15 @@ const verifyToken = require("../config/verifyToken.js");
 
 router.post("/Login", async (req, res) => {
   const { email, password } = req.body;
+  console.log("Login attempt with email:", email); // Log the received email
 
-  // check if all fields are filled
+  // Check if all fields are filled
   if (!email || !password) {
     return res.status(400).json({ message: "Please enter all fields" });
   }
 
   try {
-    const user = await UserService.login(email, password); // send login info
+    const user = await UserService.login(email, password); // Attempt login
     
     req.session.loggedIn = true
     req.session.user = user
@@ -36,6 +37,7 @@ router.post("/Login", async (req, res) => {
       ),
     });
   } catch (error) {
+    console.error("Error during login:", error.message); // Log any errors
     if (error.message === "Invalid Login Credentials") {
       res.status(400).json({ message: error.message });
     }

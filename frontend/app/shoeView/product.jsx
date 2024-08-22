@@ -46,7 +46,7 @@ export default function product({ shoeData, alternatives, id }) {
             {/* TODO: See all reviews */}
             <a
               href={"/"}
-              className="text-gray-400 float-left md:float-right lg:float-right underline text-sm"
+              className="text-gray-400 text-left md:text-right underline text-sm"
             >
               See all reviews
             </a>
