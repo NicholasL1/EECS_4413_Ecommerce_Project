@@ -9,12 +9,12 @@ export default class PaymentService {
         if (tokenJSON) {
             try {
                 const tokenObject = JSON.parse(tokenJSON);
-                token = tokenObject.token || tokenObject; 
+                token = tokenObject.token || tokenObject;
             } catch (e) {
                 console.error('Error parsing token:', e);
             }
         }
-        console.log("Token being used:", token); 
+        console.log("Token being used:", token);
         return {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -32,10 +32,6 @@ export default class PaymentService {
             return { success: false, message: 'Failed to update payment method' };
         }
     }
-
-
-
-
 
     static async GetAllPayments() {
         try {
@@ -55,12 +51,9 @@ export default class PaymentService {
     static async AddPayment(payment) {
         try {
             const headers = this.getAuthHeaders();
-            console.log('Request headers:', headers);
             const response = await this.DB.post('/Payment/AddPaymentMethod', payment, headers);
-            console.log("AddPayment raw response:", response);
             return { success: true, message: response.data.message };
         } catch (err) {
-            console.error('Error adding payment method:', err.response ? err.response.data : err.message);
             if (err.response && err.response.status === 403) {
                 console.log('Full error object:', err);
                 return { success: false, message: 'Access forbidden. Please check your login status.' };

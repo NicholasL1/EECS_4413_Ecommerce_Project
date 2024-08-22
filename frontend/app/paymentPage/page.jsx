@@ -3,9 +3,7 @@ import React, { useState, useEffect } from 'react';
 import PaymentService from "../../components/paymentsPage/paymentService";
 
 const PaymentsPage = () => {
-    // Manage component state for payment methods and the input form
     const [userPayments, setUserPayments] = useState([]);
-    // Managing the payment form, updates form object with new values when editing existing payment
     const [form, setForm] = useState({ card_number: '', cvc: '', expiry_date: '', payment_id: '' });
 
     const handleSubmitForm = (e) => {
@@ -25,7 +23,7 @@ const PaymentsPage = () => {
                 if (result.success && Array.isArray(result.data)) {
                     setUserPayments(result.data);
                 } else {
-                    console.error("Failed to fetch payments or unexpected data structure:", result);
+                    console.error("Failed to fetch payments", result);
                     setUserPayments([]);
                 }
             } catch (error) {
