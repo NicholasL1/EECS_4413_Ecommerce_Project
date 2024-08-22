@@ -12,7 +12,7 @@ export default function product({ shoeData, alternatives, id }) {
 
   const addToCart = async () => {
     const response = await CartService.addtoCart(id)
-    alert('Added to Cart')
+    alert(response.data.message)
   }
 
   return (
@@ -136,10 +136,10 @@ export default function product({ shoeData, alternatives, id }) {
           </div>
           <button 
             onClick={addToCart}
-            className={`mt-8 w-full text-white font-bold py-2 px-4 rounded ${shoeData?.stock === 0 ? ' bg-gray-200' : 'bg-custom-red'}`}
-            disabled={shoeData.stock !== 0}
+            className={`mt-8 w-full text-white font-bold py-2 px-4 rounded ${shoeData?.stock <= 0 ? ' bg-gray-200' : 'bg-custom-red'}`}
+            disabled={shoeData.stock <= 0}
           >
-            {shoeData.stock !== 0 ? 'Add to Cart' : 'Out of Stock'}
+            {shoeData.stock <= 0 ? 'Out of Stock' : 'Add to Cart'}
           </button>
         </div>
       </div>

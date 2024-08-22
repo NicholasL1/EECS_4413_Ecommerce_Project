@@ -56,6 +56,17 @@ export default class userServices {
     }
   }
 
+  static async Logout() {
+    try {
+      await this.DB.post('/User/Logout')
+      sessionStorage.removeItem('Authorization')
+      console.log('Logged out')
+      window.location.href = '/'
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   static async getUser (token) {
     // debugger
     const decodedToken = jwtDecode(token)

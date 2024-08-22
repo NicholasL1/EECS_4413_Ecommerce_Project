@@ -22,29 +22,13 @@ export default function CartView({mini = false, cart = [], total, gst, estTotal,
         )
     }
 
-    const isTokenExpired = () => {
-      const token = JSON.parse(sessionStorage.getItem('Authorization'))
-      if (!token) return true
-      
-      try {
-        const decodedToken = jwtDecode(token)
-        const exp = decodedToken.exp
-        const currentTime = Math.floor(Date.now() / 1000)
-        return exp < currentTime
-      } catch (error) {
-        console.error('Error decoding token:', error)
-        return true
-      }
-    }
-
-    const proccedToCheckout = async () => {
-      if (isTokenExpired()) {
-        alert('Please Login/SignUp to continue to checkout')
-        window.location.href = '/signup'
-      } else {
+    const proceedToCheckout = async () => {
+      const response = await CartService.proceedToCheckout()
+      if (response) {
         window.location.href = '/checkout'
+      } else {
+        alert('Please Login / Sign-up to continue')
       }
-
     }
 
     const clearCart = async () => {
@@ -94,7 +78,7 @@ export default function CartView({mini = false, cart = [], total, gst, estTotal,
 
                   <button
                     className="p-2 bg-custom-black font-bold text-white rounded-md shadow-md w-full text-lg hover:bg-gray-600 flex items-center justify-center"
-                    onClick={proccedToCheckout}
+                    onClick={proceedToCheckout}
                   >
                     <span className="mr-2">Checkout</span>
                     <FontAwesomeIcon icon={faShoppingBasket} />

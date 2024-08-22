@@ -66,6 +66,16 @@ class CartService {
     const response = await CartDAO.clearCart(cart_id)
     return response
   }
+
+  /**
+   * 
+   * @param {Object} cart 
+   * @returns true if user can proceed to checkout, otherwise false
+   */
+  static async verifyCheckout(cart) {
+    const response = await CartDAO.verifyCheckout(cart)
+    return response
+  }
 }
 
 module.exports = CartService;

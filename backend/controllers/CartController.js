@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const CartService = require("../services/CartService.js");
+const verifyToken = require('../config/verifyToken.js')
 
 router.get('/GetCart', async (req, res) => {
   const loggedIn = req.session.loggedIn
@@ -12,12 +13,11 @@ router.get('/GetCart', async (req, res) => {
   else {
     const cart_id = req.session.user.cart_id
     const session_cart = req.session.cart
-    
-    if (session_cart) {
-      await CartService.addGuestCartToRegisteredCart(session_cart, cart_id)
-    }
-
     const response = await CartService.getCart(false, cart_id)
+    
+    req.session.cart = response
+    req.session.save()
+    
     return res.status(201).json(response)
   }
 })
@@ -41,6 +41,10 @@ router.post("/AddToCart", async (req, res) => {
     else {
       const cart_id = req.session.user.cart_id
       const response = await CartService.addToRegisteredCart(shoe_id, cart_id)
+      
+      req.session.cart = response.data
+      req.session.save()
+      
       return res.status(201).json({message: response})
     }
   } catch (error) {
@@ -65,6 +69,10 @@ router.post("/RemoveFromCart", async (req, res) => {
     } else {
       const cart_id = req.session.user.cart_id
       const response = await CartService.removeFromRegisteredCart(shoe_id, cart_id)  
+      
+      req.session.cart = response.data
+      req.session.save()
+      
       return res.status(200).json({message: response.message, data: response.data})
     }
 
@@ -93,6 +101,10 @@ router.post("/UpdateQuantity", async (req, res) => {
     else {
       const cart_id = req.session.user.cart_id
       const response = await CartService.updateRegisteredCartQuantity(qty, shoe_id, cart_id)
+      
+      req.session.cart = response.data
+      req.session.save()
+      
       return res.status(200).json({message: response.message, data: response.data})
     }
 
@@ -102,7 +114,7 @@ router.post("/UpdateQuantity", async (req, res) => {
 });
 
 // Endpoint called under the "My Cart" page after user clicks the "Checkout" button
-router.post("/Checkout", async (req, res) => {
+router.post("/Checkout", verifyToken, async (req, res) => {
   const loggedIn = req.session.loggedIn
 
   if (!loggedIn) {
@@ -125,6 +137,22 @@ router.post("/Checkout", async (req, res) => {
     res.status(401).json({ message: error.message });
   }
 });
+
+router.get('/VerifyCheckout', async (req, res) => {
+  const cart = req.session.cart || {}
+  const loggedIn = req.session.loggedIn
+  
+  if (!loggedIn) {
+    return res.status(200).json({message: 'Sign-up / Login to checkout your items', data: cart})
+  }
+
+  try {
+    const response = await CartService.verifyCheckout(cart)
+    return res.status(200).json({message: response.message, data: response.data})
+  } catch (err) {
+      return res.status(500).json({message: 'Internal Server Error @ VerifyCheckout', data: cart})
+  }
+})
 
 router.post('/ClearCart', async (req, res) => {
   const loggedIn = req.session.loggedIn
