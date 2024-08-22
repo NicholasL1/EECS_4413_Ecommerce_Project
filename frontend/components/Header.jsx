@@ -47,7 +47,6 @@ export default function Header() {
   return (
     <header className="py-8 bg-primary">
       <div className="w-full flex justify-between px-4 xl:px-8">
-        <Link href="/paymentPage">Go to Payment Page</Link>
         {/** logo */}
         <Link href="/">
           <Image
