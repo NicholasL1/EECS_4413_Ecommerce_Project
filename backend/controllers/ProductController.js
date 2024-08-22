@@ -9,9 +9,6 @@ const verifyToken = require("../config/verifyToken.js");
 
 router.get("/FetchShoe", async (req, res) => {
   const query = req.query; // Get query params from request
-
-  
-
   // Checks if query is empty
   if (
     !query.brand &&
@@ -24,7 +21,8 @@ router.get("/FetchShoe", async (req, res) => {
     !query.rating &&
     !query.category
   ) {
-    res.status(400).json({ message: "No parameters associated with query" });
+    const shoes = await ProductService.fetchAllShoes();
+    res.status(200).json(shoes);
     return;
   }
 
@@ -45,8 +43,22 @@ router.get("/FetchAll", async (req, res) => {
   }
 });
 
-// Will have to update to remove the name, size, and colour and just use product id
-// The identifier for a shoe is the product id, so we need to find the shoe with that and update accordingly
+router.get("/FetchShoeById", async (req, res) => {
+  const { product_id } = req.query;
+
+  if (!product_id) {
+    res.status(400).json({ message: "No product_id associated with query" });
+    return;
+  }
+
+  try {
+    const shoe = await ProductService.fetchShoeById(product_id);
+    res.status(200).json(shoe);
+  } catch (error) {
+    res.status(401).json({ message: error.message });
+  }
+});
+
 router.post("/UpdateStock", verifyToken, async (req, res) => {
   const isAdmin = req.user.userData[7];
 
