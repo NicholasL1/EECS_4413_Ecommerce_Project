@@ -4,11 +4,20 @@ export default class PaymentService {
     static DB = axios.create({ baseURL: 'http://localhost:3001/' });
 
     static getAuthHeaders() {
-        const token = localStorage.getItem("Authorization");
-
+        const tokenJSON = localStorage.getItem("Authorization");
+        let token = '';
+        if (tokenJSON) {
+            try {
+                const tokenObject = JSON.parse(tokenJSON);
+                token = tokenObject.token || tokenObject; 
+            } catch (e) {
+                console.error('Error parsing token:', e);
+            }
+        }
+        console.log("Token being used:", token); 
         return {
             headers: {
-                Authorization: token,
+                Authorization: `Bearer ${token}`,
             },
         };
     }
@@ -45,19 +54,20 @@ export default class PaymentService {
 
     static async AddPayment(payment) {
         try {
-            const response = await this.DB.post('/Payment/AddPaymentMethod', payment, this.getAuthHeaders());
+            const headers = this.getAuthHeaders();
+            console.log('Request headers:', headers);
+            const response = await this.DB.post('/Payment/AddPaymentMethod', payment, headers);
             console.log("AddPayment raw response:", response);
-            if (response.data.message === "Payment method added.") {
-                return { success: true, message: response.data.message };
-            } else {
-                return { success: false, message: response.data.message || "Failed to add payment method" };
-            }
+            return { success: true, message: response.data.message };
         } catch (err) {
-            console.error('Error adding payment method:', err);
-            return { success: false, message: 'Failed to add payment method' };
+            console.error('Error adding payment method:', err.response ? err.response.data : err.message);
+            if (err.response && err.response.status === 403) {
+                console.log('Full error object:', err);
+                return { success: false, message: 'Access forbidden. Please check your login status.' };
+            }
+            return { success: false, message: err.response ? err.response.data.message : 'Failed to add payment method' };
         }
     }
-
     static async DeletePayment(paymentId) {
         try {
             const response = await this.DB.post('/Payment/DeletePaymentMethod', { payment_id: paymentId }, this.getAuthHeaders());
