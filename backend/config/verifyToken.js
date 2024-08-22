@@ -38,10 +38,15 @@ const dotenv = require("dotenv").config(); // Retrieves sensitive values from .e
 const jwt = require("jsonwebtoken"); // Ensure you have jwt imported
 
 const verifyToken = (req, res, next) => {
-  const token = req.headers["authorization"];
+  let token = req.headers["authorization"];
 
   if (!token) {
     return res.status(403).json({ message: "Login Required" });
+  }
+
+  // Check if token starts with "Bearer " and remove it
+  if (token.startsWith("Bearer ")) {
+    token = token.slice(7, token.length); // Extract token part only
   }
 
   try {
@@ -52,5 +57,6 @@ const verifyToken = (req, res, next) => {
   }
   return next();
 };
+
 
 module.exports = verifyToken;

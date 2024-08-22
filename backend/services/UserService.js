@@ -41,7 +41,7 @@ class UserService {
     return await UserDAO.updateUser(userId, updateData);
   }
 
-  static async logout() {}
+  static async logout() { }
 }
 
 module.exports = UserService;
