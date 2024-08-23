@@ -39,7 +39,7 @@ const productSchema = mongoose.Schema(
             required: [false, "Please enter shoe category"]
         },
         image: {
-            type: Buffer,
+            type: String,
             requred: [false, ""]
         }
     },
