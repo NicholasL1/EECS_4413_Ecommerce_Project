@@ -1,4 +1,4 @@
-import { faArrowRight, faShoppingBasket } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faShoppingBasket, faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from '@fortawesome/free-regular-svg-icons';
 import ShoeView from "../ui/ShoeView";
 import Loading from "../ui/Loading";
@@ -7,6 +7,8 @@ import CartService from "@/services/cartServices";
 import OrderSummaryInfo from "../ui/OrderSummaryInfo";
 import { jwtDecode } from "jwt-decode";
 import userServices from "@/services/userServices";
+import ShoePlaceholder from "../../public/4413 Shoe Pics/NIKE+AIR+MAX+270+WHITE+1.png"
+import Image from "next/image";
 
 export default function CartView({mini = false, cart = [], total, gst, estTotal, setCart}) {
     if (cart == null) {
@@ -91,14 +93,81 @@ export default function CartView({mini = false, cart = [], total, gst, estTotal,
       )    
   }
     
-  function CartViewMini() {
+  function CartViewSummary() {
+    return (
+      <div id="CartViewSummary" className="">
 
+        <div id="list-of-items" className="overflow-y-scroll my-8">
+        {
+          cart?.map((shoe, i) => {
+
+            return (
+              <div key={i} className="flex flex-row justify-between border shadow-md rounded-md my-4">
+
+                <div id="Product" className="w-2/3 flex flex-row justify-start items-center align-middle p-4 gap-4">
+                  <Image
+                    src={ShoePlaceholder} // TODO: Replace with shoe.image
+                    alt={shoe.colour}
+                    className="border shadow-sm rounded-md"
+                    width={192}
+                    height={192}
+                  />
+
+                  <div id="Info" className="">
+                    <a className="font-bold text-2xl flex flex-row gap-2 items-center align-middle" href={`/showView?id=${shoe._id}`}>{shoe?.name}
+                      <FontAwesomeIcon icon={faArrowUpRightFromSquare} size="xs" className="text-blue-500"/>
+                    </a>
+                    <h4 className="text-sm font-thin mb-2">{shoe?.brand}</h4>
+                    <h2>
+                      {shoe?.colour} | {shoe?.gender} | {shoe?.size}
+                    </h2>
+                    <h2>Category: <span>{shoe?.category}</span></h2>
+                  </div>
+                </div>
+
+
+                <div id="PriceInfo" className="flex flex-col w-1/4 margin-auto text-left justify-center items-center align-middle">
+                  <div>
+                    <h1 className="font-bold text-2xl">${(shoe?.price * shoe?.qty)?.toFixed(2).toLocaleString()}</h1>
+                    <h2>
+                      <p>Qty: {shoe?.qty}</p>
+                      <p>Shoe Price: ${shoe?.price}</p>
+                    </h2>
+                  </div>
+                </div>
+
+
+              </div>
+            )
+
+          })
+        }
+        </div>
+
+        <div className="flex flex-col shadow-md">
+          <p className="flex flex-row justify-between border text-2xl p-4 rounded-t-md">
+            <span>Subtotal:</span>
+            <span>${total?.toFixed(2).toLocaleString()}</span>
+          </p>
+          <p className="flex flex-row justify-between border-x text-2xl p-4">
+            <span>GST/HST:</span>
+            <span>${gst?.toFixed(2).toLocaleString()}</span>
+          </p>
+          <p className="flex flex-row justify-between border text-2xl p-4 rounded-b-md text-blue-500">
+            <span>Total: </span>
+            <span>${estTotal?.toFixed(2).toLocaleString()}</span>
+          </p>
+        </div>
+
+
+      </div>
+    )
   }
     
   return (
       <>
           {
-              mini && CartViewMini()
+              mini && CartViewSummary()
           }
 
           {

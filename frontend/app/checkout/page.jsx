@@ -5,8 +5,8 @@ import CartService from "@/services/cartServices"
 import OrderSummaryInfo from "@/components/ui/OrderSummaryInfo"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTruck, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
-import {faCcVisa, faCcMastercard, faApplePay, faCcPaypal} from "@fortawesome/free-brands-svg-icons"
 import PaymentServices from "@/services/paymentServices";
+import CreditCart from "@/components/ui/CreditCart";
 
 export default function page() {
 
@@ -193,22 +193,20 @@ export default function page() {
 
         const token = JSON.parse(sessionStorage.getItem('Authorization'))
         const response = await CartService.checkout(token, paymentMethod)
+        
+        // get OrderID --> redirect to orderSummary?=
+        console.log(response)
         alert(response.data.message)
-        // window.location.href = '/'
+        
+        if (response.data.message === 'Order created.') {
+            // sessionStorage.setItem("OrderID", JSON.stringify(response.data.order_info))
+            console.log(response.data)
+            window.location.href = '/orderSummary?orderId=' + response.data.order_id
+        }
+
     }
 
     //#endregion
-
-    const generateCardIcon = () => {
-        const icons = [faCcMastercard, faCcPaypal, faCcVisa, faApplePay]
-        return icons[Math.floor(Math.random() * 4)]
-    }
-
-    const genRandColor = () => {
-        const col = ['#6290C8', '#FF6F59', '#F4B860', '#7AE582']
-        return col[Math.floor(Math.random() * 4)]
-    }
-
 
     return (
 
@@ -394,17 +392,7 @@ export default function page() {
                                     {
                                         user?.payment_info?.map((method, i) => (
                                             <div key={i} className="min-w-48">
-                                                <div id="card" style={{ backgroundColor: genRandColor() }} className="rounded-md shadow-md flex flex-row justify-between p-2 ">
-                                                    <div className="w-1/3 ">
-                                                        <FontAwesomeIcon size="2xl" className="text-left" icon={generateCardIcon()}/>
-                                                        <p className="flex flex-col justify-end">{method.cvc}</p>
-                                                    </div>
-
-                                                    <div className="text-right w-fit flex flex-col justify-between">
-                                                        <p>**** {method.card_number ? method.card_number.slice(-4) : 'N/A'}</p>
-                                                        <p>Exp: {method.expiry_date}</p>
-                                                    </div>
-                                                </div>
+                                                <CreditCart card={method}/>
 
                                                 <div id="action">
                                                 {
