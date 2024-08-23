@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation"; // Correct import
-import { addAdminLink } from "@/lib/utils";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { addAdminLink } from "@/lib/utils";
+import { useEffect } from "react";
 
 const links = [
   {
@@ -18,10 +19,8 @@ const links = [
   {
     name: "cart",
     path: "/cart",
-  },
+  }
 ];
-
-addAdminLink(links);
 
 export default function Nav() {
   const pathname = usePathname(); // Correct function name
@@ -30,6 +29,12 @@ export default function Nav() {
   if (pathname === undefined || pathname === null) {
     return null; // Or some placeholder
   }
+
+  // On mount, add Admin link if token is admin
+  useEffect(() => {
+    addAdminLink(links)
+  }, [])
+
   return (
     <nav className="flex gap-8">
       {links.map((link, index) => {
@@ -44,6 +49,11 @@ export default function Nav() {
             </Link>
           );
         }
+
+        // if (link.name === "admin" && !renderAdminLink) {
+        //   return 
+        // }
+
         return (
           <Link
             href={link.path}
