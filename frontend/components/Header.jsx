@@ -18,7 +18,7 @@ export default function Header() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      if (localStorage.getItem("Authorization")) {
+      if (sessionStorage.getItem("Authorization")) {
         setButtonText("Log Out");
         setButtonLink("");
       } else if (pathname === "/signup") {
@@ -35,9 +35,9 @@ export default function Header() {
   const handleLogout = () => {
     if (
       typeof window !== "undefined" &&
-      localStorage.getItem("Authorization")
+      sessionStorage.getItem("Authorization")
     ) {
-      localStorage.removeItem("Authorization");
+      sessionStorage.removeItem("Authorization");
       setButtonText("Sign Up");
       setButtonLink("/signup");
       window.location.href = "/";

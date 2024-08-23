@@ -46,7 +46,7 @@ export default function EditCustomerModal({
 
   const SubmitChanges = async () => {
     const response = await AdminServices.EditCustomer(
-      JSON.parse(localStorage.getItem("Authorization")),
+      JSON.parse(sessionStorage.getItem("Authorization")),
       newCustomer,
       customer.email
     );

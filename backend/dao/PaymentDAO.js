@@ -9,9 +9,9 @@ class PaymentDAO {
       expiry_date,
     });
     if (payment) {
-      return "Payment method added.";
+      return payment;
     } else {
-      return "Error creating payment method.";
+      return null;
     }
   }
 

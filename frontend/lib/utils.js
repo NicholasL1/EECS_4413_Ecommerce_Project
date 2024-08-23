@@ -8,7 +8,7 @@ function cn(...inputs) {
 
 const isAdmin = () => {
   if (typeof window !== "undefined") {
-    const token = localStorage.getItem("Authorization");
+    const token = JSON.parse(sessionStorage.getItem("Authorization"));
 
     if (token) {
       const decodedToken = jwtDecode(token);

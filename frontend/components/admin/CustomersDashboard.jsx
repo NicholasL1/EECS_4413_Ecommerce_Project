@@ -39,7 +39,7 @@ export default function CustomersDashboard() {
   const GetAllCustomers = async () => {
     try {
       const response = await AdminServices.GetAllCustomers(
-        JSON.parse(localStorage.getItem("Authorization"))
+        JSON.parse(sessionStorage.getItem("Authorization"))
       );
       setSearchResults(response.data);
     } catch (err) {
@@ -78,7 +78,7 @@ export default function CustomersDashboard() {
     const confirmation = confirm("Are you sure you want to remove this User?");
     if (confirmation) {
       await AdminServices.RemoveUser(
-        JSON.parse(localStorage.getItem("Authorization")),
+        JSON.parse(sessionStorage.getItem("Authorization")),
         rowData._id
       );
       window.location.reload();

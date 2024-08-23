@@ -35,7 +35,7 @@ function page() {
         setError("User already exists! Please login instead.");
       } else {
         setError(""); // Clear error message on successful signup
-        localStorage.setItem("Authorization", JSON.stringify(response.token));
+        sessionStorage.setItem("Authorization", JSON.stringify(response.token));
         window.location.href = "/"; // Redirect to home page
       }
     } catch (error) {

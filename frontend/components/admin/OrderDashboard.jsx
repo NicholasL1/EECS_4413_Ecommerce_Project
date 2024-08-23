@@ -28,7 +28,7 @@ export default function OrderDashboard() {
 
   //#region On Mount Functions
   const getAllOrders = async () => {
-    const token = JSON.parse(localStorage.getItem("Authorization"));
+    const token = JSON.parse(sessionStorage.getItem("Authorization"));
     try {
       const results = await AdminServices.GetAllOrders(token);
       if (results.data.length === 0) {
@@ -72,7 +72,7 @@ export default function OrderDashboard() {
             <div className="p-2 pl-0 pt-0" key={i}>
               <div className="flex flex-row align-middle items-center">
                 <a
-                  href={`Product/${shoe.shoe._id}`}
+                  href={`/shoeView?id=${shoe.shoe._id}`}
                   className="block underline text-blue-600"
                 >
                   {shoe.qty} x {shoe.shoe.name} @ ${shoe.shoe.price}
