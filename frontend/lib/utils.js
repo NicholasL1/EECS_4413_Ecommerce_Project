@@ -8,6 +8,12 @@ function cn(...inputs) {
 
 const isAdmin = () => {
   if (typeof window !== "undefined") {
+    if (
+      sessionStorage.getItem("Authorization") == undefined ||
+      sessionStorage.getItem("Authorization") == null
+    ) {
+      return false;
+    }
     const token = JSON.parse(sessionStorage.getItem("Authorization"));
 
     if (token) {
