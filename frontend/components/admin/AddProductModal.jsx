@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import AdminServices from "../../services/adminServices";
 import { handleOnBlur } from "@/lib/utils";
+import { toast } from "react-toastify";
 
 export default function AddProductModal({ showModal, setShowModal }) {
   const [newProduct, setNewProduct] = useState({
@@ -45,7 +46,7 @@ export default function AddProductModal({ showModal, setShowModal }) {
       newProduct
     );
     if (!response) {
-      alert("Please Fill All Fields");
+      return toast.error("Please Fill All Fields");
     } else {
       setShowModal(false);
       window.location.reload();

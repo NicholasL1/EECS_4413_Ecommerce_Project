@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEdit, faShoppingBag } from "@fortawesome/free-solid-svg-icons";
 import Loading from "@/components/ui/Loading"
 import AccessDenied from "@/components/AccessDenied"
+import { isAdmin } from "@/lib/utils"
 
 export default function Page() {
 
@@ -76,7 +77,7 @@ export default function Page() {
 
     //#endregion
 
-    if (!payment || !cart || !delivery) {
+    if ((!payment || !cart || !delivery) && !isLoading) {
         return <AccessDenied />
     }
 
@@ -86,16 +87,18 @@ export default function Page() {
 
     return (
         <div className=" sm:mx-32 md:mx-48 lg:mx-64 p-4 sm:p-6 md:p-8 lg:p-10 mb-10 font-signika-negative shadow-md rounded-md bg-white">
-            <h1 className="block text-3xl mb-4 font-bold">Order Summary</h1>
+            <h1 className="block text-3xl font-bold">Order Summary</h1>
             <span className="font-normal">Order ID: {orderId}</span>
 
-            <div className="flex flex-row">
+            <p className="text-lg my-4">Thank you for ordering from 6ixKicks 🎉</p>
+
+            <div className="flex flex-row my-4">
                 <div id="nav-links" className="flex flex-row w-fit">
-                    <button onClick={handleShowSummary} className={`${showSummary ? 'border-custom-red font-bold text-lg' : 'border-gray-100'} border-b-2 h-full px-4`}>Summary</button>
-                    <button onClick={handleShowPayment} className={`${showPayment ? 'border-custom-red font-bold text-lg' : 'border-gray-100'} border-b-2 h-full px-4`}>Payment</button>
-                    <button onClick={handleShowDelivery} className={`${showDelivery ? 'border-custom-red font-bold text-lg' : 'border-gray-100'} border-b-2 h-full px-4`}>Delivery</button>
+                    <button onClick={handleShowSummary} className={`${showSummary ? 'bg-blue-500 font-bold text-lg text-white rounded-t-md' : 'border-b-2 border-blue-500'}  h-full px-4`}>Summary</button>
+                    <button onClick={handleShowPayment} className={`${showPayment ? 'bg-blue-500 font-bold text-lg  text-white rounded-t-md' : 'border-b-2 border-blue-500'}  h-full px-4`}>Payment</button>
+                    <button onClick={handleShowDelivery} className={`${showDelivery ? 'bg-blue-500 font-bold text-lg text-white  rounded-t-md' : 'border-b-2 border-blue-500'} h-full px-4`}>Delivery</button>
                 </div>
-                <div className="w-full border-b-2 border-gray-100"></div>
+                <div className="w-full border-b-2 border-blue-500"></div>
             </div>
             <div>
                 {showSummary && (

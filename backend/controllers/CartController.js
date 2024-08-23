@@ -188,13 +188,12 @@ router.post('/ClearCart', async (req, res) => {
 })
 
 router.get('/OrderSummary/:id', verifyToken, async (req, res) => {
-  const orderId = req.params.id
-
-  // const cart = req.session.tempCart
+  const order_id = req.params.id
+  const user_id = req.session.user._id
 
   const result = {cart: null, delivery: null, payment: null, order: null}
   try {
-    const response = await CartService.getOrderSummary(orderId)
+    const response = await CartService.getOrderSummary(order_id, user_id)
     result.delivery = response.delivery_info
     result.payment = response.payment_info
     result.order = response.order_info

@@ -280,11 +280,15 @@ class CartDAO {
     return {message: 'Cart cannot be Empty', data: cart}    
   }
 
-  static async getOrderSummary(orderId) {
+  static async getOrderSummary(orderId, user_id) {
     const order = await OrderModel.findById(orderId)
+    
+    if (user_id != order.user_id) {
+      return {order_info: null, payment_info: null, delivery_info: null, cart: null}
+    }
+    
     const payment_info = await PaymentModel.findById(order.payment)
     const address = await UserModel.findById(order.user_id)
-    const shoes = order.shoes
     const cart = await this.getCart(false, order)
     return {order_info: order, payment_info: payment_info, delivery_info: address, cart: cart}
   }

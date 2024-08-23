@@ -1,14 +1,14 @@
-import { faArrowRight, faShoppingBasket, faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
+import { faShoppingBasket, faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from '@fortawesome/free-regular-svg-icons';
 import ShoeView from "../ui/ShoeView";
 import Loading from "../ui/Loading";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CartService from "@/services/cartServices";
 import OrderSummaryInfo from "../ui/OrderSummaryInfo";
-import { jwtDecode } from "jwt-decode";
-import userServices from "@/services/userServices";
 import ShoePlaceholder from "../../public/4413 Shoe Pics/NIKE+AIR+MAX+270+WHITE+1.png"
 import Image from "next/image";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function CartView({mini = false, cart = [], total, gst, estTotal, setCart}) {
     if (cart == null) {
@@ -29,16 +29,16 @@ export default function CartView({mini = false, cart = [], total, gst, estTotal,
       if (response) {
         window.location.href = '/checkout'
       } else {
-        alert('Please Login / Sign-up to continue')
+        toast.error('Please Login / Sign-up to Continue')
       }
     }
 
     const clearCart = async () => {
         const response = await CartService.clearCart()
-        if (response.data.message) 
-            alert(response.data.message)
-        else
-            alert('Cart cleared')
+        if (response.data.message)
+          toast.error(response.data.message)
+        else 
+          toast.success('Cart cleared')
 
         setCart(response.data.data)
         window.location.reload()
@@ -95,9 +95,9 @@ export default function CartView({mini = false, cart = [], total, gst, estTotal,
     
   function CartViewSummary() {
     return (
-      <div id="CartViewSummary" className="">
+      <div id="CartViewSummary" className="h-full">
 
-        <div id="list-of-items" className="overflow-y-scroll my-8">
+        <div id="list-of-items" className={`overflow-y-scroll my-8 ${cart?.length > 1 ? 'h-[500px]' : 'h-fit'}`}>
         {
           cart?.map((shoe, i) => {
 
@@ -130,8 +130,8 @@ export default function CartView({mini = false, cart = [], total, gst, estTotal,
                   <div>
                     <h1 className="font-bold text-2xl">${(shoe?.price * shoe?.qty)?.toFixed(2).toLocaleString()}</h1>
                     <h2>
-                      <p>Qty: {shoe?.qty}</p>
                       <p>Shoe Price: ${shoe?.price}</p>
+                      <p>Qty: {shoe?.qty}</p>
                     </h2>
                   </div>
                 </div>

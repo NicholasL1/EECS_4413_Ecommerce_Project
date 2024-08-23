@@ -83,8 +83,8 @@ class CartService {
     return response
   }
 
-  static async getOrderSummary(orderId) {
-    const response = await CartDAO.getOrderSummary(orderId)
+  static async getOrderSummary(order_id, user_id) {
+    const response = await CartDAO.getOrderSummary(order_id, user_id)
     return response
   }
 }
