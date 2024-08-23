@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation"; // Correct import
 import { addAdminLink } from "@/lib/utils";
+import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const links = [
   {
@@ -31,6 +33,17 @@ export default function Nav() {
   return (
     <nav className="flex gap-8">
       {links.map((link, index) => {
+        if (link.name === "cart") {
+          return (
+            <Link href={link.path} key={index}>
+              <FontAwesomeIcon
+                size="xl"
+                className="text-custom-black"
+                icon={faCartShopping}
+              />
+            </Link>
+          );
+        }
         return (
           <Link
             href={link.path}

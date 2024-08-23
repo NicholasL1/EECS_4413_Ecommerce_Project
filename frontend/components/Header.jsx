@@ -71,7 +71,11 @@ export default function Header() {
         </div>
         {/* mobile nav */}
         <div className="xl:hidden">
-          <MobileNav />
+          <MobileNav
+            buttonText={buttonText}
+            buttonLink={buttonLink}
+            logoutFunction={handleLogout}
+          />
         </div>
       </div>
     </header>
