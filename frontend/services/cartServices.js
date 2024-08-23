@@ -107,7 +107,7 @@ export default class CartService {
                 }
             })
 
-            console.log(response)
+            return response
 
         } catch (err) {
             console.log(err.message)

@@ -193,9 +193,8 @@ export default function page() {
 
         const token = JSON.parse(sessionStorage.getItem('Authorization'))
         const response = await CartService.checkout(token, paymentMethod)
-        console.log(response)
         alert(response.data.message)
-        window.location.href = '/'
+        // window.location.href = '/'
     }
 
     //#endregion
@@ -453,7 +452,7 @@ export default function page() {
                             className={`${canPlaceOrder() ? '' : 'bg-gray-200'} p-2 bg-custom-black font-bold text-white rounded-md shadow-md w-full text-lg hover:bg-gray-600 flex items-center justify-center`}
                             onClick={checkout}
                         >           
-                            <span className="mr-2">Place Order</span>
+                            <span className="mr-2">Confirm Order</span>
                             <FontAwesomeIcon icon={faTruck} />
                         </button>
                     </div>

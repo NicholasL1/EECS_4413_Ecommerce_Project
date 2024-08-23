@@ -58,6 +58,12 @@ class CartService {
   static async checkout(cart_id, user_id, payment_id) {
     // Calls createOrder endpoint to create order in DB
     // Clears the cart
+
+    const transactionError = Math.floor(Math.random() * 3)
+    if (transactionError === 1) {
+      return "error"
+    }
+
     const response = await CartDAO.checkout(cart_id, user_id, payment_id);
     return response;
   }

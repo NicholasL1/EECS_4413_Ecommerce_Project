@@ -131,6 +131,10 @@ router.post("/Checkout", verifyToken, async (req, res) => {
   try {
     const response = await CartService.checkout(cart_id, user_id, payment_id);
     
+    if (response === "error") {
+      return res.status(200).json({message: "Credit Card Authorization Failed"})
+    }
+
     req.session.cart = {}
     
     res.status(201).json({
