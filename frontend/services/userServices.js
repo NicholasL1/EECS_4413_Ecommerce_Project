@@ -1,3 +1,4 @@
+import PaymentServices from "./paymentServices";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 axios.defaults.withCredentials = true
@@ -72,12 +73,9 @@ export default class userServices {
     const decodedToken = jwtDecode(token)
     const user = decodedToken.userData
     
-    const response = await this.DB.get('Payment/GetAllPaymentMethods', {
-      headers: {
-          Authorization: token
-      }
-    })
-    
+    const response = await PaymentServices.getAllPaymentsForUser(token)
+    console.log(response)
+
     return {payment_info: response.data.message, email: user[2], first_name: user[4], last_name: user[5], address: user[6]}
   }
 

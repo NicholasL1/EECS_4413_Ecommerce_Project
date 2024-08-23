@@ -12,7 +12,9 @@ export default function product({ shoeData, alternatives, id }) {
 
   const addToCart = async () => {
     const response = await CartService.addtoCart(id)
-    alert(response.data.message)
+    if (response.data.message.message)
+      return alert(response.data.message.message)
+    return alert(response.data.message)
   }
 
   return (

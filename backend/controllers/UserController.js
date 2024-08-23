@@ -83,6 +83,12 @@ router.post("/Register", async (req, res) => {
     req.session.user = user
     req.session.save()
 
+    const session_cart = req.session.cart
+
+    if (session_cart) {
+      await CartService.addGuestCartToRegisteredCart(session_cart, user.cart_id)
+    }
+
     res.status(201).json({
       token: generateToken(
         user._id,

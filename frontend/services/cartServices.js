@@ -1,5 +1,6 @@
 import axios from "axios";
 axios.defaults.withCredentials = true
+import { jwtDecode } from "jwt-decode";
 export default class CartService {
     static DB = axios.create({baseURL: 'http://localhost:3001/Cart'})
 
@@ -43,7 +44,7 @@ export default class CartService {
      * @param {number} id 
      */
     static async removeFromCart(shoe_id) {
-        debugger
+        // debugger
         
         try {
             const response = await this.DB.post('/RemoveFromCart', {shoe_id})
@@ -78,6 +79,7 @@ export default class CartService {
     }
 
     static async proceedToCheckout() {
+        // debugger
         if (this.isTokenExpired()) 
             return false
         

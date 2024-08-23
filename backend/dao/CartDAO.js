@@ -5,6 +5,12 @@ const PaymentModel = require("../models/PaymentModel");
 
 class CartDAO {
 
+  /**
+   * Adds the shoes from GUEST session cart to newly logged-in user's cart
+   * Invoked on Login and Register
+   * @param {Object} session_cart 
+   * @param {string} cart_id 
+   */
   static async addGuestCartToRegisteredCart(session_cart, cart_id) {
     const cart = await Cart.findById(cart_id);
     
@@ -23,7 +29,7 @@ class CartDAO {
     await cart.save();
   }
   
-
+  
   static async getCart(isGuest, cart) {
     if (isGuest) { // guest cart
       for (const [id, item] of Object.entries(cart)) {
@@ -61,6 +67,10 @@ class CartDAO {
     if (!(shoe_id in cart)) {
       cart[shoe_id] = {qty: 1, price: shoe.price}
     } else {
+      const curr_qty = cart[shoe_id].qty + 1
+      if (curr_qty > shoe.stock)
+        return {message: 'Shoe is out of stock for that quantity', data: cart}
+
       cart[shoe_id] = {qty: cart[shoe_id].qty + 1, price: shoe.price}
     }
 
@@ -87,9 +97,11 @@ class CartDAO {
     if (shoe.stock === 0)
       return {message: 'Shoe is out of stock for that quantity', data: cart}
 
-    const curr_qty = (cart.shoes.get(shoe._id)).qty || 0
+    const curr_qty = ((cart.shoes.get(shoe._id))?.qty || 0) + 1
+    if (curr_qty > shoe.stock)
+      return {message: 'Shoe is out of stock for that quantity', data: cart}
 
-    cart.shoes.set(shoe._id.toString(), { qty: curr_qty + 1, price: shoe.price });
+    cart.shoes.set(shoe._id.toString(), { qty: curr_qty, price: shoe.price });
     await cart.save()
 
     const response = await this.getCart(false, cart)

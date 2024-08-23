@@ -11,7 +11,6 @@ export default function page() {
 
   const getCart = async () => {
       const response = await CartService.getCart()
-      console.log(response)
       setCart(response)
       if (response === null) {
           setLabel('Empty Cart... nothing to see here')
@@ -28,14 +27,14 @@ export default function page() {
         <header className="flex flex-col sm:flex-row justify-between items-center mb-6">
           <h1 className="text-2xl sm:text-3xl font-bold">My Cart</h1>
           <h2 className="text-xl sm:text-2xl font-extralight underline mt-2 sm:mt-0">
-            ${cart?.estTotal?.toLocaleString() || '0.00'}
+            ${cart?.estTotal?.toFixed(2).toLocaleString() || '0.00'}
           </h2>
         </header>
         {label !== null && <p className="text-sm sm:text-base">{label}</p>}
         {label === null && (
           <CartView 
             cart={cart?.items} 
-            total={cart?.total} 
+            total={cart?.total?.toFixed(2).toLocaleString()} 
             gst={cart?.gst} 
             estTotal={cart?.estTotal} 
             setCart={setCart} 

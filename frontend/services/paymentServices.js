@@ -8,12 +8,12 @@ export default class PaymentServices {
     static async getAllPaymentsForUser(token) {
         try {
             // debugger
-            const response = await this.DB.post('/GetAllPaymentMethods', {
+            const response = await this.DB.post('/GetAllPaymentMethods', {}, {
                 headers: {
                     Authorization: token
                 }
             });
-            return response.message
+            return response
         } catch (err) {
             console.log(err)
         }

@@ -130,9 +130,15 @@ router.post("/Checkout", verifyToken, async (req, res) => {
 
   try {
     const response = await CartService.checkout(cart_id, user_id, payment_id);
+    
+    req.session.cart = {}
+    
     res.status(201).json({
       message: response,
     });
+
+
+
   } catch (error) {
     res.status(401).json({ message: error.message });
   }
