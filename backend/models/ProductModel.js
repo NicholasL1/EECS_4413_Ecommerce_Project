@@ -38,6 +38,10 @@ const productSchema = mongoose.Schema(
             type: String,
             required: [false, "Please enter shoe category"]
         },
+        image: {
+            type: Buffer,
+            requred: [false, ""]
+        }
     },
     {collection: "shoes", 
      collation: {locale: 'en', strength: 2}}                // Collation allows for fast, case-insensitive queries
