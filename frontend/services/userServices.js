@@ -85,5 +85,3 @@ export default class userServices {
     return response
   }
 }
-
-// 27 denlow drive, brampton, on, l6y2l3, canada
