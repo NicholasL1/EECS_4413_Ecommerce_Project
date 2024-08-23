@@ -1,10 +1,10 @@
 // Dependencies
 const express = require("express");
 const dotenv = require("dotenv").config(); // Retrieves sensitive values from .env file, I.E.: API Keys, Passwords, etc
-const cors = require('cors');
-const cookieParser = require('cookie-parser')
-const session = require('express-session')
-const memoryStore = new session.MemoryStore()
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
+const memoryStore = new session.MemoryStore();
 
 // Config
 const connectDB = require("./config/db");
@@ -20,6 +20,7 @@ const Order = require("./controllers/OrderController.js");
 const Payment = require("./controllers/PaymentController.js");
 const Product = require("./controllers/ProductController.js");
 const Admin = require("./controllers/AdminController.js");
+const Review = require("./controllers/ReviewController.js");
 
 // Connect to database
 connectDB();
@@ -27,22 +28,26 @@ connectDB();
 const app = express();
 
 app.use(express.json());
-app.use(express.urlencoded({extended: false}));
-app.use(cookieParser())
-app.use(session({
-  secret: '1234',
-  resave: false,
-  saveUninitialized: false,
-  store: memoryStore,
-  cookie: {
-    httpOnly: true,
-    sameSite: 'lax' 
-  }
-}))
-app.use(cors({
-  origin: 'http://localhost:3000',  // Replace with your client URL
-  credentials: true
-}));
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(
+  session({
+    secret: "1234",
+    resave: false,
+    saveUninitialized: false,
+    store: memoryStore,
+    cookie: {
+      httpOnly: true,
+      sameSite: "lax",
+    },
+  })
+);
+app.use(
+  cors({
+    origin: "http://localhost:3000", // Replace with your client URL
+    credentials: true,
+  })
+);
 
 app.use((req, res, next) => {
   // Initialize session variables on the req.session object
@@ -54,7 +59,6 @@ app.use((req, res, next) => {
   }
   next();
 });
-
 
 // app.use((req, res, next) => {
 //   if (!req.sessionStore.cart) {
@@ -74,6 +78,7 @@ app.use("/Order", Order);
 app.use("/Payment", Payment);
 app.use("/Product", Product);
 app.use("/Admin", Admin);
+app.use("/Review", Review);
 
 app.get("/", (req, res) => {
   res.status(200).json({ message: "Welcome to shoe store" });
