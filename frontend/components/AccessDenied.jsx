@@ -9,13 +9,13 @@ export default function AccessDenied() {
           We're sorry, but you do not have the required permissions to access
           this page.
         </p>
-        <p className="text-custom-black">
+        <div className="text-custom-black">
           Click{" "}
           <a className="text-blue-500 underline" href="/">
             here
           </a>{" "}
           to go back
-        </p>
+        </div>
       </div>
     </div>
   );
