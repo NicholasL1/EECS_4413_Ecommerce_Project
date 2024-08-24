@@ -51,7 +51,11 @@ router.post("/Login", async (req, res) => {
   }
 });
 
-router.post("/Logout", async (req, res) => {});
+router.post("/Logout", async (req, res) => {
+  req.session.destroy()
+  req.session = null
+  res.status(200)
+});
 
 router.post("/Register", async (req, res) => {
   const { email, password, first_name, last_name, address } = req.body;

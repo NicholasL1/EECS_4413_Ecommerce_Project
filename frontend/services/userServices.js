@@ -130,4 +130,24 @@ export default class UserService {
       };
     }
   }
+
+  static async Logout() {
+    try {
+      await this.DB.post('/User/Logout')
+      sessionStorage.removeItem('Authorization')
+      console.log('Logged out')
+      window.location.href = '/'
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  static async getUser (token) {
+    const decodedToken = jwtDecode(token)
+    const user = decodedToken.userData
+    const response = await PaymentServices.getAllPaymentsForUser(token)
+    console.log(response)
+    return {payment_info: response.data.message, email: user[2], first_name: user[4], last_name: user[5], address: user[6]}
+  }  
+
 }
