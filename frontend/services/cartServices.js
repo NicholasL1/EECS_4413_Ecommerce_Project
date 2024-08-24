@@ -13,26 +13,53 @@ export default class CartService {
         }
     }
 
+    static async getOrderSummary(id, token) {
+        try {
+
+            const response = await this.DB.get(`/OrderSummary/${id}`, {
+                headers: {
+                    Authorization: token
+                }
+            })
+
+            return response.data.data
+
+        } catch (err) {
+            console.log(err)
+            return {message: 'Internal Server Error'}
+        }
+    }
+
+    /**
+     * 
+     * @param {Object[]} items 
+     * @param {Object} cart 
+     * @returns 
+     */
+    static transformCart(items, cart) {
+        if (Object.keys(cart).length === 0)
+            return items
+
+        let total = 0
+
+        for (const [key, value] of Object.entries(cart)) {
+            
+            total += value.qty * value.price
+            items.push({...value})
+        }
+
+        const gst = total * .13
+        const estTotal = total * 1.13
+        return {total, gst, estTotal, items}
+    }
+
     static async getCart() {
         try {
             const response = await this.DB.get('/GetCart')
             const cart = response.data
             const items = []
-
-            if (Object.keys(cart).length === 0)
-                return items
-
-            let total = 0
-
-            for (const [key, value] of Object.entries(cart)) {
-                
-                total += value.qty * value.price
-                items.push({...value})
-            }
-
-            const gst = total * .13
-            const estTotal = total * 1.13
-            return {total, gst, estTotal, items}
+            return this.transformCart(items, cart)
+            
         } catch (err) {
             console.log(err)
             return []
@@ -107,7 +134,7 @@ export default class CartService {
                 }
             })
 
-            console.log(response)
+            return response
 
         } catch (err) {
             console.log(err.message)

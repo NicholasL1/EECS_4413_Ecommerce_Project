@@ -6,15 +6,20 @@ import AffirmLogo from "@/public/affirm-logo.svg";
 import imageStub from "@/public/nike.png";
 import ReviewStars from "@/components/ui/ReviewStars";
 import CartService from "@/services/cartServices";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function product({ shoeData, alternatives, id }) {
   console.log(alternatives);
 
   const addToCart = async () => {
     const response = await CartService.addtoCart(id)
-    if (response.data.message.message)
-      return alert(response.data.message.message)
-    return alert(response.data.message)
+    if (response.data.message.message) {
+      toast.success(response.data.message.message)
+    } else {
+      toast.success(response.data.message)
+    }
+      
   }
 
   return (

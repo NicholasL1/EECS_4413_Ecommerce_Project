@@ -29,7 +29,6 @@ class PaymentService {
   static async getAllPaymentsForUser(user_id) {
     console.log("User ID:", user_id); // Log the user ID
     const payments = await PaymentDAO.getAllPaymentsForUser(user_id);
-    console.log("Payments Found:", payments); // Log the payments found
     return payments;
   }
   

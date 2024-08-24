@@ -129,15 +129,21 @@ router.post("/Checkout", verifyToken, async (req, res) => {
   const user_id = req.session.user._id
 
   try {
-    const response = await CartService.checkout(cart_id, user_id, payment_id);
+    const response = await CartService.checkout(cart_id, user_id, payment_id, req);
     
+    if (response === "error") {
+      return res.status(200).json({message: "Credit Card Authorization Failed"})
+    }
+
+    // Used for OrderSummary
+    req.session.payment_id = payment_id
+    req.session.tempCart = req.session.cart
+
     req.session.cart = {}
     
     res.status(201).json({
-      message: response,
+      message: response, order_id: req.session.order_id
     });
-
-
 
   } catch (error) {
     res.status(401).json({ message: error.message });
@@ -179,6 +185,28 @@ router.post('/ClearCart', async (req, res) => {
       return res.status(401).json({message: err.message, data: []})
     }
   }
+})
+
+router.get('/OrderSummary/:id', verifyToken, async (req, res) => {
+  const order_id = req.params.id
+  const user_id = req.session.user._id
+
+  const result = {cart: null, delivery: null, payment: null, order: null}
+  try {
+    const response = await CartService.getOrderSummary(order_id, user_id)
+    result.delivery = response.delivery_info
+    result.payment = response.payment_info
+    result.order = response.order_info
+    result.cart = response.cart
+
+    return res.status(200).json({data: result})
+
+  } catch (err) {
+    console.log(err)
+    return {cart: null, delivery: null, payment: null, order: null}
+  }
+
+
 })
 
 module.exports = router;

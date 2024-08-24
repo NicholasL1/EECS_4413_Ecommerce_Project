@@ -5,8 +5,9 @@ import CartService from "@/services/cartServices"
 import OrderSummaryInfo from "@/components/ui/OrderSummaryInfo"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTruck, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
-import {faCcVisa, faCcMastercard, faApplePay, faCcPaypal} from "@fortawesome/free-brands-svg-icons"
 import PaymentServices from "@/services/paymentServices";
+import CreditCart from "@/components/ui/CreditCart";
+import { toast } from "react-toastify";
 
 export default function page() {
 
@@ -20,7 +21,6 @@ export default function page() {
     const [checkoutSave, setCheckoutSave] = useState(false)
     const [shippingSave, setShippingSave] = useState(false)
     const [paymentSave, setPaymentSave] = useState(false)
-
 
     const provinces = [{ name: "Alberta", abrv: "AB" }, { name: "British Columbia", abrv: "BC" }, { name: "Manitoba", abrv: "MB" }, { name: "New Brunswick", abrv: "NB" }, { name: "Newfoundland and Labrador", abrv: "NL" }, { name: "Nova Scotia", abrv: "NS" }, { name: "Ontario", abrv: "ON" }, { name: "Prince Edward Island", abrv: "PE" }, { name: "Quebec", abrv: "QC" }, { name: "Saskatchewan", abrv: "SK" }, { name: "Northwest Territories", abrv: "NT" }, { name: "Nunavut", abrv: "NU" }, { name: "Yukon", abrv: "YT" }];
     const getProvince = (p) => {
@@ -37,9 +37,10 @@ export default function page() {
             street_address: x[0]?.substring(x[0].indexOf(' ') + 1, x[0].length).trim(),
             city: x[1]?.trim(),
             province: x[2]?.split(' ')[0],
-            postal_code: x[2]?.split(' ')[1]
+            postal_code: x[3] || ''
         }
 
+        console.log(newAddress)
         setAddress(newAddress)
     }
 
@@ -67,7 +68,7 @@ export default function page() {
         e.preventDefault()
         const formData = new FormData(e.target)
         const formObj = Object.fromEntries(formData.entries())
-
+        console.log(formObj)
         const token = JSON.parse(sessionStorage.getItem('Authorization'))
         await userServices.updateUser(token, formObj)
         handleCheckoutStatus('contact', true)
@@ -79,9 +80,16 @@ export default function page() {
         const formData = new FormData(e.target)
         const formObj = Object.fromEntries(formData.entries())
 
+        const postal_code_regex = /^[A-Za-z]\d[A-Za-z] \d[A-Za-z]\d$/
+        if (!postal_code_regex.test(formObj.postal_code))
+            return toast.error('Please provide a valid postal code: X1X X1X')
+
         for (const[key, value] of Object.entries(formObj)) {
-            if (key == 'postal_code') continue
-            formObj[key] = value.split(' ').map(w => {return w.charAt(0).toUpperCase() + w.substring(1, w.length)}).join(' ')
+            if (key == 'postal_code') {
+                formObj[key] = value.toUpperCase()
+            } else {
+                formObj[key] = value.split(' ').map(w => {return w.charAt(0).toUpperCase() + w.substring(1, w.length)}).join(' ')
+            }
         }
 
         const full_address = `${formObj['unit']} ${formObj['street_address']}, ${formObj['city']}, ${formObj['province']}, ${formObj['postal_code']}`
@@ -103,13 +111,13 @@ export default function page() {
         const {card_number, cvc, expiry_date} = formObj
 
         if (!expiry_date_regex.test(expiry_date))
-            return alert('Please enter the Date in MM/YY format')
+            return toast.error('Please enter the Date in MM/YY format')
 
         if (!card_number_regex.test(card_number))
-            return alert('Please enter your Card number (16 digits)')
+            return toast.error('Please enter your Card number (16 digits)')
 
         if (!cvc_regex.test(cvc)) 
-            return alert('Please enter your CVC number (3 digits)')
+            return toast.error('Please enter your CVC number (3 digits)')
 
         const token = JSON.parse(sessionStorage.getItem('Authorization'))
         const response = await PaymentServices.addPaymentMethod(token, formObj)
@@ -188,28 +196,27 @@ export default function page() {
 
     const checkout = async () => {
         if (!canPlaceOrder()) {
-            return alert('Cannot place order yet. please fill all feilds')
+            return toast.error('Cannot place order yet. Please fill all feilds')
         }
 
         const token = JSON.parse(sessionStorage.getItem('Authorization'))
         const response = await CartService.checkout(token, paymentMethod)
+        
+        // get OrderID --> redirect to orderSummary?=
         console.log(response)
-        alert(response.data.message)
-        window.location.href = '/'
+        
+        if (response.data.message === 'Order created.') {
+            // sessionStorage.setItem("OrderID", JSON.stringify(response.data.order_info))
+            console.log(response.data)
+            toast.success('Order Placed 😁')
+            window.location.href = '/orderSummary?orderId=' + response.data.order_id
+        } else {
+            return toast.error(response.data.message)
+        }
+
     }
 
     //#endregion
-
-    const generateCardIcon = () => {
-        const icons = [faCcMastercard, faCcPaypal, faCcVisa, faApplePay]
-        return icons[Math.floor(Math.random() * 4)]
-    }
-
-    const genRandColor = () => {
-        const col = ['#6290C8', '#FF6F59', '#F4B860', '#7AE582']
-        return col[Math.floor(Math.random() * 4)]
-    }
-
 
     return (
 
@@ -395,17 +402,7 @@ export default function page() {
                                     {
                                         user?.payment_info?.map((method, i) => (
                                             <div key={i} className="min-w-48">
-                                                <div id="card" style={{ backgroundColor: genRandColor() }} className="rounded-md shadow-md flex flex-row justify-between p-2 ">
-                                                    <div className="w-1/3 ">
-                                                        <FontAwesomeIcon size="2xl" className="text-left" icon={generateCardIcon()}/>
-                                                        <p className="flex flex-col justify-end">{method.cvc}</p>
-                                                    </div>
-
-                                                    <div className="text-right w-fit flex flex-col justify-between">
-                                                        <p>**** {method.card_number ? method.card_number.slice(-4) : 'N/A'}</p>
-                                                        <p>Exp: {method.expiry_date}</p>
-                                                    </div>
-                                                </div>
+                                                <CreditCart card={method}/>
 
                                                 <div id="action">
                                                 {
@@ -453,7 +450,7 @@ export default function page() {
                             className={`${canPlaceOrder() ? '' : 'bg-gray-200'} p-2 bg-custom-black font-bold text-white rounded-md shadow-md w-full text-lg hover:bg-gray-600 flex items-center justify-center`}
                             onClick={checkout}
                         >           
-                            <span className="mr-2">Place Order</span>
+                            <span className="mr-2">Confirm Order</span>
                             <FontAwesomeIcon icon={faTruck} />
                         </button>
                     </div>
