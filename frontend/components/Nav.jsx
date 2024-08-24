@@ -5,9 +5,16 @@ import { usePathname } from "next/navigation"; // Correct import
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { addAdminLink } from "@/lib/utils";
+import { addUserLink } from "@/lib/utils";
+
 import { useEffect } from "react";
 
 const links = [
+  {
+    name: "cart",
+    path: "/cart",
+  },
+
   {
     name: "home",
     path: "/",
@@ -15,14 +22,11 @@ const links = [
   {
     name: "shoes",
     path: "/shoes",
-  },
-  {
-    name: "cart",
-    path: "/cart",
   }
 ];
 
 addAdminLink(links);
+addUserLink(links);
 
 export default function Nav() {
   const pathname = usePathname(); // Correct function name

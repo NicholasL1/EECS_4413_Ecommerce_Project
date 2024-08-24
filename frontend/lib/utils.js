@@ -8,7 +8,7 @@ function cn(...inputs) {
 
 const isUserLoggedIn = () => {
   if (typeof window !== "undefined") {
-    const token = JSON.parse(localStorage.getItem("Authorization"));
+    const token = JSON.parse(sessionStorage.getItem("Authorization"));
     return !!token;
   }
   return false;
@@ -48,7 +48,7 @@ const addUserLink = (links) => {
 const addAdminLink = (links) => {
   const alreadyAdded = links.some(link => link.name === "admin")
   if (!alreadyAdded && isAdmin()) {
-    links.push({name: "admin", path: "/admin"})
+    links.push({ name: "admin", path: "/admin" })
   }
 }
 
@@ -128,5 +128,4 @@ export {
   handleOnBlur,
   constructSearchQuery,
   parseSearchParams,
-  addAdminLink
 };

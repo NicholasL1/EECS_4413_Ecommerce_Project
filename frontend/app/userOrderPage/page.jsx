@@ -14,7 +14,7 @@ const UserOrdersPage = () => {
     useEffect(() => {
         const getUserOrders = async () => {
             try {
-                const token = JSON.parse(localStorage.getItem("Authorization"));
+                const token = JSON.parse(sessionStorage.getItem("Authorization"));
                 if (!token) {
                     setFeedbackMessage('No authentication token found. Please log in.');
                 }
