@@ -6,7 +6,7 @@ export default function AccessDenied() {
           ❌ Access Denied ❌
         </h1>
         <p className="mb-2 text-custom-black">
-          We're sorry, but you do not have the required permissions to access
+          We're sorry, but you do not have the required permissions or login to access
           this page.
         </p>
         <div className="text-custom-black">

@@ -2,8 +2,14 @@
 import React, { useState, useEffect } from 'react';
 import PaymentService from "../../components/paymentsPage/paymentService";
 import { toast } from "react-toastify";
+import {isUserLoggedIn} from '../../lib/utils'
+import AccessDenied from '@/components/AccessDenied';
 
 const PaymentsPage = () => {
+    
+    if (!isUserLoggedIn())
+        return <AccessDenied/>
+
     const [userPayments, setUserPayments] = useState([]);
     const [form, setForm] = useState({ card_number: '', cvc: '', expiry_date: '', payment_id: '' });
 

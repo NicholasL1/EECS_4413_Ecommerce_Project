@@ -8,8 +8,14 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import React, { useState } from "react";
+import {isUserLoggedIn} from '../../lib/utils'
+import AccessDenied from "@/components/AccessDenied";
 
 const AccountPage = () => {
+
+  if (!isUserLoggedIn())
+    return <AccessDenied/>
+
   const [hoverIndex, setHoverIndex] = useState(null);
 
   const handleMouseEnter = (index) => {
