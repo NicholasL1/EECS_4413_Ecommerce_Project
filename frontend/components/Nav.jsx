@@ -5,9 +5,16 @@ import { usePathname } from "next/navigation"; // Correct import
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { addAdminLink } from "@/lib/utils";
+import { addUserLink } from "@/lib/utils";
+
 import { useEffect } from "react";
 
 const links = [
+  {
+    name: "cart",
+    path: "/cart",
+  },
+
   {
     name: "home",
     path: "/",
@@ -15,12 +22,11 @@ const links = [
   {
     name: "shoes",
     path: "/shoes",
-  },
-  {
-    name: "cart",
-    path: "/cart",
   }
 ];
+
+addAdminLink(links);
+addUserLink(links);
 
 export default function Nav() {
   const pathname = usePathname(); // Correct function name
@@ -58,9 +64,8 @@ export default function Nav() {
           <Link
             href={link.path}
             key={index}
-            className={`${
-              link.path === pathname && "text-accent border-b-2 border-accent"
-            } capitalize font-signika-negative font-bold text-xl hover:text-custom-red-hover transition-all`}
+            className={`${link.path === pathname && "text-accent border-b-2 border-accent"
+              } capitalize font-signika-negative font-bold text-xl hover:text-custom-red-hover transition-all`}
           >
             {link.name}
           </Link>
