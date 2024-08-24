@@ -44,7 +44,7 @@ app.use(
 );
 app.use(
   cors({
-    origin: "http://localhost:3000", // Replace with your client URL
+    origin: "https://eecs-4413-ecommerce-project-api.vercel.app/",
     credentials: true,
   })
 );
