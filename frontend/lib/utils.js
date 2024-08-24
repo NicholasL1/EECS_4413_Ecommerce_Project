@@ -34,14 +34,14 @@ const isAdmin = () => {
 };
 
 const addUserLink = (links) => {
-  if (!isAdmin() && isUserLoggedIn() &&
-    links.find((e) => {
-      e.name == "Admin";
-    }) == null) {
-    links.push({
-      name: "My Account",
-      path: "/accountPage",
-    });
+  const alreadyAdded = links.some(link => link.name.toLowerCase() === 'account')
+  if (!isAdmin() && !alreadyAdded) {
+    links.push (
+      {
+        name: 'Account',
+        path: '/accountPage'
+      }
+    )
   }
 }
 

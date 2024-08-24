@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { CiMenuFries } from "react-icons/ci";
 import { Button } from "./ui/button";
-import { addAdminLink } from "@/lib/utils";
+import { addAdminLink, addUserLink } from "@/lib/utils";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect } from "react";
@@ -31,6 +31,7 @@ const MobileNav = ({ buttonText, buttonLink, logoutFunction }) => {
   // On mount, add Admin link if token is admin
   useEffect(() => {
     addAdminLink(links)
+    addUserLink(links);
   }, [])
 
   return (

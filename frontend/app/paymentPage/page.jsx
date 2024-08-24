@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import PaymentService from "../../components/paymentsPage/paymentService";
+import { toast } from "react-toastify";
 
 const PaymentsPage = () => {
     const [userPayments, setUserPayments] = useState([]);
@@ -8,6 +9,22 @@ const PaymentsPage = () => {
 
     const handleSubmitForm = (e) => {
         e.preventDefault();
+
+        const expiry_date_regex = /^\d{2}\/\d{2}$/
+        const card_number_regex = /^\d{16}$/
+        const cvc_regex = /^\d{3}$/
+
+        const {card_number, cvc, expiry_date} = form
+
+        if (!expiry_date_regex.test(expiry_date))
+            return toast.error('Please enter the Date in MM/YY format')
+
+        if (!card_number_regex.test(card_number))
+            return toast.error('Please enter your Card Number (16 digits)')
+
+        if (!cvc_regex.test(cvc)) 
+            return toast.error('Please enter your CVC Number (3 digits)')
+
         if (form.payment_id) {
             updatePayment()
         } else {

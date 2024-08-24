@@ -124,18 +124,6 @@ export default function CustomersDashboard() {
               <Column
                 field="_id"
                 header="User ID"
-                body={(data) => {
-                  return (
-                    <div className="flex flex-row align-middle items-center">
-                      <a href={`/user/${data._id}`}>{data._id}</a>
-                      <FontAwesomeIcon
-                        icon={faArrowUpRightFromSquare}
-                        className="ml-1 mt-1 text-blue-500"
-                        size="sm"
-                      />
-                    </div>
-                  );
-                }}
                 sortable
               />
               <Column field="email" header="Email" sortable />

@@ -1,10 +1,10 @@
 "use client";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  MdOutlineSupervisorAccount,
-  MdPayment,
-  MdChatBubbleOutline,
-} from "react-icons/md";
-import { FaSitemap } from "react-icons/fa";
+  faSitemap,
+  faUser,
+  faCreditCard,
+} from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import React, { useState } from "react";
 
@@ -23,26 +23,20 @@ const AccountPage = () => {
     {
       title: "Your Orders",
       description: "See all of your order history",
-      icon: <FaSitemap />,
+      icon: faSitemap,
       link: "/userOrderPage",
     },
     {
       title: "Profile Information",
       description: "View your account details",
-      icon: <MdOutlineSupervisorAccount />,
+      icon: faUser,
       link: "/profilePage",
     },
     {
       title: "Your Payments",
       description: "View all payments for your account",
-      icon: <MdPayment />,
+      icon: faCreditCard,
       link: "/paymentPage",
-    },
-    {
-      title: "Your Reviews",
-      description: "View all product reviews you've made",
-      icon: <MdChatBubbleOutline />,
-      link: "/userReviews",
     },
   ];
 
@@ -122,7 +116,7 @@ const AccountPage = () => {
               }}
             >
               <div style={accountStyles.cardHeader}>
-                <div style={accountStyles.icon}>{item.icon}</div>
+                <FontAwesomeIcon icon={item?.icon} style={accountStyles.icon} />
                 <h2 style={accountStyles.cardTitle}>{item.title}</h2>
               </div>
               <p style={accountStyles.cardDescription}>{item.description}</p>

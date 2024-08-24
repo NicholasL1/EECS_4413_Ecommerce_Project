@@ -84,8 +84,7 @@ export default function OrderDashboard() {
                 />
               </div>
               <span className="text-sm">
-                Size {shoe.shoe.size} | Colour: {shoe.shoe.colour} | Gender:{" "}
-                {shoe.shoe.gender}
+                Size: {shoe.shoe.size} | Colour: {shoe.shoe.colour} | Gender: {shoe.shoe.gender}
               </span>
             </div>
           );
