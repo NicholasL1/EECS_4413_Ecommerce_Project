@@ -1,48 +1,50 @@
 const express = require("express");
 const router = express.Router();
-
 const CartService = require("../services/CartService.js");
-const verifyToken = require("../config/verifyToken.js");
+const verifyToken = require('../config/verifyToken.js')
 
 router.get('/GetCart', async (req, res) => {
-  const loggedIn = req.sessionStore.loggedIn
-  
+  const loggedIn = req.session.loggedIn
+
   if (!loggedIn) {
-    return res.status(201).send(req.sessionStore.cart)
+    return res.status(201).send(req.session.cart)
   } 
   
   else {
-    const cart_id = req.sessionStore.user.cart_id
-    const session_cart = req.sessionStore.cart
-    
-    if (session_cart) {
-      //const cart_id = req.user.userData[1]
-      await CartService.addGuestCartToRegisteredCart(session_cart, cart_id)
-    }
-
+    const cart_id = req.session.user.cart_id
+    const session_cart = req.session.cart
     const response = await CartService.getCart(false, cart_id)
+    
+    req.session.cart = response
+    req.session.save()
+    
     return res.status(201).json(response)
   }
 })
 
 router.post("/AddToCart", async (req, res) => {
-  const { shoe_id } = req.body;
-  const loggedIn = req.sessionStore.loggedIn
-  const cart = req.sessionStore.cart || {}
-
+  const loggedIn = req.session.loggedIn
+  const cart = req.session.cart || {}
+  const {shoe_id} = req.body 
   try {
 
     if (!loggedIn) {
       const response = await CartService.addToGuestCart(shoe_id, cart)
       
       // store updated cart into session
-      req.sessionStore.cart = response.data
-      return res.status(201).json({message: response.message, data: req.sessionStore.cart})
+      req.session.cart = response.data
+      req.session.save()
+
+      return res.status(201).json({message: response.message, data: req.session.cart})
     } 
     
     else {
-      const cart_id = req.user.userData[1]
+      const cart_id = req.session.user.cart_id
       const response = await CartService.addToRegisteredCart(shoe_id, cart_id)
+      
+      req.session.cart = response.data
+      req.session.save()
+      
       return res.status(201).json({message: response})
     }
   } catch (error) {
@@ -52,19 +54,25 @@ router.post("/AddToCart", async (req, res) => {
 
 router.post("/RemoveFromCart", async (req, res) => {
   const { shoe_id } = req.body;
-  const loggedIn = req.sessionStore.loggedIn
-  const cart = req.sessionStore.cart || {}
+  const loggedIn = req.session.loggedIn
+  const cart = req.session.cart || {}
 
   try {
 
     if (!loggedIn) {
       const response = await CartService.removeFromGuestCart(shoe_id, cart)
-      req.sessionStore.cart = response.data
-      return res.status(200).json({message: response.message, data: req.sessionStore.cart})
+      req.session.cart = response.data
+      req.session.save()
+
+      return res.status(200).json({message: response.message, data: req.session.cart})
 
     } else {
-      const cart_id = req.user.userData[1]
+      const cart_id = req.session.user.cart_id
       const response = await CartService.removeFromRegisteredCart(shoe_id, cart_id)  
+      
+      req.session.cart = response.data
+      req.session.save()
+      
       return res.status(200).json({message: response.message, data: response.data})
     }
 
@@ -77,49 +85,128 @@ router.post("/RemoveFromCart", async (req, res) => {
 
 router.post("/UpdateQuantity", async (req, res) => {
   const { qty, shoe_id } = req.body;
-  const loggedIn = req.sessionStore.loggedIn
-  const cart = req.sessionStore.cart || {}
+  const loggedIn = req.session.loggedIn
+  const cart = req.session.cart || {}
   
   try {
 
     if (!loggedIn) {
       const response = await CartService.updateGuestCartQuantity(qty, shoe_id, cart)
-      req.sessionStore.cart = response.data
-      return res.status(200).json({message: response.message, data: req.sessionStore.cart})
+      req.session.cart = response.data
+      req.session.save()
+
+      return res.status(200).json({message: response.message, data: req.session.cart})
     } 
     
     else {
-      const cart_id = req.user.userData[1]
+      const cart_id = req.session.user.cart_id
       const response = await CartService.updateRegisteredCartQuantity(qty, shoe_id, cart_id)
+      
+      req.session.cart = response.data
+      req.session.save()
+      
       return res.status(200).json({message: response.message, data: response.data})
     }
 
-  } catch (error) {
+  } catch (err) {
     return res.status(401).json({message: err.message, data: null})
   }
 });
 
 // Endpoint called under the "My Cart" page after user clicks the "Checkout" button
-router.post("/Checkout", async (req, res) => {
-  const loggedIn = req.sessionStore.loggedIn
+router.post("/Checkout", verifyToken, async (req, res) => {
+  const loggedIn = req.session.loggedIn
 
   if (!loggedIn) {
-    req.sessionStore.redirectToCheckout = true
+    req.session.redirectToCheckout = true
+    req.session.save()
+
     return res.status(200).json({message: 'Sign-up or Login to checkout your items', redirectToCheckout: true})
   }
 
   const { payment_id } = req.body;
-  const cart_id = req.user.userData[1];
-  const user_id = req.user.userData[0];
+  const cart_id = req.session.user.cart_id
+  const user_id = req.session.user._id
 
   try {
-    const response = await CartService.checkout(cart_id, user_id, payment_id);
+    const response = await CartService.checkout(cart_id, user_id, payment_id, req);
+    
+    if (response === "error") {
+      return res.status(200).json({message: "Credit Card Authorization Failed"})
+    }
+
+    // Used for OrderSummary
+    req.session.payment_id = payment_id
+    req.session.tempCart = req.session.cart
+
+    req.session.cart = {}
+    
     res.status(201).json({
-      message: response,
+      message: response, order_id: req.session.order_id
     });
+
   } catch (error) {
     res.status(401).json({ message: error.message });
   }
 });
+
+router.get('/VerifyCheckout', async (req, res) => {
+  const cart = req.session.cart || {}
+  const loggedIn = req.session.loggedIn
+  
+  if (!loggedIn) {
+    return res.status(200).json({message: 'Sign-up / Login to checkout your items', data: cart})
+  }
+
+  try {
+    const response = await CartService.verifyCheckout(cart)
+    return res.status(200).json({message: response.message, data: response.data})
+  } catch (err) {
+      return res.status(500).json({message: 'Internal Server Error @ VerifyCheckout', data: cart})
+  }
+})
+
+router.post('/ClearCart', async (req, res) => {
+  const loggedIn = req.session.loggedIn
+
+  if (!loggedIn) {
+    req.session.cart = {}
+    req.session.save()
+    return res.status(201).json({message: '', data: req.session.cart})
+  } else {
+    const cart_id = req.session.user.cart_id
+    try {
+      const response = await CartService.clearCart(cart_id)
+      req.session.cart = {}
+      req.session.save()
+      return res.status(200).json({message: response.message, data: response.data})
+    } catch (err) {
+      console.log(err)
+      return res.status(401).json({message: err.message, data: []})
+    }
+  }
+})
+
+router.get('/OrderSummary/:id', verifyToken, async (req, res) => {
+  const order_id = req.params.id
+  const user_id = req.session.user._id
+
+  const result = {cart: null, delivery: null, payment: null, order: null}
+  try {
+    const response = await CartService.getOrderSummary(order_id, user_id)
+    result.delivery = response.delivery_info
+    result.payment = response.payment_info
+    result.order = response.order_info
+    result.cart = response.cart
+
+    return res.status(200).json({data: result})
+
+  } catch (err) {
+    console.log(err)
+    return {cart: null, delivery: null, payment: null, order: null}
+  }
+
+
+})
 
 module.exports = router;

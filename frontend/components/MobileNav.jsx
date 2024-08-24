@@ -6,6 +6,9 @@ import Link from "next/link";
 import { CiMenuFries } from "react-icons/ci";
 import { Button } from "./ui/button";
 import { addAdminLink } from "@/lib/utils";
+import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect } from "react";
 
 const links = [
   {
@@ -17,15 +20,19 @@ const links = [
     path: "/shoes",
   },
   {
-    name: "contact",
-    path: "/contact",
-  },
+    name: "cart",
+    path: "/cart",
+  }
 ];
 
-addAdminLink(links);
-
-const MobileNav = () => {
+const MobileNav = ({ buttonText, buttonLink, logoutFunction }) => {
   const pathname = usePathname();
+
+  // On mount, add Admin link if token is admin
+  useEffect(() => {
+    addAdminLink(links)
+  }, [])
+
   return (
     <Sheet className="sheet bg-custom-white">
       <SheetTrigger className="flex justify-center items-center">
@@ -43,6 +50,23 @@ const MobileNav = () => {
         {/* nav */}
         <nav className="flex flex-col justify-center items-center gap-8">
           {links.map((link, index) => {
+            if (link.name === "cart") {
+              return (
+                <Link href={link.path} key={index}>
+                  <FontAwesomeIcon
+                    size="xl"
+                    className="text-custom-black"
+                    icon={faCartShopping}
+                  />
+                </Link>
+              );
+            }
+
+            
+            // if (link.name === "admin" && !renderAdminLink) {
+            //   return 
+            // }
+
             return (
               <Link
                 href={link.path}
@@ -56,9 +80,12 @@ const MobileNav = () => {
               </Link>
             );
           })}
-          <Link href="/signup">
-            <Button className="bg-custom-red font-signika-negative text-lg text-custom-white hover:text-gray-700">
-              Sign Up
+          <Link href={buttonLink}>
+            <Button
+              className="bg-custom-red font-signika-negative text-lg text-custom-white hover:text-gray-700"
+              onClick={logoutFunction}
+            >
+              {buttonText}
             </Button>
           </Link>
         </nav>

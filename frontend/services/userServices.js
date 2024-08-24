@@ -1,5 +1,7 @@
+import PaymentServices from "./paymentServices";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+axios.defaults.withCredentials = true
 
 export default class UserService {
   static DB = axios.create({ baseURL: "http://localhost:3001/" });
@@ -99,32 +101,6 @@ export default class UserService {
       console.log(err);
       return {
         message: err.response.data.message,
-      };
-    }
-  }
-
-  static async UpdateUser(updateData) {
-    const userId = this.getUserId();
-    if (!userId) {
-      return { success: false, message: 'No user ID' };
-    }
-    try {
-      const response = await this.DB.patch('/User/update',
-        { userId, update: updateData }
-      );
-      // debugging 
-      console.log('Update response:', response.data);
-      return {
-        success: true,
-        message: response.data.message,
-        updatedFields: response.data.updatedFields,
-        user: response.data.user
-      };
-    } catch (error) {
-      console.error('Error updating user:', error.response?.data || error.message);
-      return {
-        success: false,
-        message: error.response?.data?.message || 'Error updating user'
       };
     }
   }

@@ -5,7 +5,7 @@ import BannerText from "./BannerText";
 const BannerInfo = {
   header: "Sales",
   subHeader: "Browse our most exclusive offers.",
-  buttonLink: "/shoes",
+  buttonLink: "/shoes?price=Deals",
   colour: "text-green-700",
 };
 

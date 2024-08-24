@@ -20,7 +20,7 @@ export default function EditProductModalV2({
 
   const SubmitChanges = async () => {
     const response = await AdminServices.EditProduct(
-      JSON.parse(localStorage.getItem("Authorization")),
+      JSON.parse(sessionStorage.getItem("Authorization")),
       newProduct
     );
     if (response) {

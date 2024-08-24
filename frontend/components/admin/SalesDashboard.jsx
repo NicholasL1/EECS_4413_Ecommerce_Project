@@ -78,7 +78,7 @@ export default function SalesDashboard() {
 
   const fetchData = async () => {
     try {
-      const token = JSON.parse(localStorage.getItem("Authorization"));
+      const token = JSON.parse(sessionStorage.getItem("Authorization"));
       const response = await AdminServices.GetTotals(token);
       setTotalsData(response.data.totals);
       setProductSpecificInfo(response.data.shoes);

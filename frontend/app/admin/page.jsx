@@ -21,7 +21,7 @@ function page() {
     Sales: <SalesDashboard />,
   };
 
-  const [selected_item, setSelectedItem] = useState(menu_items[3]);
+  const [selected_item, setSelectedItem] = useState(menu_items[0]);
 
   const DashboardMenu = (menu_items) => {
     return (

@@ -2,6 +2,8 @@ import { Signika_Negative } from "next/font/google";
 import "./globals.css";
 import Header from "../components/Header";
 import Footer from "@/components/Footer";
+import { ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const signikaNegative = Signika_Negative({
   subsets: ["latin"],
@@ -20,6 +22,7 @@ export default function RootLayout({ children }) {
       <body className={signikaNegative.variable}>
         <Header />
         {children}
+        <ToastContainer position="top-center" hideProgressBar={true} closeOnClick pauseOnHover={false} newestOnTop={true} style={{ width: 'fit-content' }}/>
         <Footer />
       </body>
     </html>

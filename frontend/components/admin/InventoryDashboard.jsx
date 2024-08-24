@@ -84,7 +84,7 @@ export default function InventoryDashboard() {
   const ProductIDcomponent = (rowData) => {
     return (
       <div className="">
-        <a href={`/products/${rowData._id}`} className=" text-xs">
+        <a href={`/shoeView?id=${rowData._id}`} className=" text-xs">
           {rowData._id}
           <FontAwesomeIcon
             icon={faArrowUpRightFromSquare}
@@ -102,7 +102,7 @@ export default function InventoryDashboard() {
     );
     if (confirmation) {
       await AdminServices.RemoveProduct(
-        JSON.parse(localStorage.getItem("Authorization")),
+        JSON.parse(sessionStorage.getItem("Authorization")),
         rowData._id
       );
       window.location.reload();

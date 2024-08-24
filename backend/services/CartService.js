@@ -55,11 +55,37 @@ class CartService {
     return response
   }
 
-  static async checkout(cart_id, user_id, payment_id) {
+  static async checkout(cart_id, user_id, payment_id, req) {
     // Calls createOrder endpoint to create order in DB
     // Clears the cart
-    const response = await CartDAO.checkout(cart_id, user_id, payment_id);
+
+    const transactionError = Math.floor(Math.random() * 3)
+    if (transactionError === 1) {
+      return "error"
+    }
+
+    const response = await CartDAO.checkout(cart_id, user_id, payment_id, req);
     return response;
+  }
+
+  static async clearCart(cart_id) {
+    const response = await CartDAO.clearCart(cart_id)
+    return response
+  }
+
+  /**
+   * 
+   * @param {Object} cart 
+   * @returns true if user can proceed to checkout, otherwise false
+   */
+  static async verifyCheckout(cart) {
+    const response = await CartDAO.verifyCheckout(cart)
+    return response
+  }
+
+  static async getOrderSummary(order_id, user_id) {
+    const response = await CartDAO.getOrderSummary(order_id, user_id)
+    return response
   }
 }
 

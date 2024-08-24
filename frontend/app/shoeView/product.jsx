@@ -5,9 +5,23 @@ import Image from "next/image";
 import AffirmLogo from "@/public/affirm-logo.svg";
 import imageStub from "@/public/nike.png";
 import ReviewStars from "@/components/ui/ReviewStars";
+import CartService from "@/services/cartServices";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function product({ shoeData, alternatives, id }) {
   console.log(alternatives);
+
+  const addToCart = async () => {
+    const response = await CartService.addtoCart(id)
+    if (response.data.message.message) {
+      toast.success(response.data.message.message)
+    } else {
+      toast.success(response.data.message)
+    }
+      
+  }
+
   return (
     <div className="w-10/12 flex flex-col md:flex-row p-16 bg-gray-300 mx-auto rounded-3xl">
       {/* Shoe display picture */}
@@ -127,8 +141,12 @@ export default function product({ shoeData, alternatives, id }) {
               </Link>
             ))}
           </div>
-          <button className="mt-8 w-full bg-custom-red text-white font-bold py-2 px-4 rounded">
-            Add to Cart
+          <button 
+            onClick={addToCart}
+            className={`mt-8 w-full text-white font-bold py-2 px-4 rounded ${shoeData?.stock <= 0 ? ' bg-gray-200' : 'bg-custom-red'}`}
+            disabled={shoeData.stock <= 0}
+          >
+            {shoeData.stock <= 0 ? 'Out of Stock' : 'Add to Cart'}
           </button>
         </div>
       </div>

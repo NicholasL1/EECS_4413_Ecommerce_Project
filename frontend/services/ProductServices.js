@@ -1,5 +1,5 @@
 import axios from "axios";
-
+axios.defaults.withCredentials = true
 class ProductServices {
   static DB = axios.create({ baseURL: "http://localhost:3001/Product/" });
 
