@@ -14,7 +14,10 @@ export default function AddProductModal({ showModal, setShowModal }) {
     price: null,
     rating: 0,
     category: null,
+    image: "",
   });
+
+  const [imageUpload, setImageUpload] = useState(null);
 
   const handleNewProduct = (field, e) => {
     let value = e.target.value;
@@ -41,16 +44,34 @@ export default function AddProductModal({ showModal, setShowModal }) {
   };
 
   const SubmitChanges = async () => {
-    const response = await AdminServices.AddProduct(
-      JSON.parse(sessionStorage.getItem("Authorization")),
-      newProduct
-    );
-    if (!response) {
-      return toast.error("Please Fill All Fields");
-    } else {
-      setShowModal(false);
-      window.location.reload();
+    if (!imageUpload) {
+      alert("No image selected");
+      return;
     }
+
+    const reader = new FileReader(); // gets file upload from user to be used for product image
+    reader.onloadend = async () => {
+      const image64 = reader.result.split(",")[1]; // gets base64 data from image URL in FileReader
+
+      const updatedProduct = {
+        // adds image to product
+        ...newProduct,
+        image: image64,
+      };
+
+      const response = await AdminServices.AddProduct(
+        JSON.parse(sessionStorage.getItem("Authorization")),
+        newProduct
+      );
+      if (!response) {
+        return toast.error("Please Fill All Fields");
+      } else {
+        setShowModal(false);
+        window.location.reload();
+      }
+    };
+
+    reader.readAsDataURL(imageUpload);
   };
 
   const FormInputComponent = ({ label, placeholder, type = "text" }) => {
@@ -99,6 +120,11 @@ export default function AddProductModal({ showModal, setShowModal }) {
         )}
       </div>
     );
+  };
+
+  const handleImageUpload = (event) => {
+    // sets the image to the file uploaded by the user
+    setImageUpload(event.target.files[0]);
   };
 
   return (
@@ -167,6 +193,16 @@ export default function AddProductModal({ showModal, setShowModal }) {
                           label={"Price"}
                           placeholder={""}
                           type="number"
+                        />
+                      </div>
+
+                      <div className="flex">
+                        <FormInputComponent
+                          label={"Image"}
+                          placeholder={""}
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageUpload}
                         />
                       </div>
                     </fieldset>

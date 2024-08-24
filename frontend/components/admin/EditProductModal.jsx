@@ -12,6 +12,8 @@ export default function EditProductModalV2({
 }) {
   const [newProduct, setNewProduct] = useState({ ...product });
 
+  const [imageUpload, setImageUpload] = useState(null);
+
   useEffect(() => {
     if (showModal) {
       setNewProduct({ ...product });
@@ -19,14 +21,39 @@ export default function EditProductModalV2({
   }, [product, showModal]);
 
   const SubmitChanges = async () => {
-    const response = await AdminServices.EditProduct(
-      JSON.parse(sessionStorage.getItem("Authorization")),
-      newProduct
-    );
-    if (response) {
-      window.location.reload();
+    if (imageUpload) {
+      // if image is uploaded, need to use FileReader to get base64 data
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        const image64 = reader.result.split(",")[1];
+
+        const updatedProduct = {
+          // add image to product update
+          ...newProduct,
+          image: image64,
+        };
+
+        const response = await AdminServices.EditProduct(
+          JSON.parse(localStorage.getItem("Authorization")),
+          newProduct
+        );
+        if (response) {
+          window.location.reload();
+        }
+        setShowModal(false);
+      };
+    } else {
+      const response = await AdminServices.EditProduct(
+        JSON.parse(sessionStorage.getItem("Authorization")),
+        newProduct
+      );
+      if (response) {
+        window.location.reload();
+      }
+      setShowModal(false);
     }
-    setShowModal(false);
+
+    reader.readAsDataURL(imageUpload);
   };
 
   const handleNewProduct = (label, e) => {
@@ -98,6 +125,11 @@ export default function EditProductModalV2({
     );
   };
 
+  const handleImageUpload = (event) => {
+    // set image to file uploaded by user
+    setImageUpload(event.target.files[0]);
+  };
+
   return (
     <>
       {showModal ? (
@@ -166,6 +198,15 @@ export default function EditProductModalV2({
                           label={"Price"}
                           placeholder={""}
                           type="number"
+                        />
+                      </div>
+                      <div className="flex">
+                        <FormInputComponent
+                          label={"Image"}
+                          placeholder={""}
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageUpload}
                         />
                       </div>
                     </fieldset>

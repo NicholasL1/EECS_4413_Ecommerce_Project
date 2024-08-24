@@ -29,6 +29,7 @@ router.post("/AddProduct", verifyToken, verifyAdmin, async (req, res) => {
         price,
         rating,
         category,
+        image
       })
     ) {
       res.status(201).json({ messsage: "Shoe successfully added" });
