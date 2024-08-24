@@ -11,6 +11,7 @@ export default function page() {
 
   const getCart = async () => {
       const response = await CartService.getCart()
+      console.log(response)
       setCart(response)
       if (response === null) {
           setLabel('Empty Cart... nothing to see here')

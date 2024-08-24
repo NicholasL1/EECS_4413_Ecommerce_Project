@@ -33,8 +33,7 @@ export default function page() {
         if (!x) return
 
         const newAddress = {
-            unit: x[0]?.substring(0, x[0].indexOf(' ')).trim(),
-            street_address: x[0]?.substring(x[0].indexOf(' ') + 1, x[0].length).trim(),
+            street_address: x[0]?.trim(),
             city: x[1]?.trim(),
             province: x[2]?.split(' ')[0],
             postal_code: x[3] || ''
@@ -49,6 +48,8 @@ export default function page() {
         const response = await userServices.getUser(token)
         setUser(response)
         parsingAddress(response.address)
+        setAddNewPayment(user?.payment_info?.length === 0)
+        console.log(response)
     }
 
     const getCart = async () => {
@@ -70,7 +71,8 @@ export default function page() {
         const formObj = Object.fromEntries(formData.entries())
         console.log(formObj)
         const token = JSON.parse(sessionStorage.getItem('Authorization'))
-        await userServices.updateUser(token, formObj)
+        const response = await userServices.UpdateUser(formObj)
+        console.log(response)
         handleCheckoutStatus('contact', true)
         setCheckoutSave(true)
     }
@@ -94,7 +96,7 @@ export default function page() {
 
         const full_address = `${formObj['unit']} ${formObj['street_address']}, ${formObj['city']}, ${formObj['province']}, ${formObj['postal_code']}`
         const token = JSON.parse(sessionStorage.getItem('Authorization'))
-        await userServices.updateUser(token, {address: full_address})
+        await userServices.UpdateUser({address: full_address})
         handleCheckoutStatus('shipping', true)
         setShippingSave(true)
     }
@@ -112,6 +114,9 @@ export default function page() {
 
         if (!expiry_date_regex.test(expiry_date))
             return toast.error('Please enter the Date in MM/YY format')
+
+        if (isExpired(expiry_date))
+            return toast.error('Card is Expired')
 
         if (!card_number_regex.test(card_number))
             return toast.error('Please enter your Card Number (16 digits)')
@@ -283,8 +288,8 @@ export default function page() {
                                         <input name="street_address" type="text" defaultValue={address?.street_address} className="border rounded-sm p-2 bg-gray-200" required/>
                                     </div>
                                     <div className="  flex flex-col w-1/2 my-2">
-                                        <label htmlFor="unit" className="text-xl">Apt/Unit No.*</label>
-                                        <input name="unit" type="text" defaultValue={address?.unit} className="border rounded-sm p-2 bg-gray-200" required/>
+                                        <label htmlFor="unit" className="text-xl">Apt/Unit No.</label>
+                                        <input name="unit" type="text" defaultValue={address?.unit} className="border rounded-sm p-2 bg-gray-200"/>
                                     </div>
                                 </div>
 
