@@ -55,13 +55,19 @@ export default class ReviewServices {
   }
 
   static async getUserReviews(token, id) {
+    console.log("kajwbdbka");
     try {
       const response = await this.DB.get(`GetUserReviews/${id}`, {
         headers: {
           Authorization: token,
         },
       });
-      return response;
+      console.log(response);
+      if (response.data.data) {
+        return response.data.data;
+      } else {
+        return [];
+      }
     } catch (error) {
       console.log(error);
     }
