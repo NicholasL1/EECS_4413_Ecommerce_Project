@@ -14,7 +14,7 @@ router.post("/AddProduct", verifyToken, verifyAdmin, async (req, res) => {
       message:
         "Please enter at least the brand, size, name, colour, stock, gender, and price of the product you want to add",
     });
-    return
+    return;
   }
 
   try {
@@ -29,6 +29,7 @@ router.post("/AddProduct", verifyToken, verifyAdmin, async (req, res) => {
         price,
         rating,
         category,
+        image
       })
     ) {
       res.status(201).json({ messsage: "Shoe successfully added" });
@@ -36,7 +37,7 @@ router.post("/AddProduct", verifyToken, verifyAdmin, async (req, res) => {
       res.status(408).json({ messsage: "Shoe not successfully added" });
     }
   } catch (error) {
-    res.send({message: error.message})
+    res.send({ message: error.message });
   }
 });
 
@@ -49,7 +50,7 @@ router.post("/RemoveProduct", verifyToken, verifyAdmin, async (req, res) => {
       .json(
         "Please enter at least the name, size, colour, and gender of the product you want to delete"
       );
-      return
+    return;
   }
 
   try {
@@ -125,18 +126,21 @@ router.post("/UpdateCustInfo", verifyToken, verifyAdmin, async (req, res) => {
   }
 });
 
-router.get('/GetAllCustomers', verifyToken, verifyAdmin, async (req, res) => {
+router.get("/GetAllCustomers", verifyToken, verifyAdmin, async (req, res) => {
   try {
-    const response = await AdminService.getAllUsers()
-    res.json({data: response})
+    const response = await AdminService.getAllUsers();
+    res.json({ data: response });
   } catch (err) {
-    console.log(err.message)
-    res.json({data: []})
+    console.log(err.message);
+    res.json({ data: [] });
   }
-})
+});
 
-router.post('/RemoveCustomer', verifyToken, verifyAdmin, async (req, res) => {
-  
-})
+router.post(
+  "/RemoveCustomer",
+  verifyToken,
+  verifyAdmin,
+  async (req, res) => {}
+);
 
 module.exports = router;

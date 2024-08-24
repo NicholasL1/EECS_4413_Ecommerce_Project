@@ -29,7 +29,7 @@ export default function ReviewStars(rating, size) {
           className={`text-gray-700 ${size ? size : "text-xl"} mx-1`}
         />
       ))}
-      <span className="ml-2 text-md font-thin">({rating})</span>
+      <span className="ml-2 text-sm font-light">({rating.toFixed(1)})</span>
     </div>
   );
 }
