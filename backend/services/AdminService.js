@@ -23,7 +23,7 @@ class AdminService {
       price: price,
       rating: rating || 0,
       category: category || null,
-      image: image || null
+      image: image || ""
     };
 
     return await AdminDAO.addShoe(shoeFilter);

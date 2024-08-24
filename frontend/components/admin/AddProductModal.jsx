@@ -13,7 +13,10 @@ export default function AddProductModal({ showModal, setShowModal }) {
     price: null,
     rating: 0,
     category: null,
+    image: '',
   });
+
+  const [imageUpload, setImageUpload] = useState(null);
 
   const handleNewProduct = (field, e) => {
     let value = e.target.value;
@@ -40,16 +43,35 @@ export default function AddProductModal({ showModal, setShowModal }) {
   };
 
   const SubmitChanges = async () => {
-    const response = await AdminServices.AddProduct(
-      JSON.parse(localStorage.getItem("Authorization")),
-      newProduct
-    );
-    if (!response) {
-      alert("Please Fill All Fields");
-    } else {
-      setShowModal(false);
-      window.location.reload();
+
+    if (!imageUpload) {
+      alert('No image selected');
+      return;
     }
+
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        const image64 = reader.result.split(',')[1];
+
+        const updatedProduct = {
+          ...newProduct,
+          image: image64,
+        };
+
+        const response = await AdminServices.AddProduct(
+          JSON.parse(localStorage.getItem("Authorization")),
+          newProduct
+        );
+        if (!response) {
+          alert("Please Fill All Fields");
+        } else {
+          setShowModal(false);
+          window.location.reload();
+        }
+
+      }
+      
+      reader.readAsDataURL(imageUpload);
   };
 
   const FormInputComponent = ({ label, placeholder, type = "text" }) => {
@@ -99,6 +121,15 @@ export default function AddProductModal({ showModal, setShowModal }) {
       </div>
     );
   };
+
+
+  const handleImageUpload = (event) => {
+    setImageUpload(event.target.files[0]);
+  };
+
+
+
+
 
   return (
     <>
@@ -166,6 +197,16 @@ export default function AddProductModal({ showModal, setShowModal }) {
                           label={"Price"}
                           placeholder={""}
                           type="number"
+                        />
+                      </div>
+
+                      <div className="flex">
+                        <FormInputComponent
+                          label={"Image"}
+                          placeholder={""}
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageUpload}
                         />
                       </div>
                     </fieldset>
