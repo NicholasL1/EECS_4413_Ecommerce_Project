@@ -35,7 +35,7 @@ const isAdmin = () => {
 
 const addUserLink = (links) => {
   const alreadyAdded = links.some(link => link.name.toLowerCase() === 'account')
-  if (!isAdmin() && !alreadyAdded) {
+  if (!isAdmin() && !alreadyAdded && isUserLoggedIn()) {
     links.push (
       {
         name: 'Account',
@@ -128,4 +128,5 @@ export {
   handleOnBlur,
   constructSearchQuery,
   parseSearchParams,
+  isUserLoggedIn
 };
