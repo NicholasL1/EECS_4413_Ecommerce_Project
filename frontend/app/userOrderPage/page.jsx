@@ -41,7 +41,7 @@ const UserOrdersPage = () => {
                     <Column field="total" sortable header="Total" body={(rowData) => `$${rowData.total}`} />
                 </DataTable>
             ) : (
-                <div>No orders found.</div>
+                <div> </div>
             )}
         </>
     );
@@ -115,7 +115,7 @@ const ShoeDisplay = (rowData) => {
                             , Name: {shoeDetails[shoeId].data.name || 'N/A'}
                             , Size: {shoeDetails[shoeId].data.size || 'N/A'}
                             , Color: {shoeDetails[shoeId].data.colour || 'N/A'}
-                            , <a href={`http://localhost:3000/shoeView?id=${shoeId}`}>
+                            ,<a href={`http://localhost:3000/shoeView?id=${shoeId}`}>
                                 <b>Shoe Link</b>
                             </a>
                         </span>
