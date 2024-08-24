@@ -8,6 +8,7 @@ import { Button } from "./ui/button";
 import { addAdminLink } from "@/lib/utils";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect } from "react";
 
 const links = [
   {
@@ -21,13 +22,17 @@ const links = [
   {
     name: "cart",
     path: "/cart",
-  },
+  }
 ];
-
-addAdminLink(links);
 
 const MobileNav = ({ buttonText, buttonLink, logoutFunction }) => {
   const pathname = usePathname();
+
+  // On mount, add Admin link if token is admin
+  useEffect(() => {
+    addAdminLink(links)
+  }, [])
+
   return (
     <Sheet className="sheet bg-custom-white">
       <SheetTrigger className="flex justify-center items-center">
@@ -56,6 +61,12 @@ const MobileNav = ({ buttonText, buttonLink, logoutFunction }) => {
                 </Link>
               );
             }
+
+            
+            // if (link.name === "admin" && !renderAdminLink) {
+            //   return 
+            // }
+
             return (
               <Link
                 href={link.path}

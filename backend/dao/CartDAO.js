@@ -2,6 +2,8 @@ const Cart = require("../models/CartModel");
 const Shoe = require("../models/ProductModel");
 const OrderService = require("../services/OrderService");
 const PaymentModel = require("../models/PaymentModel");
+const OrderModel = require("../models/OrderModel");
+const UserModel = require("../models/UserModel");
 
 class CartDAO {
 
@@ -204,7 +206,7 @@ class CartDAO {
     return {message: 'Error updating quantity in shopping cart', data: response}
   }
 
-  static async checkout(cart_id, user_id, payment_id) {
+  static async checkout(cart_id, user_id, payment_id, req) {
     /**
      * Check if the cart exists, if it does then retrieve it
      * Send the cart information to order
@@ -224,6 +226,7 @@ class CartDAO {
       );
 
       if (order) {
+        req.session.order_id = order._id
         const response = "Order created.";
         cart.shoes = new Map(); // Clears the cart
         await cart.save();
@@ -276,6 +279,20 @@ class CartDAO {
 
     return {message: 'Cart cannot be Empty', data: cart}    
   }
+
+  static async getOrderSummary(orderId, user_id) {
+    const order = await OrderModel.findById(orderId)
+    
+    if (user_id != order.user_id) {
+      return {order_info: null, payment_info: null, delivery_info: null, cart: null}
+    }
+    
+    const payment_info = await PaymentModel.findById(order.payment)
+    const address = await UserModel.findById(order.user_id)
+    const cart = await this.getCart(false, order)
+    return {order_info: order, payment_info: payment_info, delivery_info: address, cart: cart}
+  }
+
 
 }
 

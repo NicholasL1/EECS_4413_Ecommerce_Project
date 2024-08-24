@@ -4,6 +4,7 @@ import { faTrashCan} from "@fortawesome/free-solid-svg-icons";
 import ReviewStars from "../ui/ReviewStars";
 import CartService from "@/services/cartServices";
 import Loading from "./Loading";
+import { toast } from "react-toastify";
 
 export default function ShoeView({shoe, adminView}) {
 
@@ -26,7 +27,7 @@ export default function ShoeView({shoe, adminView}) {
 
         const response = await CartService.updateQuantity(qty, shoe_id)
         if (response.data.message) {
-            alert(response.data.message)
+            toast.error(response.data.message)
         }
         window.location.reload()
     }
@@ -67,7 +68,7 @@ export default function ShoeView({shoe, adminView}) {
                   <span className="p-1 mx-2 text-sm font-bold text-white rounded-md bg-orange-500">Low Stock</span>
                 )}
               </h2>
-              <ReviewStars rating={shoe?.rating} />
+              {ReviewStars(shoe?.rating)}
             </div>
           )}
       
