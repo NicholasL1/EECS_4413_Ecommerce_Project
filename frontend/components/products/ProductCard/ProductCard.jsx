@@ -12,7 +12,7 @@ const ProductCard = ({ product }) => {
         <div className="w-full h-64 overflow-hidden bg-gray-300">
           {product.image && (
             <Image
-            src={product.image ? `data:image/png;base64,${product.image}` : nike}
+            src={product.image ? `data:image/png;base64,${product.image}` : nike}     // decodes the base64 image to render in the browser window
             alt={product.name}
             className="w-full h-full object-cover"
           ></Image>

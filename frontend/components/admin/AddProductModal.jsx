@@ -49,11 +49,11 @@ export default function AddProductModal({ showModal, setShowModal }) {
       return;
     }
 
-      const reader = new FileReader();
+      const reader = new FileReader();                 // gets file upload from user to be used for product image
       reader.onloadend = async () => {
-        const image64 = reader.result.split(',')[1];
+        const image64 = reader.result.split(',')[1];      // gets base64 data from image URL in FileReader
 
-        const updatedProduct = {
+        const updatedProduct = {                          // adds image to product
           ...newProduct,
           image: image64,
         };
@@ -70,7 +70,7 @@ export default function AddProductModal({ showModal, setShowModal }) {
         }
 
       }
-      
+
       reader.readAsDataURL(imageUpload);
   };
 
@@ -123,7 +123,7 @@ export default function AddProductModal({ showModal, setShowModal }) {
   };
 
 
-  const handleImageUpload = (event) => {
+  const handleImageUpload = (event) => {              // sets the image to the file uploaded by the user
     setImageUpload(event.target.files[0]);
   };
 

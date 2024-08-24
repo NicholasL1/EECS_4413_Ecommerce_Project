@@ -16,7 +16,7 @@ export default function product({ shoeData, alternatives, id }) {
           className="w-full max-w-[600px] relative aspect-square mx-auto"
           style={{
             //backgroundImage: `url(${imageStub.src})`,
-            backgroundImage: `url(data:image/png;base64,${shoeData.image})`,
+            backgroundImage: `url(data:image/png;base64,${shoeData.image})`,        // decodes base64 image to render in browser window
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",

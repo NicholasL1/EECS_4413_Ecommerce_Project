@@ -22,12 +22,12 @@ export default function EditProductModalV2({
 
   const SubmitChanges = async () => {
 
-    if (imageUpload) {
-      const reader = newFileReader();
+    if (imageUpload) {                                        // if image is uploaded, need to use FileReader to get base64 data
+      const reader = new FileReader();
       reader.onloadend = async () => {
         const image64 = reader.result.split(',')[1];
 
-        const updatedProduct = {
+        const updatedProduct = {                          // add image to product update
           ...newProduct,
           image: image64,
         };
@@ -124,7 +124,7 @@ export default function EditProductModalV2({
     );
   };
 
-  const handleImageUpload = (event) => {
+  const handleImageUpload = (event) => {              // set image to file uploaded by user
     setImageUpload(event.target.files[0]);
   };
 
