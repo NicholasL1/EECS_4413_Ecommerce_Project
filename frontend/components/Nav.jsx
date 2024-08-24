@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation"; // Correct import
 import { addAdminLink } from "@/lib/utils";
+import { addUserLink } from "@/lib/utils";
+
 
 const links = [
   {
@@ -19,6 +21,7 @@ const links = [
   },
 ];
 
+addUserLink(links);
 addAdminLink(links);
 
 export default function Nav() {
@@ -35,9 +38,8 @@ export default function Nav() {
           <Link
             href={link.path}
             key={index}
-            className={`${
-              link.path === pathname && "text-accent border-b-2 border-accent"
-            } capitalize font-signika-negative font-bold text-xl hover:text-custom-red-hover transition-all`}
+            className={`${link.path === pathname && "text-accent border-b-2 border-accent"
+              } capitalize font-signika-negative font-bold text-xl hover:text-custom-red-hover transition-all`}
           >
             {link.name}
           </Link>

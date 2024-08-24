@@ -12,7 +12,7 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 import AdminServices from "../../services/adminServices";
 import Loading from "../ui/Loading";
-import SearchTable from "../ui/SearchTable";
+import SearchTable from "../ui/Loading";
 
 export default function OrderDashboard() {
   //#region States

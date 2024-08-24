@@ -6,7 +6,6 @@ const app = express();
 
 const UserService = require("../services/UserService.js");
 const { generateToken } = require("../config/generateToken.js");
-const verifyToken = require("../config/verifyToken.js");
 
 router.post("/Login", async (req, res) => {
   const { email, password } = req.body;
@@ -18,11 +17,12 @@ router.post("/Login", async (req, res) => {
 
   try {
     const user = await UserService.login(email, password); // send login info
-    
+
     req.sessionStore.loggedIn = true
     req.sessionStore.user = user
 
     res.status(201).json({
+
       token: generateToken(
         user._id,
         user.cart_id,
@@ -41,7 +41,7 @@ router.post("/Login", async (req, res) => {
   }
 });
 
-router.post("/Logout", async (req, res) => {});
+router.post("/Logout", async (req, res) => { });
 
 router.post("/Register", async (req, res) => {
   const { email, password, first_name, last_name, address } = req.body;
@@ -106,31 +106,22 @@ router.get("/Account/:id", async (req, res) => {
   }
 });
 
-router.post("/UpdateUser", verifyToken, async (req, res) => {
+router.patch('/update', async (req, res) => {
+  const { userId, update } = req.body;
+
+  if (!userId || !update) {
+    return res.status(400).json({ message: "No fields found, please try again" });
+  }
+
   try {
-    const userId = req.user.userData[0];
-
-    const { update } = req.body;
-
-    if (!userId || !update) {
-      return res.status(400).json({ message: "ID and update is required" });
+    const updatedUser = await User.findByIdAndUpdate(userId, update, { new: true });
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found, please try again" });
     }
-
-    const user = await UserService.updateUser(userId, update);
-
-    if (!user) {
-      return res
-        .status(404)
-        .json({ message: "User not found in the database" });
-    }
-
-    res.status(201).json({
-      message: "Update Successful",
-    });
+    res.json({ message: "Update successful!", user: updatedUser });
   } catch (error) {
-    console.error("Error updating user:", error);
-    res.status(500).json({ message: "Server error" });
+    console.error('Error updating user information:', error);
+    res.status(500).json({ message: "Error updating user information" });
   }
 });
-
 module.exports = router;
