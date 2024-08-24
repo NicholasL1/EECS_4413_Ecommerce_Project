@@ -1,8 +1,9 @@
 import axios from "axios";
+import api from "./config";
 axios.defaults.withCredentials = true;
 
 export default class ReviewServices {
-  static DB = axios.create({ baseURL: "http://localhost:3001/Review/" });
+  static DB = axios.create({ baseURL: `${api}Review/` });
 
   static async addReview(token, form) {
     try {

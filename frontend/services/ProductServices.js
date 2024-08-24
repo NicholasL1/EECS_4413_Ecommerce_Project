@@ -1,7 +1,9 @@
 import axios from "axios";
-axios.defaults.withCredentials = true
+import api from "./config";
+axios.defaults.withCredentials = true;
+
 class ProductServices {
-  static DB = axios.create({ baseURL: "http://localhost:3001/Product/" });
+  static DB = axios.create({ baseURL: `${api}/Product/` });
 
   static async fetchShoes(query) {
     try {

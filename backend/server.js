@@ -44,7 +44,7 @@ app.use(
 );
 app.use(
   cors({
-    origin: "https://eecs-4413-ecommerce-project-api.vercel.app/",
+    origin: "https://6ixkicks.vercel.app/",
     credentials: true,
   })
 );
