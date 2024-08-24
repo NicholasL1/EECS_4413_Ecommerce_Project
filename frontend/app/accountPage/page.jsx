@@ -4,6 +4,7 @@ import {
   faSitemap,
   faUser,
   faCreditCard,
+  faComment,
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -37,6 +38,12 @@ const AccountPage = () => {
       description: "View all payments for your account",
       icon: faCreditCard,
       link: "/paymentPage",
+    },
+    {
+      title: "Your Reviews",
+      description: "View all product reviews you've made",
+      icon: faComment,
+      link: "/userReviews",
     },
   ];
 
