@@ -31,8 +31,9 @@ router.post("/AddReview", verifyToken, async (req, res) => {
 });
 
 // delete review
-router.post("/DeleteReview", verifyToken, async (req, res) => {
-  const { review_id } = req.body;
+router.post("/DeleteReview/:id", verifyToken, async (req, res) => {
+  console.log("nakda");
+  const review_id = req.params.id;
   try {
     const response = await ReviewService.deleteReview(review_id);
     res.status(201).json({
@@ -59,7 +60,7 @@ router.get("/GetUserReviews/:id", verifyToken, async (req, res) => {
 });
 
 // get reviews by product id
-router.get("/GetProductReviews/:id", verifyToken, async (req, res) => {
+router.get("/GetProductReviews/:id", async (req, res) => {
   const product_id = req.params.id;
   try {
     const response = await ReviewService.getProductReviews(product_id);

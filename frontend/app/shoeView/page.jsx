@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import ProductServices from "@/services/ProductServices";
 import Product from "./product";
-import ProductReviews from "@/components/reviews/ProductReviews";
+import ReviewSection from "@/components/reviews/ReviewSection";
 
 const shoeResponses = [
   { id: "1", image: "/nike.png", size: 11, colour: "black" },
@@ -21,12 +21,11 @@ export default function ShoePage() {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
 
-  const [shoeData, setShoeData] = useState(null); // state to hold shoe data
-  const [alternatives, setAlternatives] = useState([]); // state to hold alternative shoes
-  const [error, setError] = useState(null); // state to handle errors
-  const [loading, setLoading] = useState(true); // state to manage loading
+  const [shoeData, setShoeData] = useState(null);
+  const [alternatives, setAlternatives] = useState([]);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // Fetch the shoe info based on the provided id
   const fetchShoeInfo = async () => {
     try {
       if (id) {
@@ -40,7 +39,6 @@ export default function ShoePage() {
     }
   };
 
-  // Fetch alternative shoes based on the loaded shoe data
   const fetchShoeAlternatives = async () => {
     try {
       if (shoeData) {
@@ -59,19 +57,16 @@ export default function ShoePage() {
     }
   };
 
-  // Trigger the fetchShoeInfo function when the id changes
   useEffect(() => {
     fetchShoeInfo();
   }, [id]);
 
-  // Trigger the fetchShoeAlternatives function only when shoeData is loaded
   useEffect(() => {
     if (shoeData) {
       fetchShoeAlternatives();
     }
   }, [shoeData]);
 
-  // Ensure fallback rendering during loading and errors
   if (!shoeData) {
     return (
       <div className="flex w-full h-full items-center justify-center">
@@ -99,7 +94,7 @@ export default function ShoePage() {
         <Product shoeData={shoeData} alternatives={alternatives} id={id} />
       </div>
       <div className="mt-5" id="reviews">
-        <ProductReviews />
+        <ReviewSection product_id={id} />
       </div>
     </div>
   );

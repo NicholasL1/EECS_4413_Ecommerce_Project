@@ -10,8 +10,6 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function product({ shoeData, alternatives, id }) {
-  console.log(alternatives);
-
   const addToCart = async () => {
     const response = await CartService.addtoCart(id);
     if (response.data.message.message) {
@@ -29,7 +27,7 @@ export default function product({ shoeData, alternatives, id }) {
           className="w-full max-w-[600px] relative aspect-square mx-auto"
           style={{
             //backgroundImage: `url(${imageStub.src})`,
-            backgroundImage: `url(data:image/png;base64,${shoeData.image})`,        // decodes base64 image to render in browser window
+            backgroundImage: `url(data:image/png;base64,${shoeData.image})`, // decodes base64 image to render in browser window
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
@@ -108,14 +106,14 @@ export default function product({ shoeData, alternatives, id }) {
                 >
                   {shoe.image && (
                     <Image
-                    src={`data:image/png;base64,${shoe.image}`}
-                    alt={shoe.colour}
-                    className="w-full h-auto object-cover rounded"
-                    width={192}
-                    height={192}
+                      src={`data:image/png;base64,${shoe.image}`}
+                      alt={shoe.colour}
+                      className="w-full h-auto object-cover rounded"
+                      width={192}
+                      height={192}
                     ></Image>
                   )}
-                 
+
                   <p className="text-sm font-medium text-center mt-2">
                     {shoe.colour}
                   </p>
