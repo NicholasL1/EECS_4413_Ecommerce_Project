@@ -58,22 +58,19 @@ class UserDAO {
     }
   }
 
-  static async updateUser(user_id, values) {
-    try {
-      const update = await User.updateOne(
-        {
-          _id: user_id,
-        },
-        values
-      );
+  // Update the given user
 
-      if (update.modifiedCount > 0) {
-        return true;
-      } else {
-        return false;
-      }
+  static async updateUser(userId, updateFields) {
+    try {
+      const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        { $set: updateFields },
+        { new: true, runValidators: true }
+      );
+      return updatedUser;
     } catch (error) {
-      throw new Error(error);
+      console.error('Error in UserDAO UPDATE USER:', error);
+      throw error;
     }
   }
 }

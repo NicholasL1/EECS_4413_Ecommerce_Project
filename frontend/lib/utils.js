@@ -6,6 +6,14 @@ function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
 
+const isUserLoggedIn = () => {
+  if (typeof window !== "undefined") {
+    const token = JSON.parse(sessionStorage.getItem("Authorization"));
+    return !!token;
+  }
+  return false;
+}
+
 const isAdmin = () => {
   if (typeof window !== "undefined") {
     if (
@@ -25,10 +33,22 @@ const isAdmin = () => {
   return false;
 };
 
+const addUserLink = (links) => {
+  if (!isAdmin() && isUserLoggedIn() &&
+    links.find((e) => {
+      e.name == "Admin";
+    }) == null) {
+    links.push({
+      name: "My Account",
+      path: "/accountPage",
+    });
+  }
+}
+
 const addAdminLink = (links) => {
   const alreadyAdded = links.some(link => link.name === "admin")
   if (!alreadyAdded && isAdmin()) {
-    links.push({name: "admin", path: "/admin"})
+    links.push({ name: "admin", path: "/admin" })
   }
 }
 
@@ -102,9 +122,10 @@ function parseSearchParams(searchParams) {
 
 export {
   cn,
+  addUserLink,
+  addAdminLink,
   isAdmin,
   handleOnBlur,
   constructSearchQuery,
   parseSearchParams,
-  addAdminLink
 };

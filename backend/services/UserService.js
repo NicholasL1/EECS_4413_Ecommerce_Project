@@ -37,8 +37,14 @@ class UserService {
     // register them
   }
 
-  static async updateUser(userId, updateData) {
-    return await UserDAO.updateUser(userId, updateData);
+  static async updateUser(userId, updateFields) {
+    try {
+      const updatedUser = await UserDAO.updateUser(userId, updateFields);
+      return updatedUser;
+    } catch (error) {
+      console.error('Unable to update user:', error);
+      throw error;
+    }
   }
 
   static async logout() { }
