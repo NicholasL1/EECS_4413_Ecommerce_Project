@@ -28,10 +28,6 @@ class ProductService {
       filteredQuery.gender = query.gender;
     }
 
-    if (query.price) {
-      filteredQuery.price = Number(query.price);
-    }
-
     if (query.rating) {
       filteredQuery.rating = Number(query.rating);
     }
@@ -40,7 +36,23 @@ class ProductService {
       filteredQuery.category = query.category;
     }
 
-    return await ProductDAO.fetchShoes(filteredQuery);
+    if (query.price === "Deals") {
+      filteredQuery.dealPrice = { $exists: true, $type: "number" };
+    }
+
+    const results = await ProductDAO.fetchShoes(filteredQuery);
+
+    if (query.price === "Low to High") {
+      return results.sort((a, b) => a.price - b.price);
+    } else if (query.price === "High to Low") {
+      return results.sort((a, b) => b.price - a.price);
+    }
+
+    return results;
+  }
+
+  static async fetchShoeById(product_id) {
+    return await ProductDAO.fetchShoeById(product_id);
   }
 
   static async fetchAllShoes() {

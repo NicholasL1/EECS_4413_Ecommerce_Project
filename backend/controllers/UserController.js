@@ -3,30 +3,35 @@ const router = express.Router();
 const Cart = require("../models/CartModel");
 const User = require("../models/UserModel.js");
 const app = express();
+const CartService = require('../services/CartService.js')
 
 const UserService = require("../services/UserService.js");
 const { generateToken } = require("../config/generateToken.js");
-const verifyToken = require("../config/verifyToken.js");
 
 router.post("/Login", async (req, res) => {
   const { email, password } = req.body;
+  console.log("Login attempt with email:", email); // Log the received email
 
-  // check if all fields are filled
+  // Check if all fields are filled
   if (!email || !password) {
-    res.status(400).json({ message: "Please enter all fields" });
+    return res.status(400).json({ message: "Please enter all fields" });
   }
 
-  /*
-logs in 
-gen jwt 
-return jwt back to client
-store jwt on local storage (client side)
-*/
-
-  // call UserService to login
   try {
-    const user = await UserService.login(email, password); // send login info
+    const user = await UserService.login(email, password); // Attempt login
+    
+    req.session.loggedIn = true
+    req.session.user = user
+    req.session.save()
+
+    const session_cart = req.session.cart
+
+    if (session_cart) {
+      await CartService.addGuestCartToRegisteredCart(session_cart, user.cart_id)
+    }
+
     res.status(201).json({
+
       token: generateToken(
         user._id,
         user.cart_id,
@@ -39,13 +44,18 @@ store jwt on local storage (client side)
       ),
     });
   } catch (error) {
+    console.error("Error during login:", error.message); // Log any errors
     if (error.message === "Invalid Login Credentials") {
       res.status(400).json({ message: error.message });
     }
   }
 });
 
-router.post("/Logout", async (req, res) => {});
+router.post("/Logout", async (req, res) => {
+  req.session.destroy()
+  req.session = null
+  res.status(200)
+});
 
 router.post("/Register", async (req, res) => {
   const { email, password, first_name, last_name, address } = req.body;
@@ -69,6 +79,16 @@ router.post("/Register", async (req, res) => {
     );
 
     // ToDo -- store generated token on the client-side
+    req.session.loggedIn = true
+    req.session.user = user
+    req.session.save()
+
+    const session_cart = req.session.cart
+
+    if (session_cart) {
+      await CartService.addGuestCartToRegisteredCart(session_cart, user.cart_id)
+    }
+
     res.status(201).json({
       token: generateToken(
         user._id,
@@ -107,31 +127,22 @@ router.get("/Account/:id", async (req, res) => {
   }
 });
 
-router.post("/UpdateUser", verifyToken, async (req, res) => {
+router.patch('/update', async (req, res) => {
+  const { userId, update } = req.body;
+
+  if (!userId || !update) {
+    return res.status(400).json({ message: "No fields found, please try again" });
+  }
+
   try {
-    const userId = req.user.userData[0];
-
-    const { update } = req.body;
-
-    if (!userId || !update) {
-      return res.status(400).json({ message: "ID and update is required" });
+    const updatedUser = await User.findByIdAndUpdate(userId, update, { new: true });
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found, please try again" });
     }
-
-    const user = await UserService.updateUser(userId, update);
-
-    if (!user) {
-      return res
-        .status(404)
-        .json({ message: "User not found in the database" });
-    }
-
-    res.status(201).json({
-      message: "Update Successful",
-    });
+    res.json({ message: "Update successful!", user: updatedUser });
   } catch (error) {
-    console.error("Error updating user:", error);
-    res.status(500).json({ message: "Server error" });
+    console.error('Error updating user information:', error);
+    res.status(500).json({ message: "Error updating user information" });
   }
 });
-
 module.exports = router;

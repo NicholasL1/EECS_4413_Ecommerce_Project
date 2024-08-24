@@ -11,6 +11,7 @@ class AdminService {
     price,
     rating,
     category,
+    image                   // able to provide image to new shoe
   }) {
     const shoeFilter = {
       brand: brand,
@@ -20,8 +21,9 @@ class AdminService {
       gender: gender,
       stock: stock,
       price: price,
-      rating: rating || null,
+      rating: rating || 0,
       category: category || null,
+      image: image || ""
     };
 
     return await AdminDAO.addShoe(shoeFilter);
@@ -41,6 +43,10 @@ class AdminService {
     }
 
     return await AdminDAO.updateUser(email, update);
+  }
+
+  static async getAllUsers() {
+    return await AdminDAO.getAllUsers()
   }
 }
 

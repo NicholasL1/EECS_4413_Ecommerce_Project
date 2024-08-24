@@ -1,0 +1,40 @@
+# Ignore frontend files/directories
+/frontend/node_modules/
+/frontend/package-lock.json/
+/frontend/.env
+
+# dependencies
+/frontend/pnp
+/frontend/pnp.js
+/frontend/yarn/install-state.gz
+
+# testing
+/frontend/coverage
+
+# next.js
+/frontend/next/
+/frontend/out/
+
+# production
+/frontend/build
+
+# misc
+/frontend/DS_Store
+/frontend/*.pem
+
+# debug
+/frontend/npm-debug.log*
+/frontend/yarn-debug.log*
+/frontend/yarn-error.log*
+
+# vercel
+/frontend/vercel
+
+# typescript
+/frontend/*.tsbuildinfo
+/frontend/next-env.d.ts
+
+# Ignore backend files/directories
+/backend/node_modules/
+/backend/package-lock.json/
+/backend/.env
