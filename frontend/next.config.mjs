@@ -2,8 +2,8 @@
 const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
-    missingSuspenseWithCSRBailout: false,
   },
+  experimental: { missingSuspenseWithCSRBailout: false },
 };
 
 export default nextConfig;
