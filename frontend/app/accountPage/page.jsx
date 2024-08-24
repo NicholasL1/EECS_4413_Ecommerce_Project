@@ -1,6 +1,6 @@
 "use client";
-import { MdOutlineSupervisorAccount, MdPayment } from 'react-icons/md';
-import { FaSitemap } from 'react-icons/fa';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSitemap, faUser, faCreditCard } from "@fortawesome/free-solid-svg-icons";
 import Link from 'next/link';
 import React, { useState } from "react";
 
@@ -16,9 +16,9 @@ const AccountPage = () => {
     };
 
     const items = [
-        { title: 'Your Orders', description: 'See all of your order history', icon: <FaSitemap />, link: '/userOrderPage' },
-        { title: 'Profile Information', description: 'View your account details', icon: <MdOutlineSupervisorAccount />, link: '/profilePage' },
-        { title: 'Your Payments', description: 'View all payments for your account', icon: <MdPayment />, link: '/paymentPage' },
+        { title: 'Your Orders', description: 'See all of your order history', icon: faSitemap, link: '/userOrderPage' },
+        { title: 'Profile Information', description: 'View your account details', icon: faUser, link: '/profilePage' },
+        { title: 'Your Payments', description: 'View all payments for your account', icon: faCreditCard, link: '/paymentPage' },
     ];
 
 
@@ -98,7 +98,7 @@ const AccountPage = () => {
                             }}
                         >
                             <div style={accountStyles.cardHeader}>
-                                <div style={accountStyles.icon}>{item.icon}</div>
+                                <FontAwesomeIcon icon={item?.icon} style={accountStyles.icon}/>
                                 <h2 style={accountStyles.cardTitle}>{item.title}</h2>
                             </div>
                             <p style={accountStyles.cardDescription}>{item.description}</p>

@@ -5,6 +5,7 @@
 @layer base {
   body {
     @apply bg-[#e8e7ee] leading-loose;
+    @apply font-signika-negative
   }
 }
 

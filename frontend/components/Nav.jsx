@@ -25,8 +25,6 @@ const links = [
   }
 ];
 
-addAdminLink(links);
-addUserLink(links);
 
 export default function Nav() {
   const pathname = usePathname(); // Correct function name
@@ -39,6 +37,7 @@ export default function Nav() {
   // On mount, add Admin link if token is admin
   useEffect(() => {
     addAdminLink(links)
+    addUserLink(links);
   }, [])
 
   return (
