@@ -68,7 +68,7 @@ export default function ShoeView({shoe, adminView}) {
                   <span className="p-1 mx-2 text-sm font-bold text-white rounded-md bg-orange-500">Low Stock</span>
                 )}
               </h2>
-              <ReviewStars rating={shoe?.rating} />
+              {ReviewStars(shoe?.rating)}
             </div>
           )}
       
