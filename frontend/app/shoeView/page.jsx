@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import ProductServices from "@/services/ProductServices";
 import Product from "./product";
+import ProductReviews from "@/components/reviews/ProductReviews";
 
 const shoeResponses = [
   { id: "1", image: "/nike.png", size: 11, colour: "black" },
@@ -80,7 +81,8 @@ export default function ShoePage() {
   }
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    console.log(error);
+    return <div>Error getting shoe data</div>;
   }
 
   if (loading) {
@@ -93,7 +95,12 @@ export default function ShoePage() {
 
   return (
     <div>
-      <Product shoeData={shoeData} alternatives={alternatives} id={id} />
+      <div>
+        <Product shoeData={shoeData} alternatives={alternatives} id={id} />
+      </div>
+      <div className="mt-5" id="reviews">
+        <ProductReviews />
+      </div>
     </div>
   );
 }

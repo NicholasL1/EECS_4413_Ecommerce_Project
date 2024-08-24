@@ -26,6 +26,10 @@ const reviewSchema = mongoose.Schema({
     type: String,
     required: [true, "Please Leave a Comment for this Review"],
   },
+  date: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 module.exports = mongoose.model("Review", reviewSchema);

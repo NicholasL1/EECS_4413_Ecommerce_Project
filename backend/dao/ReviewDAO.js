@@ -67,6 +67,7 @@ class ReviewDAO {
   // }
   static async addReview(product_id, user_id, title, name, rating, comment) {
     try {
+      const date = new Date();
       const review = await Review.create({
         product_id,
         user_id,
@@ -74,6 +75,7 @@ class ReviewDAO {
         name,
         rating,
         comment,
+        date,
       });
       if (review) {
         await ReviewDAO.updateAverageRating(product_id);
