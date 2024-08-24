@@ -15,6 +15,8 @@ const ProductCard = ({ product }) => {
             src={product.image ? `data:image/png;base64,${product.image}` : nike}     // decodes the base64 image to render in the browser window
             alt={product.name}
             className="w-full h-full object-cover"
+            width={192}
+            height={192}
           ></Image>
           )}
         </div>
