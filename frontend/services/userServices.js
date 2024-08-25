@@ -5,7 +5,6 @@ import { jwtDecode } from "jwt-decode";
 axios.defaults.withCredentials = true
 import Cookies from "js-cookie";
 import { getToken } from "@/lib/utils";
-import { api, headers } from "./config";
 
 export default class UserService {
   static DB = axios.create({ baseURL: `${api}`, withCredentials: true });

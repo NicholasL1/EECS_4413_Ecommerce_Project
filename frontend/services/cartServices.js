@@ -2,7 +2,6 @@ import axios from "axios";
 import { api, headers } from "./config";
 import { jwtDecode } from "jwt-decode";
 import { getToken } from "@/lib/utils";
-import { api, headers } from "./config";
 
 export default class CartService {
     static DB = axios.create({baseURL: `${api}/Cart`, withCredentials: true })
