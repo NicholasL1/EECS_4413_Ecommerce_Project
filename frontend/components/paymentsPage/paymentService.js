@@ -1,12 +1,14 @@
+import { getToken } from '@/lib/utils';
 import axios from 'axios';
 
 export default class PaymentService {
     static DB = axios.create({ baseURL: 'http://localhost:3001/' });
 
     static getAuthHeaders() {
-        const tokenJSON = sessionStorage.getItem("Authorization");
+        debugger
+        const tokenJSON = getToken()
         let token = '';
-        if (tokenJSON) {
+        if (tokenJSON != "undefined") {
             try {
                 const tokenObject = JSON.parse(tokenJSON);
                 token = tokenObject.token || tokenObject;
@@ -25,7 +27,11 @@ export default class PaymentService {
     static async UpdatePaymentMethod(payment) {
         try {
             const headers = this.getAuthHeaders();
-            const response = await this.DB.post('/Payment/UpdatePaymentMethod', payment, headers);
+            const response = await this.DB.post('/Payment/UpdatePaymentMethod', payment, {
+                headers: {
+                    Authorization: getToken()
+                }
+            });
             return { success: true, message: response.data.message };
         } catch (err) {
             console.error('Error updating payment method:', err);
@@ -35,7 +41,11 @@ export default class PaymentService {
 
     static async GetAllPayments() {
         try {
-            const response = await this.DB.post('/Payment/GetAllPaymentMethods', {}, this.getAuthHeaders());
+            const response = await this.DB.post('/Payment/GetAllPaymentMethods', {}, {
+                headers: {
+                    Authorization: getToken()
+                }
+            });
             if (Array.isArray(response.data.message)) {
                 return { success: true, data: response.data.message };
             } else {
@@ -51,7 +61,11 @@ export default class PaymentService {
     static async AddPayment(payment) {
         try {
             const headers = this.getAuthHeaders();
-            const response = await this.DB.post('/Payment/AddPaymentMethod', payment, headers);
+            const response = await this.DB.post('/Payment/AddPaymentMethod', payment, {
+                headers: {
+                    Authorization: getToken()
+                }
+            });
             return { success: true, message: response.data.message };
         } catch (err) {
             if (err.response && err.response.status === 403) {
@@ -63,7 +77,11 @@ export default class PaymentService {
     }
     static async DeletePayment(paymentId) {
         try {
-            const response = await this.DB.post('/Payment/DeletePaymentMethod', { payment_id: paymentId }, this.getAuthHeaders());
+            const response = await this.DB.post('/Payment/DeletePaymentMethod', { payment_id: paymentId }, {
+                headers: {
+                    Authorization: getToken()
+                }
+            });
             return { success: true, message: response.data.message };
         } catch (err) {
             console.error('Error deleting payment:', err);
@@ -74,7 +92,11 @@ export default class PaymentService {
 
     static async SelectPaymentMethod(paymentId) {
         try {
-            const response = await this.DB.post('/Payment/SelectPaymentMethod', { payment_id: paymentId }, this.getAuthHeaders());
+            const response = await this.DB.post('/Payment/SelectPaymentMethod', { payment_id: paymentId }, {
+                headers: {
+                    Authorization: getToken()
+                }
+            });
             return { success: true, data: response.data.message };
 
         } catch (err) {

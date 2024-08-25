@@ -2,13 +2,16 @@ import PaymentServices from "./paymentServices";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 axios.defaults.withCredentials = true
+import Cookies from "js-cookie";
+import { getToken } from "@/lib/utils";
 
 export default class UserService {
-  static DB = axios.create({ baseURL: "http://localhost:3001/" });
+  static DB = axios.create({ baseURL: "http://localhost:3001/", withCredentials: true });
 
   static getUserId() {
-    const tokenJSON = sessionStorage.getItem("Authorization");
-    if (!tokenJSON) {
+    const tokenJSON = getToken()
+    // const tokenJSON = sessionStorage.getItem("Authorization");
+    if (tokenJSON == "undefined") {
       console.error('no auth');
       return null;
     }
@@ -134,7 +137,8 @@ export default class UserService {
   static async Logout() {
     try {
       await this.DB.post('/User/Logout')
-      sessionStorage.removeItem('Authorization')
+      // sessionStorage.removeItem('Authorization')
+      Cookies.remove('Authorization')
       console.log('Logged out')
       window.location.href = '/'
     } catch (err) {

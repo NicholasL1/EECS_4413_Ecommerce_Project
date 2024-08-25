@@ -31,11 +31,15 @@ function page() {
         last_name,
         address
       );
+
+      debugger
+      console.log(response)
+
       if (response.message === "User already exists") {
         setError("User already exists! Please login instead.");
       } else {
         setError(""); // Clear error message on successful signup
-        sessionStorage.setItem("Authorization", JSON.stringify(response.token));
+        // sessionStorage.setItem("Authorization", JSON.stringify(response.token));
         window.location.href = "/"; // Redirect to home page
       }
     } catch (error) {

@@ -45,12 +45,18 @@ export default function ShoeView({shoe, adminView}) {
         <div className="flex-1 p-4 flex flex-col border">
           <div className="flex flex-row justify-between items-center w-full mb-4">
             <h1 className="font-bold text-2xl">{shoe?.name}</h1>
-            <button 
-              onClick={() => {removeFromCart(shoe?._id)}} 
-              className="w-8 h-8 rounded-sm shadow-sm bg-custom-red text-white hover:bg-red-700 hover:shadow-md"
-            >
-              <FontAwesomeIcon icon={faTrashCan} />
-            </button>
+
+            {
+              !adminView && 
+              <button 
+                onClick={() => {removeFromCart(shoe?._id)}} 
+                className="w-8 h-8 rounded-sm shadow-sm bg-custom-red text-white hover:bg-red-700 hover:shadow-md"
+              >
+                <FontAwesomeIcon icon={faTrashCan} />
+              </button>
+            }  
+
+          
           </div>
 
           <h4 className="text-sm font-thin mb-2">{shoe?.brand}</h4>

@@ -19,6 +19,7 @@ import "primereact/resources/themes/saga-blue/theme.css";
 import SalesChart from "./SalesChart";
 import Loading from "../ui/Loading";
 import ShoeView from "../ui/ShoeView";
+import { getToken } from "@/lib/utils";
 
 export default function SalesDashboard() {
   const [filters, setFilters] = useState({
@@ -115,7 +116,7 @@ export default function SalesDashboard() {
 
   const fetchData = async () => {
     try {
-      const token = JSON.parse(sessionStorage.getItem("Authorization"));
+      const token = getToken();
       const response = await AdminServices.GetTotals(token);
       setTotalsData(response.data.totals);
       setProductSpecificInfo(response.data.shoes);

@@ -1,4 +1,5 @@
 import userServices from "@/services/userServices"
+import { getToken } from "@/lib/utils"
 
 export default function Contact({showContact, handleShowContact, editContact, handleEditContact, user}) {
     
@@ -9,8 +10,8 @@ export default function Contact({showContact, handleShowContact, editContact, ha
         const formData = new FormData(e.target)
         const formObj = Object.fromEntries(formData.entries())
 
-        const token = JSON.parse(sessionStorage.getItem('Authorization'))
-        await userServices.updateUser(token, formObj)
+        const token = getToken()
+        await userServices.UpdateUser(formObj)
         handleShowContact(false)
     }
     

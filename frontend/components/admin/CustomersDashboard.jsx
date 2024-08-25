@@ -18,6 +18,7 @@ import AdminServices from "../../services/adminServices";
 import EditCustomerModal from "./EditCustomerModal";
 import SearchTable from "../ui/SearchTable";
 import Loading from "../ui/Loading";
+import { getToken } from "@/lib/utils";
 
 export default function CustomersDashboard() {
   const [filters, setFilters] = useState({
@@ -39,7 +40,7 @@ export default function CustomersDashboard() {
   const GetAllCustomers = async () => {
     try {
       const response = await AdminServices.GetAllCustomers(
-        JSON.parse(sessionStorage.getItem("Authorization"))
+        getToken()
       );
       setSearchResults(response.data);
     } catch (err) {
@@ -78,7 +79,7 @@ export default function CustomersDashboard() {
     const confirmation = confirm("Are you sure you want to remove this User?");
     if (confirmation) {
       await AdminServices.RemoveUser(
-        JSON.parse(sessionStorage.getItem("Authorization")),
+        getToken(),
         rowData._id
       );
       window.location.reload();

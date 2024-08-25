@@ -1,5 +1,6 @@
 import userServices from "@/services/userServices";
 import { useState } from "react";
+import { getToken } from "@/lib/utils";
 
 export default function Shipping({showShipping, editShipping, handleShowShipping, handleEditShipping, address}) {
 
@@ -38,8 +39,8 @@ export default function Shipping({showShipping, editShipping, handleShowShipping
         }
 
         const full_address = `${formObj['unit']} ${formObj['street_address']}, ${formObj['city']}, ${formObj['province']}, ${formObj['postal_code']}`
-        const token = JSON.parse(sessionStorage.getItem('Authorization'))
-        await userServices.updateUser(token, {address: full_address})
+        const token = getToken()
+        await userServices.UpdateUser({address: full_address})
         handleShowShipping(false)
     }
     

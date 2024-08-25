@@ -13,6 +13,7 @@ import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 import AdminServices from "../../services/adminServices";
 import Loading from "../ui/Loading";
 import SearchTable from "../ui/Loading";
+import { getToken } from "@/lib/utils";
 
 export default function OrderDashboard() {
   //#region States
@@ -28,7 +29,7 @@ export default function OrderDashboard() {
 
   //#region On Mount Functions
   const getAllOrders = async () => {
-    const token = JSON.parse(sessionStorage.getItem("Authorization"));
+    const token = getToken();
     try {
       const results = await AdminServices.GetAllOrders(token);
       if (results.data.length === 0) {
@@ -102,13 +103,13 @@ export default function OrderDashboard() {
       <h2 className="text-3xl font-medium">Orders</h2>
       <hr className="my-3" />
 
-      {label === null && searchResults === null && <Loading />}
+      {/* {label == null && searchResults == null && <Loading />} */}
 
-      {label !== null && searchResults === null && (
+      {/* {label !== null && searchResults === null && (
         <div className="text-center">
           <span>{label}</span>
         </div>
-      )}
+      )} */}
 
       {searchResults !== null && (
         <div>

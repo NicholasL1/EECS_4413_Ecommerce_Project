@@ -60,16 +60,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// app.use((req, res, next) => {
-//   if (!req.sessionStore.cart) {
-//     req.sessionStore.cart = {};
-//   }
-//   if (req.sessionStore.loggedIn === undefined) {
-//     req.sessionStore.loggedIn = false;
-//   }
-//   next();
-// });
-
 // How to add controller to application
 // app.use('/CONTROLLER', CONTROLLER)
 app.use("/User", User);

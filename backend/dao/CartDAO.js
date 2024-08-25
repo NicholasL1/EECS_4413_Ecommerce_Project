@@ -16,6 +16,9 @@ class CartDAO {
   static async addGuestCartToRegisteredCart(session_cart, cart_id) {
     const cart = await Cart.findById(cart_id);
     
+    if (!cart.shoes) 
+      cart.shoes = new Map();
+    
     for (const [shoe_id, item] of Object.entries(session_cart)) {
       
       if (cart.shoes.has(shoe_id)) {
@@ -48,7 +51,8 @@ class CartDAO {
 
       for (const [id, item] of shoes) {
         const shoe = await Shoe.findById(id)
-        response[id] = {...(item.toObject()), ...(shoe.toObject())}
+        if (shoe)
+          response[id] = {...(item.toObject()), ...(shoe.toObject())}
       }
 
       return response
