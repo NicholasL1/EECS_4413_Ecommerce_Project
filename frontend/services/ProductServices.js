@@ -1,6 +1,6 @@
 import axios from "axios";
 import { api, headers } from "./config";
-axios.defaults.withCredentials = false;
+axios.defaults.withCredentials = true;
 
 class ProductServices {
   static DB = axios.create({ baseURL: `${api}/Product/` });

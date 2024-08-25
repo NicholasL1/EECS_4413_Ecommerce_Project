@@ -1,6 +1,6 @@
 import axios from "axios";
 import { api, headers } from "./config";
-axios.defaults.withCredentials = false;
+axios.defaults.withCredentials = true;
 
 export default class PaymentServices {
   static DB = axios.create({ baseURL: `${api}/Payment` });
