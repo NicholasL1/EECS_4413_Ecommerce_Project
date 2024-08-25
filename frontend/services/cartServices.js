@@ -1,8 +1,9 @@
 import axios from "axios";
 axios.defaults.withCredentials = true
 import { jwtDecode } from "jwt-decode";
+import { getToken } from "@/lib/utils";
 export default class CartService {
-    static DB = axios.create({baseURL: 'http://localhost:3001/Cart'})
+    static DB = axios.create({baseURL: 'http://localhost:3001/Cart', withCredentials: true })
 
     static async addtoCart(shoe_id) {
         try {
@@ -71,7 +72,7 @@ export default class CartService {
      * @param {number} id 
      */
     static async removeFromCart(shoe_id) {
-        // debugger
+        //  
         
         try {
             const response = await this.DB.post('/RemoveFromCart', {shoe_id})
@@ -106,7 +107,7 @@ export default class CartService {
     }
 
     static async proceedToCheckout() {
-        // debugger
+        //  
         if (this.isTokenExpired()) 
             return false
         
@@ -142,8 +143,9 @@ export default class CartService {
     }
 
     static isTokenExpired() {
-        const token = JSON.parse(sessionStorage.getItem('Authorization'))
-        if (!token) return true
+         
+        const token = getToken()
+        if (token == "undefined") return true
         
         try {
           const decodedToken = jwtDecode(token)

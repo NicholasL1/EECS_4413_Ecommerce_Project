@@ -3,16 +3,20 @@ axios.defaults.withCredentials = true
 
 export default class PaymentServices {
     
-    static DB = axios.create({ baseURL: 'http://localhost:3001/Payment' });
+    static DB = axios.create({ baseURL: 'http://localhost:3001/Payment', withCredentials: true  });
 
     static async getAllPaymentsForUser(token) {
         try {
-            // debugger
+             
             const response = await this.DB.post('/GetAllPaymentMethods', {}, {
                 headers: {
                     Authorization: token
                 }
             });
+
+             
+            console.log(response)
+
             return response
         } catch (err) {
             console.log(err)

@@ -1,31 +1,43 @@
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { jwtDecode } from "jwt-decode";
+import Cookies from "js-cookie";
 
 function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
 
-const isUserLoggedIn = () => {
-  if (typeof window !== "undefined") {
-    const token = JSON.parse(sessionStorage.getItem("Authorization"));
-    return !!token;
-  }
-  return false;
+/**
+ * Retrieves the JWT token from Cookie
+ * @returns 
+ */
+const getToken = () => {
+  const Cookie = Cookies.get("Authorization");
+  return String(Cookie)
 }
 
+const isUserLoggedIn = () => {
+  //  
+  if (typeof window !== "undefined") {
+    const token = getToken()
+    return token != "undefined"
+  }
+  return false;
+};
+
 const isAdmin = () => {
+  //  
   if (typeof window !== "undefined") {
     if (
-      sessionStorage.getItem("Authorization") == undefined ||
-      sessionStorage.getItem("Authorization") == null
+      Cookies.get("Authorization") == undefined ||
+      Cookies.get("Authorization") == null
     ) {
       return false;
     }
-    const token = JSON.parse(sessionStorage.getItem("Authorization"));
+    const Cookie = Cookies.get("Authorization");
 
-    if (token) {
-      const decodedToken = jwtDecode(token);
+    if (Cookie) {
+      const decodedToken = jwtDecode(Cookie);
       return decodedToken.userData[7];
     }
   }
@@ -34,23 +46,23 @@ const isAdmin = () => {
 };
 
 const addUserLink = (links) => {
-  const alreadyAdded = links.some(link => link.name.toLowerCase() === 'account')
+  const alreadyAdded = links.some(
+    (link) => link.name.toLowerCase() === "account"
+  );
   if (!isAdmin() && !alreadyAdded && isUserLoggedIn()) {
-    links.push (
-      {
-        name: 'Account',
-        path: '/accountPage'
-      }
-    )
+    links.push({
+      name: "Account",
+      path: "/accountPage",
+    });
   }
-}
+};
 
 const addAdminLink = (links) => {
-  const alreadyAdded = links.some(link => link.name === "admin")
+  const alreadyAdded = links.some((link) => link.name === "admin");
   if (!alreadyAdded && isAdmin()) {
-    links.push({ name: "admin", path: "/admin" })
+    links.push({ name: "admin", path: "/admin" });
   }
-}
+};
 
 const handleOnBlur = (old_obj, new_obj, checkAll = false) => {
   let formChange = false;
@@ -128,5 +140,6 @@ export {
   handleOnBlur,
   constructSearchQuery,
   parseSearchParams,
-  isUserLoggedIn
+  isUserLoggedIn,
+  getToken
 };

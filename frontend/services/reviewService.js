@@ -2,15 +2,19 @@ import axios from "axios";
 axios.defaults.withCredentials = true;
 
 export default class ReviewServices {
-  static DB = axios.create({ baseURL: "http://localhost:3001/Review/" });
+  static DB = axios.create({ baseURL: "http://localhost:3001/Review/", withCredentials: true });
 
   static async addReview(token, form) {
     try {
+       
       const response = await this.DB.post("AddReview", form, {
         headers: {
           Authorization: token,
         },
       });
+
+       
+      console.log(response.message)
       if (response.message) {
         return response.message;
       }

@@ -6,19 +6,25 @@ import Link from "next/link";
 import ReviewStars from "@/components/ui/ReviewStars";
 
 const ProductCard = ({ product }) => {
+
+  if (!product.image) {
+    product.image = "";
+  }
+
   return (
     <Link href={`/shoeView?id=${product._id}`}>
       <div className="flex relative flex-col items-center w-[250px] bg-white rounded-lg shadow-md hover:scale-[1.05] hover:cursor-pointer transition-all duration-300">
         <div className="w-full h-64 overflow-hidden bg-gray-300">
-          {product.image && (
+          {/*{product.image && (*/}
             <Image
-            src={product.image ? `data:image/png;base64,${product.image}` : nike}     // decodes the base64 image to render in the browser window
+            //src={product.image ? `data:image/png;base64,${product.image}` : nike}     // decodes the base64 image to render in the browser window
+            src={`/${product.name} ${product.colour}.png`}
+            //src={"/Adidas Nite Jogger.png"}
             alt={product.name}
-            className="w-full h-full object-cover"
-            width={192}
-            height={192}
+            width={240}
+            height={200}
           ></Image>
-          )}
+         {/* )}*/}
         </div>
         <div className="text-lg w-full rounded-lg text-gray-800 pl-2 pt-3">
           <div className="flex flex-row justify-between mb-1">

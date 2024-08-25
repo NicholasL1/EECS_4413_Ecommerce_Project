@@ -4,6 +4,7 @@ const dotenv = require("dotenv").config(); // Retrieves sensitive values from .e
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
+const bodyParser = require('body-parser')
 const memoryStore = new session.MemoryStore();
 
 // Config
@@ -27,8 +28,10 @@ connectDB();
 
 const app = express();
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(bodyParser.json({limit: '5mb' }));
+app.use(bodyParser.urlencoded({ limit: '5mb', extended: true }));
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(
   session({
@@ -59,16 +62,6 @@ app.use((req, res, next) => {
   }
   next();
 });
-
-// app.use((req, res, next) => {
-//   if (!req.sessionStore.cart) {
-//     req.sessionStore.cart = {};
-//   }
-//   if (req.sessionStore.loggedIn === undefined) {
-//     req.sessionStore.loggedIn = false;
-//   }
-//   next();
-// });
 
 // How to add controller to application
 // app.use('/CONTROLLER', CONTROLLER)

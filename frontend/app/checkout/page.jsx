@@ -8,6 +8,7 @@ import { faTruck, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import PaymentServices from "@/services/paymentServices";
 import CreditCart from "@/components/ui/CreditCart";
 import { toast } from "react-toastify";
+import { getToken } from "@/lib/utils";
 
 export default function page() {
 
@@ -44,7 +45,7 @@ export default function page() {
     }
 
     const getUserInfo = async () => {
-        const token = JSON.parse(sessionStorage.getItem('Authorization'))
+        const token = getToken()
         const response = await userServices.getUser(token)
         setUser(response)
         parsingAddress(response.address)
@@ -53,7 +54,7 @@ export default function page() {
     }
 
     const getCart = async () => {
-        const token = JSON.parse(sessionStorage.getItem('Authorization'))
+        const token = getToken()
         const response = await CartService.getCart()
         setCart(response)
     }  
@@ -70,7 +71,7 @@ export default function page() {
         const formData = new FormData(e.target)
         const formObj = Object.fromEntries(formData.entries())
         console.log(formObj)
-        const token = JSON.parse(sessionStorage.getItem('Authorization'))
+        const token = getToken()
         const response = await userServices.UpdateUser(formObj)
         console.log(response)
         handleCheckoutStatus('contact', true)
@@ -95,7 +96,7 @@ export default function page() {
         }
 
         const full_address = `${formObj['unit']} ${formObj['street_address']}, ${formObj['city']}, ${formObj['province']}, ${formObj['postal_code']}`
-        const token = JSON.parse(sessionStorage.getItem('Authorization'))
+        const token = getToken()
         await userServices.UpdateUser({address: full_address})
         handleCheckoutStatus('shipping', true)
         setShippingSave(true)
@@ -124,7 +125,7 @@ export default function page() {
         if (!cvc_regex.test(cvc)) 
             return toast.error('Please enter your CVC Number (3 digits)')
 
-        const token = JSON.parse(sessionStorage.getItem('Authorization'))
+        const token = getToken()
         const response = await PaymentServices.addPaymentMethod(token, formObj)
         console.log(response)
         setPaymentMethod(response.data.message._id)
@@ -204,19 +205,19 @@ export default function page() {
             return toast.error('Cannot place order yet. Please fill all feilds')
         }
 
-        const token = JSON.parse(sessionStorage.getItem('Authorization'))
+        const token = getToken()
         const response = await CartService.checkout(token, paymentMethod)
         
         // get OrderID --> redirect to orderSummary?=
         console.log(response)
         
-        if (response.data.message === 'Order created.') {
+        if (response?.data.message === 'Order created.') {
             // sessionStorage.setItem("OrderID", JSON.stringify(response.data.order_info))
             console.log(response.data)
             toast.success('Order Placed 😁')
             window.location.href = '/orderSummary?orderId=' + response.data.order_id
         } else {
-            return toast.error(response.data.message)
+            return toast.error(response?.data.message)
         }
 
     }
