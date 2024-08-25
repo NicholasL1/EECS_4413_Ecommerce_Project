@@ -1,5 +1,7 @@
 # EECS_4413_Ecommerce_Project
 
+## Created by: Ammad Qureshi, Ethan Mackay, Nicholas Lachhman, Ryan Loi
+
 Steps to download and run locally:
 1. Clone the repo:
  ```git clone https://github.com/Ammadq87/EECS_4413_Ecommerce_Project.git```
