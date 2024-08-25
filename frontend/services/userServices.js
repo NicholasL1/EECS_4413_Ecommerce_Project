@@ -1,6 +1,6 @@
 import PaymentServices from "./paymentServices";
 import axios from "axios";
-import api from "./config";
+import {api, headers} from "./config";
 import { jwtDecode } from "jwt-decode";
 axios.defaults.withCredentials = true;
 
@@ -30,10 +30,17 @@ export default class UserService {
       return { success: false, message: "No user ID" };
     }
     try {
-      const response = await this.DB.patch("/User/update", {
-        userId,
-        update: updateData,
-      });
+      const response = await this.DB.patch("/User/update", 
+        {
+          userId,
+          update: updateData,
+        },
+        {
+          headers: {
+            ...headers
+          }
+        }
+    );
       // debugging
       console.log("Update response:", response.data);
       return {
@@ -60,7 +67,11 @@ export default class UserService {
       return { success: false, message: "No user ID available" };
     }
     try {
-      const response = await this.DB.get(`/User/Account/${userId}`);
+      const response = await this.DB.get(`/User/Account/${userId}`, {
+        headers: {
+          ...headers
+        }
+      });
       return { success: true, data: response.data };
     } catch (err) {
       console.error("Error fetching user data:", err);
@@ -73,6 +84,7 @@ export default class UserService {
       const response = await this.DB.get("/Order/UserOrderHistory", {
         headers: {
           Authorization: token,
+          ...headers
         },
       });
 
@@ -93,6 +105,9 @@ export default class UserService {
     try {
       const response = await this.DB.get("/Product/FetchShoeById", {
         params: { product_id: shoeId },
+        headers: {
+          ...headers
+        }
       });
       return {
         message: "",
@@ -108,7 +123,11 @@ export default class UserService {
 
   static async Login(email, password) {
     try {
-      const response = await this.DB.post("/User/Login", { email, password });
+      const response = await this.DB.post("/User/Login", { email, password }, {
+        headers: {
+          ...headers
+        }
+      });
       return response.data;
     } catch (err) {
       console.error(err);
@@ -126,7 +145,13 @@ export default class UserService {
         first_name,
         last_name,
         address,
-      });
+      },
+      {
+        headers: {
+          ...headers
+        }
+      }
+    );
       return response.data;
     } catch (err) {
       console.log(err);
@@ -138,7 +163,11 @@ export default class UserService {
 
   static async Logout() {
     try {
-      await this.DB.post("/User/Logout");
+      await this.DB.post("/User/Logout", {}, {
+        headers: {
+          ...headers
+        }
+      });
       sessionStorage.removeItem("Authorization");
       console.log("Logged out");
       window.location.href = "/";

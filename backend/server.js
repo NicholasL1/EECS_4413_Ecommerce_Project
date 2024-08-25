@@ -31,6 +31,8 @@ app.use(
   cors({
     origin: "https://6ixkicks.vercel.app",
     credentials: true,
+    methods: 'GET,POST,PUT,DELETE,PATCH,OPTIONS',
+    allowedHeaders: 'Content-Type, Authorization'
   })
 );
 
@@ -51,6 +53,7 @@ app.use(
 );
 
 app.use((req, res, next) => {
+  /*
   res.header(
     "Access-Control-Allow-Origin",
     "https://6ixkicks-60sgevxeo-nicholasl1s-projects.vercel.app"
@@ -62,6 +65,7 @@ app.use((req, res, next) => {
     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
   );
   next();
+  */
   // Initialize session variables on the req.session object
   if (!req.session.cart) {
     req.session.cart = {};

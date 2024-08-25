@@ -1,5 +1,5 @@
 import axios from "axios";
-import api from "./config";
+import {api, headers} from "./config";
 axios.defaults.withCredentials = true;
 
 class ProductServices {
@@ -9,6 +9,7 @@ class ProductServices {
     try {
       const response = await this.DB.get("/FetchShoe", {
         params: query,
+        ...headers
       });
 
       if (response.data.length === 0) return null;
@@ -119,6 +120,7 @@ class ProductServices {
 
       const response = await this.DB.get("FetchShoe", {
         params: query,
+        ...headers
       });
 
       return { data: response.data };

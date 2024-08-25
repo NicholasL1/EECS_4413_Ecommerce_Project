@@ -4,4 +4,9 @@
 
 const api = "https://eecs-4413-ecommerce-project-api.vercel.app";
 
-export default api;
+const headers = {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
+}
+
+module.exports = {api, headers}
