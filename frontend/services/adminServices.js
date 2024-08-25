@@ -1,5 +1,5 @@
 import axios from "axios";
-import api from "./config";
+import {api, headers} from "./config";
 axios.defaults.withCredentials = true;
 
 export default class AdminServices {
@@ -10,6 +10,7 @@ export default class AdminServices {
       const response = await this.DB.get("/Order/GetAllOrders", {
         headers: {
           Authorization: token,
+          ...headers
         },
       });
 
@@ -30,6 +31,7 @@ export default class AdminServices {
       const response = await this.DB.get("/Product/FetchAll", {
         headers: {
           Authorization: token,
+          ...headers
         },
       });
       return { message: "", data: response.data };
@@ -50,6 +52,7 @@ export default class AdminServices {
         {
           headers: {
             Authorization: token,
+          ...headers
           },
         }
       );
@@ -65,6 +68,7 @@ export default class AdminServices {
       await this.DB.post("/Admin/AddProduct", product, {
         headers: {
           Authorization: token,
+          ...headers
         },
       });
       return true;
@@ -82,6 +86,7 @@ export default class AdminServices {
         {
           headers: {
             Authorization: token,
+          ...headers
           },
         }
       );
@@ -97,6 +102,7 @@ export default class AdminServices {
       const response = await this.DB.get("/Admin/GetAllCustomers", {
         headers: {
           Authorization: token,
+          ...headers
         },
       });
 
@@ -115,6 +121,7 @@ export default class AdminServices {
         {
           headers: {
             Authorization: token,
+          ...headers
           },
         }
       );
@@ -141,6 +148,7 @@ export default class AdminServices {
         {
           headers: {
             Authorization: token,
+          ...headers
           },
         }
       );
@@ -156,6 +164,7 @@ export default class AdminServices {
       const response = await this.DB.get("/Order/GetSales", {
         headers: {
           Authorization: token,
+          ...headers
         },
       });
 

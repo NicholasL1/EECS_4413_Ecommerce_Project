@@ -1,9 +1,9 @@
 import axios from "axios";
-import api from "./config";
+import {api, headers} from "./config";
 axios.defaults.withCredentials = true;
 
 export default class PaymentServices {
-  static DB = axios.create({ baseURL: `${api}Payment` });
+  static DB = axios.create({ baseURL: `${api}/Payment` });
 
   static async getAllPaymentsForUser(token) {
     try {
@@ -14,6 +14,7 @@ export default class PaymentServices {
         {
           headers: {
             Authorization: token,
+            ...headers
           },
         }
       );
@@ -32,6 +33,7 @@ export default class PaymentServices {
         {
           headers: {
             Authorization: token,
+            ...headers
           },
         }
       );
