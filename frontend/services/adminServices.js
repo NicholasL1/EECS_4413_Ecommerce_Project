@@ -1,6 +1,6 @@
 import axios from "axios";
-import {api, headers} from "./config";
-axios.defaults.withCredentials = true;
+import { api, headers } from "./config";
+axios.defaults.withCredentials = false;
 
 export default class AdminServices {
   static DB = axios.create({ baseURL: `${api}` });
@@ -10,7 +10,7 @@ export default class AdminServices {
       const response = await this.DB.get("/Order/GetAllOrders", {
         headers: {
           Authorization: token,
-          ...headers
+          ...headers,
         },
       });
 
@@ -31,7 +31,7 @@ export default class AdminServices {
       const response = await this.DB.get("/Product/FetchAll", {
         headers: {
           Authorization: token,
-          ...headers
+          ...headers,
         },
       });
       return { message: "", data: response.data };
@@ -52,7 +52,7 @@ export default class AdminServices {
         {
           headers: {
             Authorization: token,
-          ...headers
+            ...headers,
           },
         }
       );
@@ -68,7 +68,7 @@ export default class AdminServices {
       await this.DB.post("/Admin/AddProduct", product, {
         headers: {
           Authorization: token,
-          ...headers
+          ...headers,
         },
       });
       return true;
@@ -86,7 +86,7 @@ export default class AdminServices {
         {
           headers: {
             Authorization: token,
-          ...headers
+            ...headers,
           },
         }
       );
@@ -102,7 +102,7 @@ export default class AdminServices {
       const response = await this.DB.get("/Admin/GetAllCustomers", {
         headers: {
           Authorization: token,
-          ...headers
+          ...headers,
         },
       });
 
@@ -121,7 +121,7 @@ export default class AdminServices {
         {
           headers: {
             Authorization: token,
-          ...headers
+            ...headers,
           },
         }
       );
@@ -148,7 +148,7 @@ export default class AdminServices {
         {
           headers: {
             Authorization: token,
-          ...headers
+            ...headers,
           },
         }
       );
@@ -164,7 +164,7 @@ export default class AdminServices {
       const response = await this.DB.get("/Order/GetSales", {
         headers: {
           Authorization: token,
-          ...headers
+          ...headers,
         },
       });
 

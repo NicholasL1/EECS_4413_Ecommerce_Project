@@ -1,8 +1,8 @@
 import PaymentServices from "./paymentServices";
 import axios from "axios";
-import {api, headers} from "./config";
+import { api, headers } from "./config";
 import { jwtDecode } from "jwt-decode";
-axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = false;
 
 export default class UserService {
   static DB = axios.create({ baseURL: `${api}` });
@@ -30,17 +30,18 @@ export default class UserService {
       return { success: false, message: "No user ID" };
     }
     try {
-      const response = await this.DB.patch("/User/update", 
+      const response = await this.DB.patch(
+        "/User/update",
         {
           userId,
           update: updateData,
         },
         {
           headers: {
-            ...headers
-          }
+            ...headers,
+          },
         }
-    );
+      );
       // debugging
       console.log("Update response:", response.data);
       return {
@@ -69,8 +70,8 @@ export default class UserService {
     try {
       const response = await this.DB.get(`/User/Account/${userId}`, {
         headers: {
-          ...headers
-        }
+          ...headers,
+        },
       });
       return { success: true, data: response.data };
     } catch (err) {
@@ -84,7 +85,7 @@ export default class UserService {
       const response = await this.DB.get("/Order/UserOrderHistory", {
         headers: {
           Authorization: token,
-          ...headers
+          ...headers,
         },
       });
 
@@ -106,8 +107,8 @@ export default class UserService {
       const response = await this.DB.get("/Product/FetchShoeById", {
         params: { product_id: shoeId },
         headers: {
-          ...headers
-        }
+          ...headers,
+        },
       });
       return {
         message: "",
@@ -123,11 +124,15 @@ export default class UserService {
 
   static async Login(email, password) {
     try {
-      const response = await this.DB.post("/User/Login", { email, password }, {
-        headers: {
-          ...headers
+      const response = await this.DB.post(
+        "/User/Login",
+        { email, password },
+        {
+          headers: {
+            ...headers,
+          },
         }
-      });
+      );
       return response.data;
     } catch (err) {
       console.error(err);
@@ -139,19 +144,21 @@ export default class UserService {
 
   static async Register(email, password, first_name, last_name, address) {
     try {
-      const response = await this.DB.post("/User/Register", {
-        email,
-        password,
-        first_name,
-        last_name,
-        address,
-      },
-      {
-        headers: {
-          ...headers
+      const response = await this.DB.post(
+        "/User/Register",
+        {
+          email,
+          password,
+          first_name,
+          last_name,
+          address,
+        },
+        {
+          headers: {
+            ...headers,
+          },
         }
-      }
-    );
+      );
       return response.data;
     } catch (err) {
       console.log(err);
@@ -163,11 +170,15 @@ export default class UserService {
 
   static async Logout() {
     try {
-      await this.DB.post("/User/Logout", {}, {
-        headers: {
-          ...headers
+      await this.DB.post(
+        "/User/Logout",
+        {},
+        {
+          headers: {
+            ...headers,
+          },
         }
-      });
+      );
       sessionStorage.removeItem("Authorization");
       console.log("Logged out");
       window.location.href = "/";

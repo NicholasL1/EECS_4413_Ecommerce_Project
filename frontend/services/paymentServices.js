@@ -1,6 +1,6 @@
 import axios from "axios";
-import {api, headers} from "./config";
-axios.defaults.withCredentials = true;
+import { api, headers } from "./config";
+axios.defaults.withCredentials = false;
 
 export default class PaymentServices {
   static DB = axios.create({ baseURL: `${api}/Payment` });
@@ -14,7 +14,7 @@ export default class PaymentServices {
         {
           headers: {
             Authorization: token,
-            ...headers
+            ...headers,
           },
         }
       );
@@ -33,7 +33,7 @@ export default class PaymentServices {
         {
           headers: {
             Authorization: token,
-            ...headers
+            ...headers,
           },
         }
       );

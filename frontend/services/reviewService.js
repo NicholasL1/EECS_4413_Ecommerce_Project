@@ -1,6 +1,6 @@
 import axios from "axios";
-import {api, headers} from "./config";
-axios.defaults.withCredentials = true;
+import { api, headers } from "./config";
+axios.defaults.withCredentials = false;
 
 export default class ReviewServices {
   static DB = axios.create({ baseURL: `${api}Review/` });
@@ -10,7 +10,7 @@ export default class ReviewServices {
       const response = await this.DB.post("AddReview", form, {
         headers: {
           Authorization: token,
-          ...headers
+          ...headers,
         },
       });
       if (response.message) {
@@ -30,7 +30,7 @@ export default class ReviewServices {
         {
           headers: {
             Authorization: token,
-            ...headers
+            ...headers,
           },
         }
       );
@@ -45,7 +45,7 @@ export default class ReviewServices {
       const response = await this.DB.get(`GetProductReviews/${product_id}`, {
         headers: {
           Authorization: token,
-          ...headers
+          ...headers,
         },
       });
       if (response.data.data) {
@@ -64,7 +64,7 @@ export default class ReviewServices {
       const response = await this.DB.get(`GetUserReviews/${id}`, {
         headers: {
           Authorization: token,
-          ...headers
+          ...headers,
         },
       });
       console.log(response);

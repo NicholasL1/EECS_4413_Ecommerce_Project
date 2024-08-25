@@ -1,7 +1,8 @@
 import axios from "axios";
-import {api, headers} from "./config";
+import { api, headers } from "./config";
 import { jwtDecode } from "jwt-decode";
-axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = false;
+
 export default class CartService {
   static DB = axios.create({ baseURL: `${api}/Cart` });
 
@@ -19,7 +20,7 @@ export default class CartService {
       const response = await this.DB.get(`/OrderSummary/${id}`, {
         headers: {
           Authorization: token,
-          ...headers
+          ...headers,
         },
       });
 
@@ -127,8 +128,8 @@ export default class CartService {
         },
         {
           headers: {
-            Authorization: token, 
-            ...headers
+            Authorization: token,
+            ...headers,
           },
         }
       );
