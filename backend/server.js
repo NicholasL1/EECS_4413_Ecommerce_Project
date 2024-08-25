@@ -44,7 +44,7 @@ app.use(
 );
 app.use(
   cors({
-    origin: "https://6ixkicks-60sgevxeo-nicholasl1s-projects.vercel.app/",
+    origin: "https://6ixkicks-60sgevxeo-nicholasl1s-projects.vercel.app",
     credentials: true,
   })
 );
