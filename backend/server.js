@@ -54,6 +54,7 @@ app.use(
 );
 
 app.use((req, res, next) => {
+  res.setHeader('Referrer-Policy', 'no-referrer');
   if (!req.session.cart) {
     req.session.cart = {};
   }
