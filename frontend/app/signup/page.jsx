@@ -32,7 +32,7 @@ function page() {
         address
       );
 
-      debugger
+       
       console.log(response)
 
       if (response.message === "User already exists") {

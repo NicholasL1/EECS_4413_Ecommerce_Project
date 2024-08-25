@@ -41,10 +41,10 @@ const PaymentsPage = () => {
     useEffect(() => {
         const fetchUserPayments = async () => {
             try {
-                debugger
+                 
                 const result = await PaymentService.GetAllPayments();
                 
-                debugger
+                 
                 console.log("Fetch payments result:", result);
                 if (result.success && Array.isArray(result.data)) {
                     setUserPayments(result.data);
@@ -97,7 +97,7 @@ const PaymentsPage = () => {
     };
     const addPayment = async () => {
         try {
-            debugger
+             
             const paymentResult = await PaymentService.AddPayment({
                 card_number: form.card_number,
                 cvc: form.cvc,

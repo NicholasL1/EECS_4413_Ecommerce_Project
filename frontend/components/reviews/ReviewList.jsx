@@ -5,7 +5,7 @@ import { jwtDecode } from "jwt-decode";
 export default function ReviewList({ reviews, token, onDelete }) {
   let id = null;
 
-  debugger
+   
   if (token) {
     id = jwtDecode(token).userData[0];
   }

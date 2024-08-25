@@ -1,5 +1,6 @@
 import axios from "axios";
 import { api, headers } from "./config";
+import { api, headers } from "./config";
 axios.defaults.withCredentials = true;
 
 export default class ReviewServices {
@@ -7,7 +8,7 @@ export default class ReviewServices {
 
   static async addReview(token, form) {
     try {
-      debugger
+       
       const response = await this.DB.post("AddReview", form, {
         headers: {
           Authorization: token,
@@ -15,7 +16,7 @@ export default class ReviewServices {
         },
       });
 
-      debugger
+       
       console.log(response.message)
       if (response.message) {
         return response.message;

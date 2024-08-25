@@ -7,7 +7,7 @@ class ProductServices {
 
   static async fetchShoes(query) {
     try {
-      const response = await this.DB.get("/FetchShoe", {
+      const response = await this.DB.get("FetchShoe", {
         params: query,
         // headers: {
         //   ...headers

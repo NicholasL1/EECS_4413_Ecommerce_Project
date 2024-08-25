@@ -29,7 +29,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:3000", // Allow requests from your frontend
+    origin: "https://6ixkicks.vercel.app", // Allow requests from your frontend
     credentials: true, // Allow cookies and other credentials
     methods: "GET, POST, PUT, DELETE, OPTIONS", // Specify allowed methods
     allowedHeaders:

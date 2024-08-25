@@ -5,7 +5,7 @@ export default class PaymentService {
     static DB = axios.create({ baseURL: 'http://localhost:3001/' });
 
     static getAuthHeaders() {
-        debugger
+         
         const tokenJSON = getToken()
         let token = '';
         if (tokenJSON != "undefined") {

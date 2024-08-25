@@ -15,7 +15,7 @@ export default function ShoeView({shoe, adminView}) {
         const confirmOption = confirm('Are you sure you want to remove this item from your cart?')
         
         if (!confirmOption) return
-        // debugger
+        //  
         await CartService.removeFromCart(shoe_id)
         window.location.reload()
     }

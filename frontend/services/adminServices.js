@@ -15,15 +15,17 @@ export default class AdminServices {
                 }
             });
 
-            if (response.data?.length === 0)
-                return { message: 'No Orders Have Been Placed', data: [] };
-            return { message: '', data: response.data };
-
-        } catch (err) {
-            console.error('Token Expired')
-            return { message: 'Your session has expired, please log back in', data: [] };
-        }
+      if (response.data?.length === 0)
+        return { message: "No Orders Have Been Placed", data: [] };
+      return { message: "", data: response.data };
+    } catch (err) {
+      console.error("Token Expired");
+      return {
+        message: "Your session has expired, please log back in",
+        data: [],
+      };
     }
+  }
 
     static async GetAllProducts(token) {
         try {
@@ -162,17 +164,17 @@ export default class AdminServices {
                 totals_output.push({title: title, value: value})
             }
 
-            return {message: '', data: {
-                totals: totals_output,
-                shoes: response.data.shoes,
-                dates: response.data.dates
-            }}
-
-        } catch (err) {
-            console.error(err)
-            throw new Error('Your session has expired, please log back in')
-        }
+      return {
+        message: "",
+        data: {
+          totals: totals_output,
+          shoes: response.data.shoes,
+          dates: response.data.dates,
+        },
+      };
+    } catch (err) {
+      console.error(err);
+      throw new Error("Your session has expired, please log back in");
     }
-
-
+  }
 }

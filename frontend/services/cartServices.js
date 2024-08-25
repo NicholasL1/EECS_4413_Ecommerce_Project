@@ -1,5 +1,5 @@
 import axios from "axios";
-axios.defaults.withCredentials = true
+import { api, headers } from "./config";
 import { jwtDecode } from "jwt-decode";
 import { getToken } from "@/lib/utils";
 import { api, headers } from "./config";
@@ -38,28 +38,26 @@ export default class CartService {
         }
     }
 
-    /**
-     * 
-     * @param {Object[]} items 
-     * @param {Object} cart 
-     * @returns 
-     */
-    static transformCart(items, cart) {
-        if (Object.keys(cart).length === 0)
-            return items
+  /**
+   *
+   * @param {Object[]} items
+   * @param {Object} cart
+   * @returns
+   */
+  static transformCart(items, cart) {
+    if (Object.keys(cart).length === 0) return items;
 
-        let total = 0
+    let total = 0;
 
-        for (const [key, value] of Object.entries(cart)) {
-            
-            total += value.qty * value.price
-            items.push({...value})
-        }
-
-        const gst = total * .13
-        const estTotal = total * 1.13
-        return {total, gst, estTotal, items}
+    for (const [key, value] of Object.entries(cart)) {
+      total += value.qty * value.price;
+      items.push({ ...value });
     }
+
+    const gst = total * 0.13;
+    const estTotal = total * 1.13;
+    return { total, gst, estTotal, items };
+  }
 
     static async getCart() {
         try {
@@ -83,7 +81,7 @@ export default class CartService {
      * @param {number} id 
      */
     static async removeFromCart(shoe_id) {
-        // debugger
+        //  
         
         try {
             const response = await this.DB.post('/RemoveFromCart', {shoe_id}, {
@@ -130,7 +128,7 @@ export default class CartService {
     }
 
     static async proceedToCheckout() {
-        // debugger
+        //  
         if (this.isTokenExpired()) 
             return false
         
@@ -142,15 +140,15 @@ export default class CartService {
         })
         const data = verifyCheckout.data
 
-        // Display any error response
-        if (data.message !== '') {
-            alert(data.message)
-            return false
-        }
-
-        // User can proceed to checkout
-        return true
+    // Display any error response
+    if (data.message !== "") {
+      alert(data.message);
+      return false;
     }
+
+    // User can proceed to checkout
+    return true;
+  }
 
     static async checkout(token, payment_id) {
         try {
@@ -171,7 +169,7 @@ export default class CartService {
     }
 
     static isTokenExpired() {
-        debugger
+         
         const token = getToken()
         if (token == "undefined") return true
         
