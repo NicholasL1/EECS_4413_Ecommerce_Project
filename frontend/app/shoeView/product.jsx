@@ -27,7 +27,8 @@ export default function product({ shoeData, alternatives, id }) {
           className="w-full max-w-[600px] relative aspect-square mx-auto"
           style={{
             //backgroundImage: `url(${imageStub.src})`,
-            backgroundImage: `url(data:image/png;base64,${shoeData.image})`, // decodes base64 image to render in browser window
+            backgroundImage: `/${shoeData.name} ${shoeData.colour}.png`,
+            //backgroundImage: `url(data:image/png;base64,${shoeData.image})`, // decodes base64 image to render in browser window
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
@@ -104,7 +105,7 @@ export default function product({ shoeData, alternatives, id }) {
                       : "border-gray-200"
                   }`}
                 >
-                  {shoe.image && (
+                  {/*{shoe.image && (
                     <Image
                       src={`data:image/png;base64,${shoe.image}`}
                       alt={shoe.colour}
@@ -112,7 +113,13 @@ export default function product({ shoeData, alternatives, id }) {
                       width={192}
                       height={192}
                     ></Image>
-                  )}
+                  )} */}
+                  <Image
+                    src={`/${shoe.name} ${shoe.colour}.png`}
+                    alt={shoeData.name}
+                    width={240}
+                    height={200}
+                    ></Image>
 
                   <p className="text-sm font-medium text-center mt-2">
                     {shoe.colour}
