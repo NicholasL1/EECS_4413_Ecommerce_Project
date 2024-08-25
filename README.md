@@ -1,7 +1,5 @@
 # EECS_4413_Ecommerce_Project
 
-Online URL: https://6ixkicks.vercel.app/
-
 Steps to download and run locally:
 1. Clone the repo:
  ```git clone https://github.com/Ammadq87/EECS_4413_Ecommerce_Project.git```
@@ -33,3 +31,4 @@ JWT_SECRET = 5af53784373e542ee1c6c27b4eab72d337b93164b7f39a38aa74e72b008b6b6c50c
  ```
 6. Access the `http://localhost:3000` in your browser, you can now browse 6ixkicks!
 
+Online URL: https://6ixkicks.vercel.app/
