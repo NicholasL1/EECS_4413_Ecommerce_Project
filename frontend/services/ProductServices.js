@@ -1,5 +1,5 @@
 import axios from "axios";
-import {api, headers} from "./config";
+import { api, headers } from "./config";
 axios.defaults.withCredentials = true;
 
 class ProductServices {
@@ -7,9 +7,9 @@ class ProductServices {
 
   static async fetchShoes(query) {
     try {
-      const response = await this.DB.get("/FetchShoe", {
+      const response = await this.DB.get("FetchShoe", {
         params: query,
-        ...headers
+        ...headers,
       });
 
       if (response.data.length === 0) return null;
@@ -120,7 +120,7 @@ class ProductServices {
 
       const response = await this.DB.get("FetchShoe", {
         params: query,
-        ...headers
+        ...headers,
       });
 
       return { data: response.data };
