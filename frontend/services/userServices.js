@@ -4,9 +4,10 @@ import { jwtDecode } from "jwt-decode";
 axios.defaults.withCredentials = true
 import Cookies from "js-cookie";
 import { getToken } from "@/lib/utils";
+import { api, headers } from "./config";
 
 export default class UserService {
-  static DB = axios.create({ baseURL: "http://localhost:3001/", withCredentials: true });
+  static DB = axios.create({ baseURL: `${api}`, withCredentials: true });
 
   static getUserId() {
     const tokenJSON = getToken()
@@ -70,7 +71,8 @@ export default class UserService {
     try {
       const response = await this.DB.get('/Order/UserOrderHistory', {
         headers: {
-          Authorization: token
+          Authorization: token,
+          ...headers
         }
       });
 

@@ -2,12 +2,18 @@ import axios from "axios";
 axios.defaults.withCredentials = true
 import { jwtDecode } from "jwt-decode";
 import { getToken } from "@/lib/utils";
+import { api, headers } from "./config";
+
 export default class CartService {
-    static DB = axios.create({baseURL: 'http://localhost:3001/Cart', withCredentials: true })
+    static DB = axios.create({baseURL: `${api}/Cart`, withCredentials: true })
 
     static async addtoCart(shoe_id) {
         try {
-            const response = await this.DB.post('/AddToCart', {shoe_id})
+            const response = await this.DB.post('/AddToCart', {shoe_id}, {
+                headers: {
+                    ...headers
+                }
+            })
             return response
         } catch (err) {
             console.log(err)
@@ -19,7 +25,8 @@ export default class CartService {
 
             const response = await this.DB.get(`/OrderSummary/${id}`, {
                 headers: {
-                    Authorization: token
+                    Authorization: token,
+                    ...headers
                 }
             })
 
@@ -56,7 +63,11 @@ export default class CartService {
 
     static async getCart() {
         try {
-            const response = await this.DB.get('/GetCart')
+            const response = await this.DB.get('/GetCart', {
+                headers: {
+                    ...headers
+                }
+            })
             const cart = response.data
             const items = []
             return this.transformCart(items, cart)
@@ -75,7 +86,11 @@ export default class CartService {
         // debugger
         
         try {
-            const response = await this.DB.post('/RemoveFromCart', {shoe_id})
+            const response = await this.DB.post('/RemoveFromCart', {shoe_id}, {
+                headers: {
+                    ...headers
+                }
+            })
             console.log(response)
             return response            
         } catch (err) {
@@ -90,7 +105,11 @@ export default class CartService {
      */
     static async updateQuantity(qty, shoe_id) {
         try {
-            const response = await this.DB.post('/UpdateQuantity', {qty, shoe_id})
+            const response = await this.DB.post('/UpdateQuantity', {qty, shoe_id}, {
+                headers: {
+                    ...headers
+                }
+            })
             return response
         } catch (err) {
             return {message: err.message, data: []}
@@ -99,7 +118,11 @@ export default class CartService {
 
     static async clearCart() {
         try {
-            const response = await this.DB.post('/ClearCart')
+            const response = await this.DB.post('/ClearCart', {}, {
+                headers: {
+                    ...headers
+                }
+            })
             return response
         } catch (err) {
 
@@ -112,7 +135,11 @@ export default class CartService {
             return false
         
         // Verify checkout
-        const verifyCheckout = await this.DB.get('/VerifyCheckout')
+        const verifyCheckout = await this.DB.get('/VerifyCheckout', {
+            headers: {
+                ...headers
+            }
+        })
         const data = verifyCheckout.data
 
         // Display any error response
@@ -131,7 +158,8 @@ export default class CartService {
                 payment_id
             }, {
                 headers: {
-                    Authorization: token
+                    Authorization: token,
+                    ...headers
                 }
             })
 

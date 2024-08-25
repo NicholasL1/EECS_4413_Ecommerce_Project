@@ -1,12 +1,17 @@
 import axios from "axios";
 axios.defaults.withCredentials = true
+import { api, headers } from "./config";
+
 class ProductServices {
-  static DB = axios.create({ baseURL: "http://localhost:3001/Product/", withCredentials: true  });
+  static DB = axios.create({ baseURL: `${api}/Product/`, withCredentials: true  });
 
   static async fetchShoes(query) {
     try {
       const response = await this.DB.get("/FetchShoe", {
         params: query,
+        // headers: {
+        //   ...headers
+        // }
       });
 
       if (response.data.length === 0) return null;
@@ -38,7 +43,13 @@ class ProductServices {
 
   static async getAllProducts() {
     try {
-      const response = await this.DB.get("fetchAll");
+      const response = await this.DB.get("fetchAll"
+      //   , {
+      //   headers: {
+      //     ...headers
+      //   }
+      // }
+    );
 
       if (response.data?.length === 0) {
         return { message: "Fetch returned no products", data: [] };
@@ -117,6 +128,9 @@ class ProductServices {
 
       const response = await this.DB.get("FetchShoe", {
         params: query,
+        // headers: {
+        //   ...headers
+        // }
       });
 
       return { data: response.data };
@@ -127,7 +141,11 @@ class ProductServices {
 
   static async getShoeInfo(id) {
     try {
-      const response = await this.DB.get(`FetchShoeById/?product_id=${id}`);
+      const response = await this.DB.get(`FetchShoeById/?product_id=${id}`, {
+        // headers: {
+        //   ...headers
+        // }
+      });
       return response.data;
     } catch (err) {
       console.error(err);

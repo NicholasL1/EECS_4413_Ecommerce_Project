@@ -1,15 +1,17 @@
 import axios from 'axios';
+import { api, headers } from "./config";
 axios.defaults.withCredentials = true
 
 export default class AdminServices {
-    static DB = axios.create({ baseURL: 'http://localhost:3001/', withCredentials: true  });
+    static DB = axios.create({ baseURL: `${api}`, withCredentials: true  });
 
     static async GetAllOrders(token) {
         try {
 
             const response = await this.DB.get('/Order/GetAllOrders', {
                 headers: {
-                    Authorization: token
+                    Authorization: token,
+                    ...headers,
                 }
             });
 
@@ -27,7 +29,8 @@ export default class AdminServices {
         try {
             const response = await this.DB.get('/Product/FetchAll', {
                 headers: {
-                    Authorization: token
+                    Authorization: token,
+                    ...headers
                 }
             });
             return { message: '', data: response.data };
@@ -46,7 +49,8 @@ export default class AdminServices {
                 }
                 , {
                 headers: {
-                    Authorization: token
+                    Authorization: token,
+                    ...headers
                 }
             })
             return true
@@ -60,7 +64,8 @@ export default class AdminServices {
         try {
             await this.DB.post('/Admin/AddProduct', product, {
                 headers: {
-                    Authorization: token
+                    Authorization: token,
+                    ...headers
                 }
             })
             return true
@@ -74,7 +79,8 @@ export default class AdminServices {
         try {
             await this.DB.post('/Admin/RemoveProduct', {product_id: product_id}, {
                 headers: {
-                    Authorization: token
+                    Authorization: token,
+                    ...headers
                 }
             })
             return true
@@ -88,7 +94,8 @@ export default class AdminServices {
         try {
             const response = await this.DB.get('/Admin/GetAllCustomers', {
                 headers: {
-                    Authorization: token
+                    Authorization: token,
+                    ...headers
                 }
             })
 
@@ -103,7 +110,8 @@ export default class AdminServices {
         try {
             await this.DB.post('/Admin/RemoveUser', {user_id: user_id}, {
                 headers: {
-                    Authorization: token
+                    Authorization: token,
+                    ...headers
                 }
             })
             return true
@@ -126,7 +134,8 @@ export default class AdminServices {
             }, 
             {
                 headers: {
-                    Authorization: token
+                    Authorization: token,
+                    ...headers
                 }
             })
             return true
@@ -140,7 +149,8 @@ export default class AdminServices {
         try {
             const response = await this.DB.get('/Order/GetSales', {
                 headers: {
-                    Authorization: token
+                    Authorization: token,
+                    ...headers
                 }
             })
 
