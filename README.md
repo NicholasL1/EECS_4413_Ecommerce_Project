@@ -34,3 +34,5 @@ JWT_SECRET = 5af53784373e542ee1c6c27b4eab72d337b93164b7f39a38aa74e72b008b6b6c50c
 Github Repo: https://github.com/Ammadq87/EECS_4413_Ecommerce_Project/tree/development
 
 Online URL: https://6ixkicks.vercel.app/
+
+## Disclaimer: If there are build issues on Vercel and the link doesn't work, please download and run locally.
