@@ -7,14 +7,14 @@ export default class PaymentServices {
 
     static async getAllPaymentsForUser(token) {
         try {
-            debugger
+             
             const response = await this.DB.post('/GetAllPaymentMethods', {}, {
                 headers: {
                     Authorization: token
                 }
             });
 
-            debugger
+             
             console.log(response)
 
             return response

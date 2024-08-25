@@ -6,14 +6,14 @@ export default class ReviewServices {
 
   static async addReview(token, form) {
     try {
-      debugger
+       
       const response = await this.DB.post("AddReview", form, {
         headers: {
           Authorization: token,
         },
       });
 
-      debugger
+       
       console.log(response.message)
       if (response.message) {
         return response.message;

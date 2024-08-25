@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AdminServices from "../../services/adminServices";
-import { handleOnBlur } from "@/lib/utils";
+import { getToken, handleOnBlur } from "@/lib/utils";
 import { toast } from "react-toastify";
 
 export default function AddProductModal({ showModal, setShowModal }) {
@@ -61,8 +61,9 @@ export default function AddProductModal({ showModal, setShowModal }) {
         image: image64,
       };
 
+      debugger
       const response = await AdminServices.AddProduct(
-        JSON.parse(sessionStorage.getItem("Authorization")),
+        getToken(),
         updatedProduct
       );
       if (!response) {

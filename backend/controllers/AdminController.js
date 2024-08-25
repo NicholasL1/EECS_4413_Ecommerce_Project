@@ -6,10 +6,10 @@ const { generateToken } = require("../config/generateToken.js");
 const verifyToken = require("../config/verifyToken.js");
 
 router.post("/AddProduct", verifyToken, verifyAdmin, async (req, res) => {
-  const { brand, size, name, colour, gender, stock, price, rating, category } =
+  const { brand, size, name, colour, gender, stock, price, rating, category, image } =
     req.body;
 
-  if (!brand || !size || !name || !colour || !stock || !price || !gender) {
+  if (!brand || !size || !name || !colour || !stock || !price || !gender || !image) {
     res.status(400).json({
       message:
         "Please enter at least the brand, size, name, colour, stock, gender, and price of the product you want to add",

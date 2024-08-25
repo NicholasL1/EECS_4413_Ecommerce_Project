@@ -11,7 +11,7 @@ Steps to download and run locally:
  cd EECS_4413_Ecommerce_Project
  code .
  ```
- 3. Checkout development branch, the main branch is used for production server
+ 3. Checkout development branch, the main branch is used for production server, the development branch is up to date with changes
  ```
  git checkout development
  ```

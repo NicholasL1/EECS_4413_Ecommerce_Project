@@ -72,7 +72,7 @@ export default class CartService {
      * @param {number} id 
      */
     static async removeFromCart(shoe_id) {
-        // debugger
+        //  
         
         try {
             const response = await this.DB.post('/RemoveFromCart', {shoe_id})
@@ -107,7 +107,7 @@ export default class CartService {
     }
 
     static async proceedToCheckout() {
-        // debugger
+        //  
         if (this.isTokenExpired()) 
             return false
         
@@ -143,7 +143,7 @@ export default class CartService {
     }
 
     static isTokenExpired() {
-        debugger
+         
         const token = getToken()
         if (token == "undefined") return true
         

@@ -17,7 +17,7 @@ const getToken = () => {
 }
 
 const isUserLoggedIn = () => {
-  // debugger
+  //  
   if (typeof window !== "undefined") {
     const token = getToken()
     return token != "undefined"
@@ -26,7 +26,7 @@ const isUserLoggedIn = () => {
 };
 
 const isAdmin = () => {
-  // debugger
+  //  
   if (typeof window !== "undefined") {
     if (
       Cookies.get("Authorization") == undefined ||
