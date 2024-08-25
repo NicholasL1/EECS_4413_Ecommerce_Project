@@ -23,6 +23,7 @@ import AdminServices from "../../services/adminServices";
 import EditProductModal from "./EditProductModal";
 import SearchTable from "../ui/SearchTable";
 import Loading from "../ui/Loading";
+import { getToken } from "@/lib/utils";
 
 export default function InventoryDashboard() {
   //#region States
@@ -102,7 +103,7 @@ export default function InventoryDashboard() {
     );
     if (confirmation) {
       await AdminServices.RemoveProduct(
-        JSON.parse(sessionStorage.getItem("Authorization")),
+        getToken(),
         rowData._id
       );
       window.location.reload();
@@ -180,7 +181,7 @@ export default function InventoryDashboard() {
               <Column
                 field="rating"
                 header="Rating"
-                body={(rowData) => <p>{rowData.rating}/5</p>}
+                body={(rowData) => <p>{rowData.rating.toFixed(1)}/5</p>}
                 sortable
               />
               <Column field="category" header="Category" sortable />

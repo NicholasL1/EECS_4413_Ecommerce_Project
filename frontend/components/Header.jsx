@@ -9,6 +9,8 @@ import { usePathname } from "next/navigation";
 // components
 import Nav from "./Nav";
 import MobileNav from "./MobileNav";
+import { getToken } from "@/lib/utils";
+import Cookies from "js-cookie";
 
 export default function Header() {
   const [buttonText, setButtonText] = useState("Sign Up");
@@ -18,7 +20,7 @@ export default function Header() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      if (sessionStorage.getItem("Authorization")) {
+      if (getToken() != "undefined") {
         setButtonText("Log Out");
         setButtonLink("");
       } else if (pathname === "/signup") {
@@ -33,11 +35,13 @@ export default function Header() {
   }, [pathname]);
 
   const handleLogout = () => {
+    const token = getToken()
+
     if (
       typeof window !== "undefined" &&
-      sessionStorage.getItem("Authorization")
+      token != "undefined"  
     ) {
-      sessionStorage.removeItem("Authorization");
+      Cookies.remove("Authorization");
       setButtonText("Sign Up");
       setButtonLink("/signup");
       window.location.href = "/";

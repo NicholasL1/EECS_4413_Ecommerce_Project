@@ -12,6 +12,7 @@ import {
   faUser,
   faArrowUpRightFromSquare,
 } from "@fortawesome/free-solid-svg-icons";
+import { getToken } from "@/lib/utils";
 
 const UserOrdersPage = () => {
   const [searchResults, setSearchResults] = useState([]);
@@ -22,8 +23,8 @@ const UserOrdersPage = () => {
   useEffect(() => {
     const getUserOrders = async () => {
       try {
-        const token = JSON.parse(sessionStorage.getItem("Authorization"));
-        if (!token) {
+        const token = getToken();
+        if (token == "undefined") {
           setFeedbackMessage("No authentication token found. Please log in.");
         }
 

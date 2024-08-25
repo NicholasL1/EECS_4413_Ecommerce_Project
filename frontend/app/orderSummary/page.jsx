@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEdit, faShoppingBag } from "@fortawesome/free-solid-svg-icons";
 import Loading from "@/components/ui/Loading"
 import AccessDenied from "@/components/AccessDenied"
-import { isAdmin } from "@/lib/utils"
+import { isAdmin, getToken } from "@/lib/utils"
 
 export default function Page() {
 
@@ -28,7 +28,7 @@ export default function Page() {
             const id = params.get("orderId");
             setOrderId(id)
 
-            const token = JSON.parse(sessionStorage.getItem("Authorization"))
+            const token = getToken()
             const orderInfo = await CartService.getOrderSummary(id, token)
 
             console.log(orderInfo)

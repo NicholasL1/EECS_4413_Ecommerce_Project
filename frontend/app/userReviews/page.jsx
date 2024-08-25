@@ -3,19 +3,48 @@
 import React, { useEffect, useState } from "react";
 import ReviewServices from "@/services/reviewService";
 import ReviewList from "@/components/reviews/ReviewList";
-import { handleDeleteReview } from "@/components/reviews/ReviewSection";
 import { jwtDecode } from "jwt-decode"; // Make sure to use jwtDecode correctly
+import { getToken } from "@/lib/utils";
 
 export default function Page() {
+  const [user_id, setUser_id] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [error, setError] = useState(null);
   const [token, setToken] = useState(null);
 
+  const fetchUserReviews = async (user_id) => {
+    try {
+      const response = await ReviewServices.getUserReviews(token, user_id);
+      setReviews(response);
+    } catch (error) {
+      setError(error);
+    }
+  };
+
+  const handleDeleteReview = async (review_id) => {
+    if (token == "undefined") {
+      toast.error("Please login to delete a review");
+      return;
+    }
+    try {
+      const response = await ReviewServices.deleteReview(token, review_id);
+      if (response === "Invalid Token") {
+        toast.error("Please login again to delete this review");
+      } else {
+        toast.success(response);
+        window.location.reload();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     // Fetch the token from sessionStorage on client side
-    const storedToken = JSON.parse(sessionStorage.getItem("Authorization"));
-    if (storedToken) {
+    const storedToken = getToken();
+    if (storedToken != "unde") {
       setToken(storedToken);
+      setUser_id(jwtDecode(storedToken).userData[0]);
     } else {
       setError("Please login to view your reviews");
     }
@@ -23,18 +52,7 @@ export default function Page() {
 
   useEffect(() => {
     if (token) {
-      const user_id = jwtDecode(token).userData[0];
-
-      const fetchUserReviews = async () => {
-        try {
-          const response = await ReviewServices.getUserReviews(token, user_id);
-          setReviews(response);
-        } catch (error) {
-          setError(error);
-        }
-      };
-
-      fetchUserReviews();
+      fetchUserReviews(user_id);
     }
   }, [token]); // Run this effect whenever the token is set
 

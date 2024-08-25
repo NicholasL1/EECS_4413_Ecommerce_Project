@@ -2,15 +2,18 @@ import PaymentServices from "./paymentServices";
 import axios from "axios";
 import { api, headers } from "./config";
 import { jwtDecode } from "jwt-decode";
-axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = true
+import Cookies from "js-cookie";
+import { getToken } from "@/lib/utils";
 
 export default class UserService {
-  static DB = axios.create({ baseURL: `${api}` });
+  static DB = axios.create({ baseURL: `${api}`, withCredentials: true });
 
   static getUserId() {
-    const tokenJSON = sessionStorage.getItem("Authorization");
-    if (!tokenJSON) {
-      console.error("no auth");
+    const tokenJSON = getToken()
+    // const tokenJSON = sessionStorage.getItem("Authorization");
+    if (tokenJSON == "undefined") {
+      console.error('no auth');
       return null;
     }
     try {
@@ -85,8 +88,8 @@ export default class UserService {
       const response = await this.DB.get("/Order/UserOrderHistory", {
         headers: {
           Authorization: token,
-          ...headers,
-        },
+          ...headers
+        }
       });
 
       if (response.data && Array.isArray(response.data)) {
@@ -170,18 +173,11 @@ export default class UserService {
 
   static async Logout() {
     try {
-      await this.DB.post(
-        "/User/Logout",
-        {},
-        {
-          headers: {
-            ...headers,
-          },
-        }
-      );
-      sessionStorage.removeItem("Authorization");
-      console.log("Logged out");
-      window.location.href = "/";
+      await this.DB.post('/User/Logout')
+      // sessionStorage.removeItem('Authorization')
+      Cookies.remove('Authorization')
+      console.log('Logged out')
+      window.location.href = '/'
     } catch (err) {
       console.log(err);
     }

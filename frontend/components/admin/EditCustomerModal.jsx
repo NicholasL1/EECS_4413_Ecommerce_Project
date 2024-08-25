@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import { handleOnBlur } from "@/lib/utils";
+import { getToken } from "@/lib/utils";
 
 export default function EditCustomerModal({
   showModal,
@@ -46,7 +47,7 @@ export default function EditCustomerModal({
 
   const SubmitChanges = async () => {
     const response = await AdminServices.EditCustomer(
-      JSON.parse(sessionStorage.getItem("Authorization")),
+      getToken(),
       newCustomer,
       customer.email
     );

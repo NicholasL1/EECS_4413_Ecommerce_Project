@@ -9,6 +9,7 @@ import ShoePlaceholder from "../../public/4413 Shoe Pics/NIKE+AIR+MAX+270+WHITE+
 import Image from "next/image";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { getToken } from "@/lib/utils";
 
 export default function CartView({mini = false, cart = [], total, gst, estTotal, setCart}) {
     if (cart == null) {
@@ -45,8 +46,8 @@ export default function CartView({mini = false, cart = [], total, gst, estTotal,
     }
 
     const IsLoggedIn = () => {
-        const token = JSON.parse(sessionStorage.getItem('Authorization'))
-        if (token == null)
+        const token = getToken()
+        if (token == "undefined")
           return (
               <div className="border rounded-md shadow-md p-3 mb-4 text-sm">
                   <FontAwesomeIcon icon={faUser} className="mr-1"/>

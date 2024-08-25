@@ -1,6 +1,7 @@
 import CartService from "@/services/cartServices";
 import PaymentServices from "@/services/paymentServices";
 import { useState } from "react";
+import { getToken } from "@/lib/utils";
 
 export default function PaymentSelection({ showPayment, paymentMethods, setShowPayment, setPaymentMethod, setEditPayment }) {
   const [showNewPaymentForm, setShowNewPaymentForm] = useState(false);
@@ -18,7 +19,7 @@ export default function PaymentSelection({ showPayment, paymentMethods, setShowP
     const formData = new FormData(e.target);
     const formObj = Object.fromEntries(formData.entries());
     // Your submit logic here
-    const token = JSON.parse(sessionStorage.getItem('Authorization'))
+    const token = getToken()
     const response = await PaymentServices.addPaymentMethod(token, formObj)
     
     setShowPayment(false)
