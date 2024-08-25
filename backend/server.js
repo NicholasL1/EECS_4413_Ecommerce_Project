@@ -30,7 +30,7 @@ const app = express();
 app.use(
   cors({
     origin: "https://6ixkicks.vercel.app", // Allow requests from your frontend
-    credentials: true, // Allow cookies and other credentials
+    credentials: false, // Allow cookies and other credentials
     methods: "GET, POST, PUT, DELETE, OPTIONS", // Specify allowed methods
     allowedHeaders:
       "Origin, X-Requested-With, Content-Type, Accept, Authorization", // Specify allowed headers
