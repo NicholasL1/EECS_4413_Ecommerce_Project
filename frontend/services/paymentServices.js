@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {api, headers} from '../config';
+import {api, headers} from './config';
 axios.defaults.withCredentials = true
 
 export default class PaymentServices {
