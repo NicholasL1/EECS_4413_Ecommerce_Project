@@ -31,7 +31,7 @@ app.use(
   cors({
     origin: "https://6ixkicks.vercel.app", // Allow requests from your frontend
     credentials: true, // Allow cookies and other credentials
-    methods: "GET, POST, PUT, DELETE, OPTIONS", // Specify allowed methods
+    methods: "GET, POST, PUT, DELETE, OPTIONS, PATCH", // Specify allowed methods
     allowedHeaders:
       "Origin, X-Requested-With, Content-Type, Accept, Authorization", // Specify allowed headers
   })
@@ -54,7 +54,7 @@ app.use(
 );
 
 app.use((req, res, next) => {
-  res.setHeader('Referrer-Policy', 'no-referrer');
+  res.setHeader("Referrer-Policy", "no-referrer");
   if (!req.session.cart) {
     req.session.cart = {};
   }
