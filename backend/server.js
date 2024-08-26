@@ -32,6 +32,20 @@ app.use(bodyParser.json({limit: '5mb' }));
 app.use(bodyParser.urlencoded({ limit: '5mb', extended: true }));
 // app.use(express.json());
 // app.use(express.urlencoded({ extended: false }));
+
+app.use(
+  cors({
+    origin: "https://6ixkicks.vercel.app", // Allow requests from your frontend
+    credentials: true, // Allow cookies and other credentials
+    methods: "GET, POST, PUT, DELETE, OPTIONS, PATCH", // Specify allowed methods
+    allowedHeaders:
+      "Origin, X-Requested-With, Content-Type, Accept, Authorization", // Specify allowed headers
+  })
+);
+
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: false }));
+
 app.use(cookieParser());
 app.use(
   session({
@@ -45,15 +59,9 @@ app.use(
     },
   })
 );
-app.use(
-  cors({
-    origin: "http://localhost:3000", // Replace with your client URL
-    credentials: true,
-  })
-);
 
 app.use((req, res, next) => {
-  // Initialize session variables on the req.session object
+  res.setHeader("Referrer-Policy", "no-referrer");
   if (!req.session.cart) {
     req.session.cart = {};
   }
@@ -62,6 +70,16 @@ app.use((req, res, next) => {
   }
   next();
 });
+
+// app.use((req, res, next) => {
+//   if (!req.sessionStore.cart) {
+//     req.sessionStore.cart = {};
+//   }
+//   if (req.sessionStore.loggedIn === undefined) {
+//     req.sessionStore.loggedIn = false;
+//   }
+//   next();
+// });
 
 // How to add controller to application
 // app.use('/CONTROLLER', CONTROLLER)
