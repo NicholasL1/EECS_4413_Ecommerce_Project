@@ -53,6 +53,8 @@ app.use(
   })
 );
 
+app.options("*", cors());
+
 app.use((req, res, next) => {
   res.setHeader("Referrer-Policy", "no-referrer");
   if (!req.session.cart) {
@@ -61,6 +63,16 @@ app.use((req, res, next) => {
   if (req.session.loggedIn === undefined) {
     req.session.loggedIn = false;
   }
+  next();
+});
+
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "https://6ixkicks.vercel.app");
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
   next();
 });
 
