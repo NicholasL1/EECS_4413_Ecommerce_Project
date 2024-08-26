@@ -73,10 +73,10 @@ export default function OrderDashboard() {
             <div className="p-2 pl-0 pt-0" key={i}>
               <div className="flex flex-row align-middle items-center">
                 <a
-                  href={`/shoeView?id=${shoe.shoe._id}`}
+                  href={`/shoeView?id=${shoe?.shoe?._id}`}
                   className="block underline text-blue-600"
                 >
-                  {shoe.qty} x {shoe.shoe.name} @ ${shoe.shoe.price}
+                  {shoe?.qty} x {shoe?.shoe?.name} @ ${shoe?.shoe?.price}
                 </a>
                 <FontAwesomeIcon
                   icon={faArrowUpRightFromSquare}
@@ -85,7 +85,7 @@ export default function OrderDashboard() {
                 />
               </div>
               <span className="text-sm">
-                Size: {shoe.shoe.size} | Colour: {shoe.shoe.colour} | Gender: {shoe.shoe.gender}
+                Size: {shoe?.shoe?.size} | Colour: {shoe?.shoe?.colour} | Gender: {shoe?.shoe?.gender}
               </span>
             </div>
           );
@@ -170,7 +170,7 @@ export default function OrderDashboard() {
             <Column
               field="order.total"
               header="Total"
-              body={(data) => <p>${data.order.total.toLocaleString()}</p>}
+              body={(data) => <p>${((data.order.total) * 1.13).toLocaleString()}</p>}
               sortable
             />
           </DataTable>

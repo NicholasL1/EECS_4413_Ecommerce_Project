@@ -5,7 +5,7 @@ import Loading from "../ui/Loading";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CartService from "@/services/cartServices";
 import OrderSummaryInfo from "../ui/OrderSummaryInfo";
-import ShoePlaceholder from "../../public/4413 Shoe Pics/NIKE+AIR+MAX+270+WHITE+1.png"
+// import ShoePlaceholder from "../../public/NIKE+AIR+MAX+270+WHITE+1.png"
 import Image from "next/image";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -107,7 +107,8 @@ export default function CartView({mini = false, cart = [], total, gst, estTotal,
 
                 <div id="Product" className="w-2/3 flex flex-row justify-start items-center align-middle p-4 gap-4">
                   <Image
-                    src={ShoePlaceholder} // TODO: Replace with shoe.image
+                    src={`/${shoe.name} ${shoe.colour}.png`}
+                    // src={ShoePlaceholder} // TODO: Replace with shoe.image
                     alt={shoe.colour}
                     className="border shadow-sm rounded-md"
                     width={192}

@@ -23,16 +23,16 @@ export default function product({ shoeData, alternatives, id }) {
     <div className="w-10/12 flex flex-col md:flex-row p-16 bg-gray-300 mx-auto rounded-3xl">
       {/* Shoe display picture */}
       <div className="w-full md:w-2/3 flex items-center justify-center">
-        <div
-          className="w-full max-w-[600px] relative aspect-square mx-auto"
-          style={{
-            //backgroundImage: `url(${imageStub.src})`,
-            backgroundImage: `url(data:image/png;base64,${shoeData.image})`, // decodes base64 image to render in browser window
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-          }}
-        ></div>
+        <div className="w-full max-w-[600px] relative aspect-square mx-auto">
+          <Image
+            src={`/${shoeData.name} ${shoeData.colour}.png`}
+            alt={`${shoeData.name} ${shoeData.colour}`}
+            layout="fill" // Makes the image cover the parent container
+            objectFit="cover" // Similar to background-size: cover;
+            objectPosition="center" // Similar to background-position: center;
+            priority // Optional: Use this if you want to load the image eagerly instead of lazily
+          />
+        </div>
       </div>
 
       {/* Shoe information (title, category, brand, price, rating, colour, sizing, etc.) */}
@@ -104,7 +104,7 @@ export default function product({ shoeData, alternatives, id }) {
                       : "border-gray-200"
                   }`}
                 >
-                  {shoe.image && (
+                  {/*{shoe.image && (
                     <Image
                       src={`data:image/png;base64,${shoe.image}`}
                       alt={shoe.colour}
@@ -112,7 +112,13 @@ export default function product({ shoeData, alternatives, id }) {
                       width={192}
                       height={192}
                     ></Image>
-                  )}
+                  )} */}
+                  <Image
+                    src={`/${shoe.name} ${shoe.colour}.png`}
+                    alt={shoeData.name}
+                    width={240}
+                    height={200}
+                    ></Image>
 
                   <p className="text-sm font-medium text-center mt-2">
                     {shoe.colour}
@@ -157,4 +163,4 @@ export default function product({ shoeData, alternatives, id }) {
       </div>
     </div>
   );
-}
+} 

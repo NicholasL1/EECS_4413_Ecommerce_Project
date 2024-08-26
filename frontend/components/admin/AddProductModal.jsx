@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import AdminServices from "../../services/adminServices";
-import { handleOnBlur } from "@/lib/utils";
+import { getToken, handleOnBlur } from "@/lib/utils";
 import { toast } from "react-toastify";
-import { getToken } from "@/lib/utils";
 
 export default function AddProductModal({ showModal, setShowModal }) {
   const [newProduct, setNewProduct] = useState({
@@ -18,7 +17,7 @@ export default function AddProductModal({ showModal, setShowModal }) {
     image: "",
   });
 
-  const [imageUpload, setImageUpload] = useState(null);
+  const [imageUpload, setImageUpload] = useState("");
 
   const handleNewProduct = (field, e) => {
     let value = e.target.value;
@@ -45,21 +44,25 @@ export default function AddProductModal({ showModal, setShowModal }) {
   };
 
   const SubmitChanges = async () => {
-    if (!imageUpload) {
-      alert("No image selected");
-      return;
-    }
 
-    const reader = new FileReader(); // gets file upload from user to be used for product image
-    reader.onloadend = async () => {
-      const image64 = reader.result.split(",")[1]; // gets base64 data from image URL in FileReader
-
-      const updatedProduct = {
-        // adds image to product
-        ...newProduct,
-        image: image64,
+    if (imageUpload) {
+      const reader = new FileReader(); // gets file upload from user to be used for product image
+      reader.onloadend = async () => {
+        const image64 = reader.result.split(",")[1]; // gets base64 data from image URL in FileReader
+        const updatedProduct = {
+          // adds image to product
+          ...newProduct,
+          image: image64,
+        };
+        const response = await AdminServices.AddProduct(
+          getToken(),
+          updatedProduct
+        );
+          setShowModal(false);
+          window.location.reload();
       };
-
+      reader.readAsDataURL(imageUpload);
+    } else {
       const response = await AdminServices.AddProduct(
         getToken(),
         newProduct
@@ -70,9 +73,7 @@ export default function AddProductModal({ showModal, setShowModal }) {
         setShowModal(false);
         window.location.reload();
       }
-    };
-
-    reader.readAsDataURL(imageUpload);
+    }
   };
 
   const FormInputComponent = ({ label, placeholder, type = "text" }) => {
@@ -109,7 +110,7 @@ export default function AddProductModal({ showModal, setShowModal }) {
             type={type}
             min={0}
             placeholder={placeholder}
-            required
+            required={lowerLabel !== 'rating'}
             defaultValue={newProduct[lowerLabel] || ""}
             onChange={(e) => handleNewProduct(lowerLabel, e)}
             className="block border p-1 h-[32px] w-11/12 rounded-md"
@@ -198,12 +199,10 @@ export default function AddProductModal({ showModal, setShowModal }) {
                       </div>
 
                       <div className="flex">
-                        <FormInputComponent
-                          label={"Image"}
-                          placeholder={""}
-                          type="file"
-                          accept="image/*"
-                          onChange={handleImageUpload}
+                        <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageUpload}
                         />
                       </div>
                     </fieldset>
