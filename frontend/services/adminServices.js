@@ -2,7 +2,7 @@ import axios from 'axios';
 axios.defaults.withCredentials = true
 
 export default class AdminServices {
-    static DB = axios.create({ baseURL: 'http://localhost:3001/', withCredentials: true  });
+    static DB = axios.create({ baseURL: 'http://localhost:3001/' });
 
     static async GetAllOrders(token) {
         try {

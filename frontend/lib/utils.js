@@ -69,11 +69,16 @@ const handleOnBlur = (old_obj, new_obj, checkAll = false) => {
   let fields_filled = 0;
 
   for (const [key, value] of Object.entries(new_obj)) {
-    if (!checkAll && old_obj[key] !== value) {
-      formChange = true;
-      break;
+    
+    if (key == 'image') {
+      fields_filled++
     } else {
-      if (new_obj[key] !== null) fields_filled++;
+      if (!checkAll && old_obj[key] !== value) {
+        formChange = true;
+        break;
+      } else {
+        if (new_obj[key] !== null) fields_filled++;
+      }
     }
   }
 
