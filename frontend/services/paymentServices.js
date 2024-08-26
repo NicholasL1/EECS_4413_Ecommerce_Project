@@ -14,9 +14,6 @@ export default class PaymentServices {
                     ...headers
                 }
             });
-
-            console.log(response)
-
             return response
         } catch (err) {
             console.log(err)

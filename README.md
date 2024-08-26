@@ -1,6 +1,6 @@
 # EECS_4413_Ecommerce_Project
 
-Online URL: https://6ixkicks.vercel.app/
+## Created by: Ammad Qureshi, Ethan Mackay, Nicholas Lachhman, Ryan Loi
 
 Steps to download and run locally:
 1. Clone the repo:
@@ -11,7 +11,7 @@ Steps to download and run locally:
  cd EECS_4413_Ecommerce_Project
  code .
  ```
- 3. Checkout development branch, the main branch is used for production server
+ 3. Checkout development branch, the main branch is used for production server, the development branch is up to date with changes
  ```
  git checkout development
  ```
@@ -33,3 +33,8 @@ JWT_SECRET = 5af53784373e542ee1c6c27b4eab72d337b93164b7f39a38aa74e72b008b6b6c50c
  ```
 6. Access the `http://localhost:3000` in your browser, you can now browse 6ixkicks!
 
+Github Repo: https://github.com/Ammadq87/EECS_4413_Ecommerce_Project/tree/development
+
+Online URL: https://6ixkicks.vercel.app/
+
+## Disclaimer: If there are build issues on Vercel and the link doesn't work, please download and run locally.

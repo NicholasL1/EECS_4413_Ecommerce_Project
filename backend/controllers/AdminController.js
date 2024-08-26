@@ -6,7 +6,7 @@ const { generateToken } = require("../config/generateToken.js");
 const verifyToken = require("../config/verifyToken.js");
 
 router.post("/AddProduct", verifyToken, verifyAdmin, async (req, res) => {
-  const { brand, size, name, colour, gender, stock, price, rating, category } =
+  const { brand, size, name, colour, gender, stock, price, rating, category, image } =
     req.body;
 
   if (!brand || !size || !name || !colour || !stock || !price || !gender) {
