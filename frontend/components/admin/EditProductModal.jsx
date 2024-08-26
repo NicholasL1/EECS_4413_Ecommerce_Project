@@ -3,7 +3,7 @@ import AdminServices from "../../services/adminServices";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
-import { handleOnBlur } from "@/lib/utils";
+import { getToken, handleOnBlur } from "@/lib/utils";
 
 export default function EditProductModalV2({
   showModal,
@@ -25,7 +25,7 @@ export default function EditProductModalV2({
 
   const SubmitChanges = async () => {
     const response = await AdminServices.EditProduct(
-      JSON.parse(sessionStorage.getItem("Authorization")),
+      getToken(),
       newProduct
     );
     if (response) {

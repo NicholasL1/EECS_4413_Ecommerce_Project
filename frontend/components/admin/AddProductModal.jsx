@@ -45,26 +45,27 @@ export default function AddProductModal({ showModal, setShowModal }) {
 
   const SubmitChanges = async () => {
 
-    if (!imageUpload) {
-      alert("No image selected");
-      return;
-    }
-
-    const reader = new FileReader(); // gets file upload from user to be used for product image
-
-    reader.onloadend = async () => {
-      const image64 = reader.result.split(",")[1]; // gets base64 data from image URL in FileReader
-
-      const updatedProduct = {
-        // adds image to product
-        ...newProduct,
-        image: image64,
+    if (imageUpload) {
+      const reader = new FileReader(); // gets file upload from user to be used for product image
+      reader.onloadend = async () => {
+        const image64 = reader.result.split(",")[1]; // gets base64 data from image URL in FileReader
+        const updatedProduct = {
+          // adds image to product
+          ...newProduct,
+          image: image64,
+        };
+        const response = await AdminServices.AddProduct(
+          getToken(),
+          updatedProduct
+        );
+          setShowModal(false);
+          window.location.reload();
       };
-
-      debugger
+      reader.readAsDataURL(imageUpload);
+    } else {
       const response = await AdminServices.AddProduct(
         getToken(),
-        updatedProduct
+        newProduct
       );
       if (!response) {
         return toast.error("Please Fill All Fields");
@@ -72,9 +73,7 @@ export default function AddProductModal({ showModal, setShowModal }) {
         setShowModal(false);
         window.location.reload();
       }
-    };
-
-    reader.readAsDataURL(imageUpload);
+    }
   };
 
   const FormInputComponent = ({ label, placeholder, type = "text" }) => {
@@ -111,7 +110,7 @@ export default function AddProductModal({ showModal, setShowModal }) {
             type={type}
             min={0}
             placeholder={placeholder}
-            required
+            required={lowerLabel !== 'rating'}
             defaultValue={newProduct[lowerLabel] || ""}
             onChange={(e) => handleNewProduct(lowerLabel, e)}
             className="block border p-1 h-[32px] w-11/12 rounded-md"
