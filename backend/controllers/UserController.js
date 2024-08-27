@@ -44,8 +44,9 @@ router.post("/Login", async (req, res) => {
     );
 
     res.cookie("Authorization", token, {
+      domain: ".vercel.app",
       httpOnly: false,
-      secure: process.env.NODE_ENV === "production",
+      secure: true,
       sameSite: "lax",
       maxAge: 3600000,
     });
@@ -113,6 +114,7 @@ router.post("/Register", async (req, res) => {
     );
 
     res.cookie("Authorization", token, {
+      domain: ".vercel.app",
       httpOnly: false,
       secure: true,
       sameSite: "lax",
