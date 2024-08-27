@@ -47,7 +47,7 @@ router.post("/Login", async (req, res) => {
       domain: ".6ixkicks.vercel.app",
       httpOnly: false,
       secure: true,
-      sameSite: "lax",
+      sameSite: "strict",
       maxAge: 3600000,
     });
 
@@ -117,7 +117,7 @@ router.post("/Register", async (req, res) => {
       domain: ".6ixkicks.vercel.app",
       httpOnly: false,
       secure: true,
-      sameSite: "lax",
+      sameSite: "strict",
       maxAge: 3600000,
     });
 
