@@ -35,12 +35,9 @@ export default function Header() {
   }, [pathname]);
 
   const handleLogout = () => {
-    const token = getToken()
+    const token = getToken();
 
-    if (
-      typeof window !== "undefined" &&
-      token != "undefined"  
-    ) {
+    if (typeof window !== "undefined" && token != "undefined") {
       Cookies.remove("Authorization");
       setButtonText("Sign Up");
       setButtonLink("/signup");
@@ -64,7 +61,7 @@ export default function Header() {
         {/* desktop nav & sign up button */}
         <div className="hidden xl:flex items-center gap-8">
           <Nav />
-          <Link href={buttonLink}>
+          <Link href={buttonLink} prefetch={false}>
             <Button
               onClick={handleLogout}
               className="bg-custom-red font-signika-negative text-lg text-custom-white hover:text-gray-700"

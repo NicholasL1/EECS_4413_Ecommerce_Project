@@ -22,7 +22,7 @@ const links = [
   {
     name: "cart",
     path: "/cart",
-  }
+  },
 ];
 
 const MobileNav = ({ buttonText, buttonLink, logoutFunction }) => {
@@ -30,9 +30,9 @@ const MobileNav = ({ buttonText, buttonLink, logoutFunction }) => {
 
   // On mount, add Admin link if token is admin
   useEffect(() => {
-    addAdminLink(links)
+    addAdminLink(links);
     addUserLink(links);
-  }, [])
+  }, []);
 
   return (
     <Sheet className="sheet bg-custom-white">
@@ -63,9 +63,8 @@ const MobileNav = ({ buttonText, buttonLink, logoutFunction }) => {
               );
             }
 
-            
             // if (link.name === "admin" && !renderAdminLink) {
-            //   return 
+            //   return
             // }
 
             return (
@@ -81,7 +80,7 @@ const MobileNav = ({ buttonText, buttonLink, logoutFunction }) => {
               </Link>
             );
           })}
-          <Link href={buttonLink}>
+          <Link href={buttonLink} prefetch={false}>
             <Button
               className="bg-custom-red font-signika-negative text-lg text-custom-white hover:text-gray-700"
               onClick={logoutFunction}
