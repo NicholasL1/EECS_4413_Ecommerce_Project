@@ -46,8 +46,8 @@ router.post("/Login", async (req, res) => {
     res.cookie("Authorization", token, {
       domain: ".6ixkicks.vercel.app",
       httpOnly: false,
-      secure: false,
-      sameSite: "lax",
+      secure: true,
+      sameSite: "None",
       maxAge: 3600000,
     });
 
@@ -116,8 +116,8 @@ router.post("/Register", async (req, res) => {
     res.cookie("Authorization", token, {
       domain: ".6ixkicks.vercel.app",
       httpOnly: false,
-      secure: false,
-      sameSite: "lax",
+      secure: true,
+      sameSite: "None",
       maxAge: 3600000,
     });
 
