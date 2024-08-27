@@ -44,7 +44,7 @@ router.post("/Login", async (req, res) => {
     );
 
     res.cookie("Authorization", token, {
-      domain: ".vercel.app",
+      domain: ".6ixkicks.vercel.app",
       httpOnly: false,
       secure: true,
       sameSite: "lax",
@@ -114,7 +114,7 @@ router.post("/Register", async (req, res) => {
     );
 
     res.cookie("Authorization", token, {
-      domain: ".vercel.app",
+      domain: ".6ixkicks.vercel.app",
       httpOnly: false,
       secure: true,
       sameSite: "lax",
