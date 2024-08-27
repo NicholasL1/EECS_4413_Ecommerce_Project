@@ -10,19 +10,18 @@ const { generateToken } = require("../config/generateToken.js");
 
 router.post("/Login", async (req, res) => {
   const { email, password } = req.body;
-  console.log("Login attempt with email:", email); // Log the received email
+  console.log("Login attempt with email:", email);
 
-  // Check if all fields are filled
   if (!email || !password) {
     return res.status(400).json({ message: "Please enter all fields" });
   }
 
   try {
-    const user = await UserService.login(email, password); // Attempt login
+    const user = await UserService.login(email, password);
 
     req.session.loggedIn = true;
     req.session.user = user;
-    req.session.save();
+    await req.session.save(); // Wait for session to save before proceeding
 
     const session_cart = req.session.cart;
 
@@ -46,19 +45,18 @@ router.post("/Login", async (req, res) => {
 
     res.cookie("Authorization", token, {
       httpOnly: false,
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       maxAge: 3600000,
     });
 
+    console.log("Cookie set successfully on login.");
     res.status(201).json({
       message: "Login Successful",
     });
   } catch (error) {
-    console.error("Error during login:", error.message); // Log any errors
-    if (error.message === "Invalid Login Credentials") {
-      res.status(400).json({ message: error.message });
-    }
+    console.error("Error during login:", error.message);
+    res.status(400).json({ message: error.message });
   }
 });
 
