@@ -4,7 +4,7 @@ import { useState } from "react";
 import FormAnimation from "@/components/FormAnimation";
 import userServices from "@/services/userServices";
 
-function page() {
+const page = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -32,8 +32,7 @@ function page() {
         address
       );
 
-       
-      console.log(response)
+      console.log(response);
 
       if (response.message === "User already exists") {
         setError("User already exists! Please login instead.");
@@ -160,6 +159,6 @@ function page() {
       </div>
     </div>
   );
-}
+};
 
 export default page;

@@ -5,7 +5,7 @@ import FormAnimation from "@/components/FormAnimation";
 import userServices from "@/services/userServices";
 import Cookies from "js-cookie";
 
-function page() {
+const page = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -95,6 +95,6 @@ function page() {
       </div>
     </div>
   );
-}
+};
 
 export default page;
