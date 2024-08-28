@@ -44,7 +44,7 @@ router.post("/Login", async (req, res) => {
     );
 
     res.cookie("Authorization", token, {
-      domain: ".sixkicks.onrender.com",
+      domain: ".6ixkicks.vercel.app",
       httpOnly: false,
       secure: true,
       sameSite: "lax",
@@ -115,7 +115,7 @@ router.post("/Register", async (req, res) => {
     );
 
     res.cookie("Authorization", token, {
-      domain: ".sixkicks.onrender.com",
+      domain: ".6ixkicks.vercel.app",
       httpOnly: false,
       secure: true,
       sameSite: "lax",

@@ -27,7 +27,7 @@ app.use(bodyParser.urlencoded({ limit: "5mb", extended: true }));
 
 app.use(
   cors({
-    origin: /^https:\/\/(?:.*\.)?sixkicks\.onrender\.com$/,
+    origin: /^https:\/\/6ixkicks\.vercel\.app$/,
     credentials: true,
     methods: "GET, POST, PUT, DELETE, OPTIONS, PATCH",
     allowedHeaders:
