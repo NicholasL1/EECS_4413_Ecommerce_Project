@@ -50,7 +50,7 @@ export default function product({ shoeData, alternatives, id }) {
             </span>
             {/* TODO: See all reviews */}
             <a
-              href={"/"}
+              href="#reviews"
               className="text-gray-400 text-left md:text-right underline text-sm"
             >
               See all reviews
@@ -118,7 +118,7 @@ export default function product({ shoeData, alternatives, id }) {
                     alt={shoeData.name}
                     width={240}
                     height={200}
-                    ></Image>
+                  ></Image>
 
                   <p className="text-sm font-medium text-center mt-2">
                     {shoe.colour}
@@ -163,4 +163,4 @@ export default function product({ shoeData, alternatives, id }) {
       </div>
     </div>
   );
-} 
+}
